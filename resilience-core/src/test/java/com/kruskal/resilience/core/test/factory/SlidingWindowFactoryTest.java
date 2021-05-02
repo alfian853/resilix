@@ -1,4 +1,4 @@
-package com.kruskal.resilience.core.test;
+package com.kruskal.resilience.core.test.factory;
 
 import com.kruskal.resilience.core.Configuration;
 import com.kruskal.resilience.core.constant.SlidingWindowStrategy;
