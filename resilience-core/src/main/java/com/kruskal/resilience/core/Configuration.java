@@ -9,10 +9,10 @@ public class Configuration {
 
   private SlidingWindowStrategy slidingWindowStrategy;
   private RetryStrategy retryStrategy = RetryStrategy.OPTIMISTIC;
-  private long slidingWindowTimeRange = 10 * SECOND_IN_MS;
-  private long slidingWindowMaxSize = 10;
-  private double errorThreshold = 0.5;
-  private long retryWaitDuration = 5;
+  private long slidingWindowTimeRange = 10L * SECOND_IN_MS;
+  private long slidingWindowMaxSize = 10L;
+  private double errorThreshold = 0.5d;
+  private long retryWaitDuration = 5L;
   private int numberOfRetryInHalfOpenState = 10;
 
   public SlidingWindowStrategy getSlidingWindowStrategy() {

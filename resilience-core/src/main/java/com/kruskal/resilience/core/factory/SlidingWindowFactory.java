@@ -7,6 +7,8 @@ import com.kruskal.resilience.core.window.TimeBasedWindow;
 
 public class SlidingWindowFactory {
 
+  private SlidingWindowFactory() { }
+
   public static SlidingWindow create(Configuration configuration){
     switch (configuration.getSlidingWindowStrategy()){
       case TIME_BASED:

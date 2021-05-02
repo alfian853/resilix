@@ -7,6 +7,8 @@ import com.kruskal.resilience.core.retry.RetryManager;
 
 public class RetryManagerFactory {
 
+  private RetryManagerFactory() { }
+
   public static RetryManager create(Context context){
     switch (context.getConfiguration().getRetryStrategy()){
       case PESSIMISTIC:
