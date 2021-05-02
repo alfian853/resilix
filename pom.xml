@@ -18,6 +18,7 @@
   <properties>
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
+    <sonar.projectKey>alfian853_resilience-${project.groupId}:${project.artifactId}</sonar.projectKey>
     <sonar.organization>alfian853</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties>
