@@ -35,10 +35,12 @@ public class TimeBasedWindow extends AbstractSlidingWindow {
   }
 
   private void examineAttemptWindow(){
-    while(successAttemptWindow.getFirst() < lastAttempt.get() - configuration.getWindowTimeRange()){
+    while(!successAttemptWindow.isEmpty() &&
+        successAttemptWindow.getFirst() < lastAttempt.get() - configuration.getWindowTimeRange()){
       successAttemptWindow.removeFirst();
     }
-    while(failureAttemptWindow.getFirst() < lastAttempt.get() - configuration.getWindowTimeRange()){
+    while(!failureAttemptWindow.isEmpty() &&
+        failureAttemptWindow.getFirst() < lastAttempt.get() - configuration.getWindowTimeRange()){
       failureAttemptWindow.removeFirst();
     }
 
