@@ -4,6 +4,7 @@ import com.kruskal.resilience.core.Configuration;
 import com.kruskal.resilience.core.test.testutil.RandomUtil;
 import com.kruskal.resilience.core.window.CountBasedWindow;
 import com.kruskal.resilience.core.window.SlidingWindowObserver;
+import com.kruskal.resilience.core.window.TimeBasedWindow;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,63 +13,71 @@ import org.junit.jupiter.api.Test;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class CountBasedWindowTest {
+public class TimeBasedWindowTest {
 
+  private final long WINDOW_TIME_RANGE = 1000L;
   private final Configuration configuration = new Configuration();
-  private final CountBasedWindow countBasedWindow = new CountBasedWindow(configuration);
+  private final TimeBasedWindow timeBasedWindow = new TimeBasedWindow(configuration);
 
   @BeforeEach
   public void init(){
-    configuration.setSlidingWindowSize(10);
+    configuration.setSlidingWindowTimeRange(WINDOW_TIME_RANGE);
   }
 
-
+  private boolean getRandomBoolean() {
+    Random random = new Random();
+    return random.ints(1, 10)
+        .findFirst()
+        .getAsInt() % 2 == 0;
+  }
 
   @Test
   @DisplayName("testcase: observe 3 ack, and then unobserve and fire 5 ack")
-  public void observerNotificationTest(){
+  public void observerNotificationTest() throws InterruptedException {
     AtomicInteger count = new AtomicInteger(0);
 
     SlidingWindowObserver observer = success -> count.incrementAndGet();
-    countBasedWindow.addObserver(observer);
+    timeBasedWindow.addObserver(observer);
+
+    Thread.sleep(WINDOW_TIME_RANGE);
 
     for(int i = 0; i < 3; i++){
-      countBasedWindow.ackAttempt(RandomUtil.generateRandomBoolean());
+      timeBasedWindow.ackAttempt(RandomUtil.generateRandomBoolean());
     }
 
-    countBasedWindow.removeObserver(observer);
+    timeBasedWindow.removeObserver(observer);
 
     for(int i = 0; i < 5; i++){
-      countBasedWindow.ackAttempt(RandomUtil.generateRandomBoolean());
+      timeBasedWindow.ackAttempt(RandomUtil.generateRandomBoolean());
     }
 
     Assertions.assertEquals(3, count.get());
   }
 
   @Test
-  @DisplayName("testcase: fire with 25 random ack followed by 10(70% success) ack in arbitrary order")
-  public void endingTest(){
-
+  @DisplayName("testcase: fire with 25 random ack followed by 10(70% success) ack in arbitrary order after 1000ms later")
+  public void endingTest() throws InterruptedException {
 
     for(int i = 0; i < 25; i++){
-      countBasedWindow.ackAttempt(RandomUtil.generateRandomBoolean());
+      timeBasedWindow.ackAttempt(RandomUtil.generateRandomBoolean());
     }
 
+    Thread.sleep(WINDOW_TIME_RANGE + 1);
     int nSuccess = 7;
     int nFailure = 3;
 
     while(nSuccess > 0 || nFailure > 0){
       if(RandomUtil.generateRandomBoolean() || nFailure == 0){
         nSuccess--;
-        countBasedWindow.ackAttempt(true);
+        timeBasedWindow.ackAttempt(true);
       }
       else {
         nFailure--;
-        countBasedWindow.ackAttempt(false);
+        timeBasedWindow.ackAttempt(false);
       }
     }
 
-    double errorRate = countBasedWindow.getErrorRate();
+    double errorRate = timeBasedWindow.getErrorRate();
 
     Assertions.assertEquals(0.3, errorRate, 0.0001);
 

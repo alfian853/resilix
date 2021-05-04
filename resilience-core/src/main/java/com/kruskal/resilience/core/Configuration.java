@@ -43,7 +43,7 @@ public class Configuration {
     return slidingWindowMaxSize;
   }
 
-  public void setSlidingWindowMaxSize(long slidingWindowMaxSize) {
+  public void setSlidingWindowSize(long slidingWindowMaxSize) {
     this.slidingWindowMaxSize = slidingWindowMaxSize;
   }
 

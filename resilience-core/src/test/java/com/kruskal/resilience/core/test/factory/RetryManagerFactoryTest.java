@@ -6,6 +6,7 @@ import com.kruskal.resilience.core.constant.RetryStrategy;
 import com.kruskal.resilience.core.factory.RetryManagerFactory;
 import com.kruskal.resilience.core.retry.OptimisticRetryManager;
 import com.kruskal.resilience.core.retry.RetryManager;
+import com.kruskal.resilience.core.window.CountBasedWindow;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ public class RetryManagerFactoryTest {
 
     Context context = new Context();
     context.setConfiguration(configuration);
+    context.setSlidingWindow(new CountBasedWindow(configuration));
 
     RetryManager retryManager = RetryManagerFactory.create(context);
 
@@ -36,6 +38,7 @@ public class RetryManagerFactoryTest {
 
     Context context = new Context();
     context.setConfiguration(configuration);
+    context.setSlidingWindow(new CountBasedWindow(configuration));
 
     RetryManager retryManager = RetryManagerFactory.create(context);
 

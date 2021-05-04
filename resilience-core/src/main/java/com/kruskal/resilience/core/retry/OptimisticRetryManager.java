@@ -28,7 +28,7 @@ public class OptimisticRetryManager implements RetryManager, SlidingWindowObserv
       return false;
     }
 
-    return this.isErrorLimitExceeded();
+    return !this.isErrorLimitExceeded();
   }
 
   @Override
@@ -53,6 +53,7 @@ public class OptimisticRetryManager implements RetryManager, SlidingWindowObserv
 
   @Override
   public double getErrorRate() {
+    if(numberOfRetry.get() == 0) return 0.0d;
     return ((double) numberOfFail.get()) / numberOfRetry.get();
   }
 
