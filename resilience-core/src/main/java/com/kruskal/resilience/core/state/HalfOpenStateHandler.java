@@ -26,6 +26,11 @@ public class HalfOpenStateHandler extends AbstractStateHandler {
   }
 
   @Override
+  protected boolean isSlidingWindowActive() {
+    return true;
+  }
+
+  @Override
   public void evaluateState() {
 
     switch (retryManager.getRetryState()){

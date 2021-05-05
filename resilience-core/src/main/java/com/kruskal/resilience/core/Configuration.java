@@ -13,7 +13,7 @@ public class Configuration {
   private int slidingWindowMaxSize = 20;
   private int minimumCallToEvaluate = 5;
   private double errorThreshold = 0.5d;
-  private long retryWaitDuration = 5L;
+  private long waitDurationInOpenState = 5L;
   private int numberOfRetryInHalfOpenState = 10;
 
   public SlidingWindowStrategy getSlidingWindowStrategy() {
@@ -56,12 +56,12 @@ public class Configuration {
     this.errorThreshold = errorThreshold;
   }
 
-  public long getRetryWaitDuration() {
-    return retryWaitDuration;
+  public long getWaitDurationInOpenState() {
+    return waitDurationInOpenState;
   }
 
-  public void setRetryWaitDuration(long retryWaitDuration) {
-    this.retryWaitDuration = retryWaitDuration;
+  public void setWaitDurationInOpenState(long waitDurationInOpenState) {
+    this.waitDurationInOpenState = waitDurationInOpenState;
   }
 
   public int getNumberOfRetryInHalfOpenState() {

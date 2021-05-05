@@ -5,30 +5,31 @@ import com.kruskal.resilience.core.state.StateHandler;
 
 public class ResilienceHandler implements ExecutionHandler, StateContainer {
 
-  private StateHandler stateStrategy;
+  private StateHandler stateHandler;
 
   public ResilienceHandler(Context context){
-    stateStrategy = new CloseStateHandler(context, this);
+    stateHandler = new CloseStateHandler(context, this);
   }
 
   @Override
   public boolean acquirePermission() {
-    return stateStrategy.acquirePermission();
+    return stateHandler.acquirePermission();
   }
 
   @Override
   public boolean execute(Runnable runnable) {
-    return stateStrategy.execute(runnable);
+    return stateHandler.execute(runnable);
   }
 
   @Override
   public void setStateHandler(StateHandler newStateHandler) {
-    stateStrategy = newStateHandler;
+    stateHandler = newStateHandler;
   }
 
   @Override
   public StateHandler getStateHandler() {
-    return stateStrategy;
+    stateHandler.evaluateState();
+    return stateHandler;
   }
 
 }

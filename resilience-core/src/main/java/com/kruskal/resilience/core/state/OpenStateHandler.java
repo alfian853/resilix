@@ -14,6 +14,11 @@ public class OpenStateHandler extends AbstractStateHandler {
   }
 
   @Override
+  protected boolean isSlidingWindowActive() {
+    return false;
+  }
+
+  @Override
   public boolean acquirePermission() {
     this.evaluateState();
 
@@ -26,7 +31,7 @@ public class OpenStateHandler extends AbstractStateHandler {
 
   @Override
   public void evaluateState() {
-    if((startingTime + configuration.getRetryWaitDuration()) >= System.currentTimeMillis()){
+    if(System.currentTimeMillis() >= (startingTime + configuration.getWaitDurationInOpenState())){
       stateContainer.setStateHandler(new HalfOpenStateHandler(context, stateContainer));
     }
   }

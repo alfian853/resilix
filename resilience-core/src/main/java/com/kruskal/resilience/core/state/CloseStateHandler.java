@@ -10,6 +10,11 @@ public class CloseStateHandler extends AbstractStateHandler {
   }
 
   @Override
+  protected boolean isSlidingWindowActive() {
+    return true;
+  }
+
+  @Override
   public boolean acquirePermission() {
     return slidingWindow.getErrorRate() < context.getConfiguration().getErrorThreshold();
   }

@@ -4,10 +4,12 @@ import com.kruskal.resilience.core.Configuration;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class AbstractSlidingWindow implements SlidingWindow {
 
   protected Configuration configuration;
+  protected AtomicBoolean isActive = new AtomicBoolean(true);
 
   private final Queue<SlidingWindowObserver> slidingWindowSubscribers =
       new ConcurrentLinkedDeque<>();
@@ -28,6 +30,7 @@ public abstract class AbstractSlidingWindow implements SlidingWindow {
 
   @Override
   public void ackAttempt(boolean success) {
+    if(isActive.get())
     this.handleAckAttempt(success);
     this.slidingWindowSubscribers.forEach(subscriber -> subscriber.notifyOnAckAttempt(success));
   }
@@ -39,6 +42,11 @@ public abstract class AbstractSlidingWindow implements SlidingWindow {
     }
 
     return getErrorRateAfterMinCallSatisfied();
+  }
+
+  @Override
+  public void setActive(boolean isActive) {
+    this.isActive.set(isActive);
   }
 
   protected abstract void handleAckAttempt(boolean success);

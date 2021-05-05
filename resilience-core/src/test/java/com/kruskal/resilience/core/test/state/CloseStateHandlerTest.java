@@ -7,7 +7,6 @@ import com.kruskal.resilience.core.constant.RetryStrategy;
 import com.kruskal.resilience.core.constant.SlidingWindowStrategy;
 import com.kruskal.resilience.core.state.CloseStateHandler;
 import com.kruskal.resilience.core.state.OpenStateHandler;
-import com.kruskal.resilience.core.state.StateHandler;
 import com.kruskal.resilience.core.test.testutil.FunctionalUtil;
 import com.kruskal.resilience.core.test.testutil.TestStateContainer;
 import com.kruskal.resilience.core.window.CountBasedWindow;
@@ -24,7 +23,7 @@ public class CloseStateHandlerTest {
 
   private Context context;
   private StateContainer stateContainer;
-  private StateHandler stateHandler;
+  private CloseStateHandler stateHandler;
 
 
   @BeforeEach
@@ -36,7 +35,6 @@ public class CloseStateHandlerTest {
     configuration.setSlidingWindowStrategy(SlidingWindowStrategy.COUNT_BASED);
     configuration.setRetryStrategy(RetryStrategy.PESSIMISTIC);
     configuration.setMinimumCallToEvaluate(MIN_CALL_TO_EVALUATE);
-    configuration.setRetryWaitDuration(0);
     configuration.setSlidingWindowSize(WINDOW_SIZE);
 
     SlidingWindow slidingWindow = new CountBasedWindow(configuration);

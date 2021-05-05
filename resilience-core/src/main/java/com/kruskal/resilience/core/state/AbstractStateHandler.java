@@ -18,6 +18,7 @@ public abstract class AbstractStateHandler implements StateHandler {
 
     this.configuration = context.getConfiguration();
     this.slidingWindow = context.getSlidingWindow();
+    this.slidingWindow.setActive(this.isSlidingWindowActive());
   }
 
   @Override
@@ -40,5 +41,7 @@ public abstract class AbstractStateHandler implements StateHandler {
   protected void onBeforeExecution() {
     // do nothing
   }
+
+  abstract protected boolean isSlidingWindowActive();
 
 }
