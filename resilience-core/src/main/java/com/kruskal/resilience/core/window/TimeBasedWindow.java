@@ -30,7 +30,12 @@ public class TimeBasedWindow extends AbstractSlidingWindow {
   }
 
   @Override
-  public double getErrorRate() {
+  protected int getQueSize() {
+    return successAttemptWindow.size() + failureAttemptWindow.size();
+  }
+
+  @Override
+  protected double getErrorRateAfterMinCallSatisfied() {
     if(failureAttemptWindow.isEmpty() && successAttemptWindow.isEmpty()) return 0.0d;
     return ((double) failureAttemptWindow.size()) / (failureAttemptWindow.size() + successAttemptWindow.size());
   }

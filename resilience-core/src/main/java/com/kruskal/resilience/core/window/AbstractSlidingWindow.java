@@ -32,5 +32,19 @@ public abstract class AbstractSlidingWindow implements SlidingWindow {
     this.slidingWindowSubscribers.forEach(subscriber -> subscriber.notifyOnAckAttempt(success));
   }
 
+  @Override
+  public double getErrorRate() {
+    if(this.getQueSize() < configuration.getMinimumCallToEvaluate()){
+      return 0.0;
+    }
+
+    return getErrorRateAfterMinCallSatisfied();
+  }
+
   protected abstract void handleAckAttempt(boolean success);
+
+  protected abstract int getQueSize();
+
+  protected abstract double getErrorRateAfterMinCallSatisfied();
+
 }

@@ -20,6 +20,7 @@ public class CloseStateHandlerTest {
 
   private final double ERROR_THRESHOLD = 0.5;
   private final int WINDOW_SIZE = 10;
+  private final int MIN_CALL_TO_EVALUATE = 3;
 
   private Context context;
   private StateContainer stateContainer;
@@ -34,6 +35,7 @@ public class CloseStateHandlerTest {
     configuration.setNumberOfRetryInHalfOpenState(10);
     configuration.setSlidingWindowStrategy(SlidingWindowStrategy.COUNT_BASED);
     configuration.setRetryStrategy(RetryStrategy.PESSIMISTIC);
+    configuration.setMinimumCallToEvaluate(MIN_CALL_TO_EVALUATE);
     configuration.setRetryWaitDuration(0);
     configuration.setSlidingWindowSize(WINDOW_SIZE);
 
@@ -51,10 +53,21 @@ public class CloseStateHandlerTest {
   }
 
   @Test
-  public void idleStateTest(){
+  public void minCallToEvaluateTest(){
+    for(int i = 0; i < MIN_CALL_TO_EVALUATE - 1; i++){
+      Assertions.assertFalse(
+          stateHandler.execute(FunctionalUtil.throwErrorRunnable())
+      );
+      Assertions.assertTrue(stateHandler.acquirePermission());
+    }
     Assertions.assertTrue(stateContainer.getStateHandler() instanceof CloseStateHandler);
-    stateHandler.evaluateState();
-    Assertions.assertTrue(stateContainer.getStateHandler() instanceof CloseStateHandler);
+
+    Assertions.assertFalse(
+        stateHandler.execute(FunctionalUtil.throwErrorRunnable())
+    );
+
+    Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());
+    Assertions.assertTrue(stateContainer.getStateHandler() instanceof OpenStateHandler);
   }
 
   @Test

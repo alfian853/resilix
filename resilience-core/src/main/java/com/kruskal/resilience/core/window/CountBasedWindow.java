@@ -23,7 +23,12 @@ public class CountBasedWindow extends AbstractSlidingWindow {
   }
 
   @Override
-  public double getErrorRate() {
+  protected int getQueSize() {
+    return windowQue.size();
+  }
+
+  @Override
+  protected double getErrorRateAfterMinCallSatisfied() {
     if(windowQue.isEmpty()) return 0.0d;
     return ((double) errorCount.get()) / windowQue.size();
   }

@@ -10,7 +10,8 @@ public class Configuration {
   private SlidingWindowStrategy slidingWindowStrategy;
   private RetryStrategy retryStrategy = RetryStrategy.OPTIMISTIC;
   private long slidingWindowTimeRange = 10L * SECOND_IN_MS;
-  private long slidingWindowMaxSize = 10L;
+  private int slidingWindowMaxSize = 20;
+  private int minimumCallToEvaluate = 5;
   private double errorThreshold = 0.5d;
   private long retryWaitDuration = 5L;
   private int numberOfRetryInHalfOpenState = 10;
@@ -43,7 +44,7 @@ public class Configuration {
     return slidingWindowMaxSize;
   }
 
-  public void setSlidingWindowSize(long slidingWindowMaxSize) {
+  public void setSlidingWindowSize(int slidingWindowMaxSize) {
     this.slidingWindowMaxSize = slidingWindowMaxSize;
   }
 
@@ -69,5 +70,13 @@ public class Configuration {
 
   public void setNumberOfRetryInHalfOpenState(int numberOfRetryInHalfOpenState) {
     this.numberOfRetryInHalfOpenState = numberOfRetryInHalfOpenState;
+  }
+
+  public int getMinimumCallToEvaluate() {
+    return minimumCallToEvaluate;
+  }
+
+  public void setMinimumCallToEvaluate(int minimumCallToEvaluate) {
+    this.minimumCallToEvaluate = minimumCallToEvaluate;
   }
 }
