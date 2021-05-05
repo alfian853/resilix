@@ -92,17 +92,6 @@ public class CloseStateHandlerTest {
     Assertions.assertSame(stateHandler, stateContainer.getStateHandler());
   }
 
-  /**
-   * it's unfortunate case when the first attempt is failed, consequently it will move
-   * to close state immediately. need improvement on this.
-   * */
-  @Test
-  public void moveToCloseStateTest(){
-    stateHandler.execute(FunctionalUtil.throwErrorRunnable());
-    Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());
-    Assertions.assertTrue(stateContainer.getStateHandler() instanceof OpenStateHandler);
-  }
-
   @Test
   public void moveToOpenStateTest(){
     for(int i = 0; i < WINDOW_SIZE; i++){
