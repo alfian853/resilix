@@ -15,4 +15,12 @@ public class FunctionalUtil {
     };
   }
 
+  public static Runnable doNothingRunnable(){
+    return () -> {};
+  }
+
+  public static Runnable throwErrorRunnable(){
+    return () -> {throw new RuntimeException();};
+  }
+
 }

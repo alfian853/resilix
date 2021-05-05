@@ -24,6 +24,7 @@ public class CountBasedWindow extends AbstractSlidingWindow {
 
   @Override
   public double getErrorRate() {
+    if(windowQue.isEmpty()) return 0.0d;
     return ((double) errorCount.get()) / windowQue.size();
   }
 

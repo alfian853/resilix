@@ -10,11 +10,11 @@ public abstract class AbstractStateHandler implements StateHandler {
   protected Context context;
   protected Configuration configuration;
   protected SlidingWindow slidingWindow;
-  protected StateContainer stateManager;
+  protected StateContainer stateContainer;
 
-  public AbstractStateHandler(Context context, StateContainer stateManager) {
+  public AbstractStateHandler(Context context, StateContainer stateContainer) {
     this.context = context;
-    this.stateManager = stateManager;
+    this.stateContainer = stateContainer;
 
     this.configuration = context.getConfiguration();
     this.slidingWindow = context.getSlidingWindow();

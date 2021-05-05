@@ -17,7 +17,7 @@ public class CloseStateHandler extends AbstractStateHandler {
   @Override
   public void evaluateState() {
     if(!this.acquirePermission()){
-      stateManager.setStateStrategy(new OpenStateHandler(context, stateManager));
+      stateContainer.setStateHandler(new OpenStateHandler(context, stateContainer));
     }
   }
 

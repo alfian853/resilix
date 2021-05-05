@@ -17,8 +17,8 @@ public class OpenStateHandler extends AbstractStateHandler {
   public boolean acquirePermission() {
     this.evaluateState();
 
-    if(stateManager.getStateStrategy() != this){
-      return stateManager.getStateStrategy().acquirePermission();
+    if(stateContainer.getStateHandler() != this){
+      return stateContainer.getStateHandler().acquirePermission();
     }
 
     return false;
@@ -27,7 +27,7 @@ public class OpenStateHandler extends AbstractStateHandler {
   @Override
   public void evaluateState() {
     if((startingTime + configuration.getRetryWaitDuration()) >= System.currentTimeMillis()){
-      stateManager.setStateStrategy(new HalfOpenStateHandler(context, stateManager));
+      stateContainer.setStateHandler(new HalfOpenStateHandler(context, stateContainer));
     }
   }
 

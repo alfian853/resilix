@@ -30,10 +30,10 @@ public class HalfOpenStateHandler extends AbstractStateHandler {
 
     switch (retryManager.getRetryState()){
       case ACCEPTED:
-        stateManager.setStateStrategy(new CloseStateHandler(context, stateManager));
+        stateContainer.setStateHandler(new CloseStateHandler(context, stateContainer));
         break;
       case REJECTED:
-        stateManager.setStateStrategy(new OpenStateHandler(context, stateManager));
+        stateContainer.setStateHandler(new OpenStateHandler(context, stateContainer));
         break;
     }
 

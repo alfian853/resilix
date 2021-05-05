@@ -22,12 +22,12 @@ public class ResilienceHandler implements ExecutionHandler, StateContainer {
   }
 
   @Override
-  public void setStateStrategy(StateHandler newStateStrategy) {
-    stateStrategy = newStateStrategy;
+  public void setStateHandler(StateHandler newStateHandler) {
+    stateStrategy = newStateHandler;
   }
 
   @Override
-  public StateHandler getStateStrategy() {
+  public StateHandler getStateHandler() {
     return stateStrategy;
   }
 
