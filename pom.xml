@@ -8,7 +8,7 @@
 
   <modules>
     <module>resilience-core</module>
-    <module>resilience-springboot</module>
+    <module>resilience-springboot-v1</module>
   </modules>
 
   <groupId>com.kruskal.resilience</groupId>
