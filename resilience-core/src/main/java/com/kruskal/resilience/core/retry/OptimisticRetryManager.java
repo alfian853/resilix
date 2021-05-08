@@ -47,7 +47,7 @@ public class OptimisticRetryManager implements RetryManager, SlidingWindowObserv
 
   @Override
   public void onBeforeRetry() {
-
+    // do nothing
   }
 
   @Override

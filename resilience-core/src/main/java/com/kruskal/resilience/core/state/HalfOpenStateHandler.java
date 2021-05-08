@@ -41,6 +41,9 @@ public class HalfOpenStateHandler extends AbstractStateHandler {
       case REJECTED:
         stateContainer.setStateHandler(new OpenStateHandler(context, stateContainer));
         break;
+      case ON_GOING:
+        // do nothing
+        break;
     }
 
   }

@@ -44,7 +44,7 @@ public class CountBasedWindow extends AbstractSlidingWindow {
   private void examineAttemptWindow(){
     if(updateQueLock.compareAndSet(true, false)){
       while (windowQue.size() > configuration.getSlidingWindowMaxSize()){
-        if(windowQue.removeFirst()){
+        if(Boolean.TRUE.equals(windowQue.removeFirst())){
           // do nothing
         }
         else {
