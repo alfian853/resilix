@@ -33,21 +33,6 @@
 
   </properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.7.1</version>
-      <scope>com.kruskal.resilience.springboot.v2.test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.7.1</version>
-      <scope>com.kruskal.resilience.springboot.v2.test</scope>
-    </dependency>
-  </dependencies>
-
   <build>
     <plugins>
       <plugin>
@@ -71,6 +56,7 @@
           </execution>
           <execution>
             <id>report</id>
+            <phase>test</phase>
             <goals>
               <goal>report</goal>
             </goals>

@@ -5,8 +5,8 @@ import com.kruskal.resilience.core.constant.RetryStrategy;
 import com.kruskal.resilience.core.constant.SlidingWindowStrategy;
 import com.kruskal.resilience.springboot.v1.EnableResilience;
 import com.kruskal.resilience.springboot.v1.ResilienceProperties;
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,18 +27,18 @@ public class ConfigurationTest {
 
   @Test
   public void test(){
-    Assertions.assertEquals(2, resilienceProperties.getConfig().entrySet().size());
+    Assert.assertEquals(2, resilienceProperties.getConfig().entrySet().size());
 
     Configuration configuration1 = resilienceProperties.getConfig().get("context1");
 
-    Assertions.assertEquals(SlidingWindowStrategy.TIME_BASED, configuration1.getSlidingWindowStrategy());
-    Assertions.assertEquals(RetryStrategy.PESSIMISTIC, configuration1.getRetryStrategy());
-    Assertions.assertEquals(5432, configuration1.getWindowTimeRange());
-    Assertions.assertEquals(23, configuration1.getSlidingWindowMaxSize());
-    Assertions.assertEquals(13, configuration1.getMinimumCallToEvaluate());
-    Assertions.assertEquals(0.19, configuration1.getErrorThreshold(), 0.000001);
-    Assertions.assertEquals(6543, configuration1.getWaitDurationInOpenState());
-    Assertions.assertEquals(7, configuration1.getNumberOfRetryInHalfOpenState());
+    Assert.assertEquals(SlidingWindowStrategy.TIME_BASED, configuration1.getSlidingWindowStrategy());
+    Assert.assertEquals(RetryStrategy.PESSIMISTIC, configuration1.getRetryStrategy());
+    Assert.assertEquals(5432, configuration1.getWindowTimeRange());
+    Assert.assertEquals(23, configuration1.getSlidingWindowMaxSize());
+    Assert.assertEquals(13, configuration1.getMinimumCallToEvaluate());
+    Assert.assertEquals(0.19, configuration1.getErrorThreshold(), 0.000001);
+    Assert.assertEquals(6543, configuration1.getWaitDurationInOpenState());
+    Assert.assertEquals(7, configuration1.getNumberOfRetryInHalfOpenState());
   }
 
 }
