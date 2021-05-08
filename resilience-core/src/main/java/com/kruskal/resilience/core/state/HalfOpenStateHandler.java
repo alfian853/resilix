@@ -2,8 +2,8 @@ package com.kruskal.resilience.core.state;
 
 import com.kruskal.resilience.core.Context;
 import com.kruskal.resilience.core.StateContainer;
-import com.kruskal.resilience.core.retry.RetryManager;
 import com.kruskal.resilience.core.factory.RetryManagerFactory;
+import com.kruskal.resilience.core.retry.RetryManager;
 
 public class HalfOpenStateHandler extends AbstractStateHandler {
 

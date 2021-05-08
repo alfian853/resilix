@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CountBasedWindowTest {

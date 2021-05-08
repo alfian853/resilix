@@ -2,7 +2,6 @@ package com.kruskal.resilience.core.test.window;
 
 import com.kruskal.resilience.core.Configuration;
 import com.kruskal.resilience.core.test.testutil.RandomUtil;
-import com.kruskal.resilience.core.window.CountBasedWindow;
 import com.kruskal.resilience.core.window.SlidingWindowObserver;
 import com.kruskal.resilience.core.window.TimeBasedWindow;
 import org.junit.jupiter.api.Assertions;

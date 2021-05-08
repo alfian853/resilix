@@ -3,7 +3,6 @@ package com.kruskal.resilience.core.test.state;
 import com.kruskal.resilience.core.Configuration;
 import com.kruskal.resilience.core.Context;
 import com.kruskal.resilience.core.StateContainer;
-import com.kruskal.resilience.core.constant.RetryState;
 import com.kruskal.resilience.core.constant.RetryStrategy;
 import com.kruskal.resilience.core.constant.SlidingWindowStrategy;
 import com.kruskal.resilience.core.state.CloseStateHandler;
@@ -13,7 +12,6 @@ import com.kruskal.resilience.core.test.testutil.FunctionalUtil;
 import com.kruskal.resilience.core.test.testutil.TestStateContainer;
 import com.kruskal.resilience.core.window.CountBasedWindow;
 import com.kruskal.resilience.core.window.SlidingWindow;
-import com.sun.xml.internal.ws.policy.AssertionSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
