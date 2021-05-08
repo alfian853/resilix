@@ -2,9 +2,9 @@ package com.kruskal.resilience.core.test.retry;
 
 import com.kruskal.resilience.core.Configuration;
 import com.kruskal.resilience.core.Context;
-import com.kruskal.resilience.core.constant.RetryState;
-import com.kruskal.resilience.core.constant.RetryStrategy;
-import com.kruskal.resilience.core.constant.SlidingWindowStrategy;
+import com.kruskal.resilience.core.retry.RetryState;
+import com.kruskal.resilience.core.retry.RetryStrategy;
+import com.kruskal.resilience.core.window.SlidingWindowStrategy;
 import com.kruskal.resilience.core.retry.PessimisticRetryManager;
 import com.kruskal.resilience.core.test.testutil.FunctionalUtil;
 import com.kruskal.resilience.core.test.testutil.RandomUtil;
