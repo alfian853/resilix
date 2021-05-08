@@ -42,6 +42,6 @@ public abstract class AbstractStateHandler implements StateHandler {
     // do nothing
   }
 
-  abstract protected boolean isSlidingWindowActive();
+  protected abstract boolean isSlidingWindowActive();
 
 }
