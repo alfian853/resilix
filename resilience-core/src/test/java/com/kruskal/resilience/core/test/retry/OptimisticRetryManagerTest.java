@@ -40,7 +40,7 @@ public class OptimisticRetryManagerTest {
     configuration = new Configuration();
     configuration.setRetryStrategy(RetryStrategy.OPTIMISTIC);
     configuration.setSlidingWindowStrategy(SlidingWindowStrategy.COUNT_BASED);
-    configuration.setSlidingWindowSize(SLIDING_WINDOW_SIZE);
+    configuration.setSlidingWindowMaxSize(SLIDING_WINDOW_SIZE);
     configuration.setErrorThreshold(ERROR_THRESHOLD);
     configuration.setNumberOfRetryInHalfOpenState(NUMBER_OF_RETRY);
 

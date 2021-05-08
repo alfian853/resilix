@@ -18,7 +18,7 @@ public class CountBasedWindowTest {
 
   @BeforeEach
   public void init(){
-    configuration.setSlidingWindowSize(10);
+    configuration.setSlidingWindowMaxSize(10);
   }
 
 

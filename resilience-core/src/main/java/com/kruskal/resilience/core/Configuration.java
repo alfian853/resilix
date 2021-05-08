@@ -7,7 +7,7 @@ public class Configuration {
 
   private static final int SECOND_IN_MS = 1000;
 
-  private SlidingWindowStrategy slidingWindowStrategy;
+  private SlidingWindowStrategy slidingWindowStrategy = SlidingWindowStrategy.COUNT_BASED;
   private RetryStrategy retryStrategy = RetryStrategy.OPTIMISTIC;
   private long slidingWindowTimeRange = 10L * SECOND_IN_MS;
   private int slidingWindowMaxSize = 20;
@@ -44,7 +44,7 @@ public class Configuration {
     return slidingWindowMaxSize;
   }
 
-  public void setSlidingWindowSize(int slidingWindowMaxSize) {
+  public void setSlidingWindowMaxSize(int slidingWindowMaxSize) {
     this.slidingWindowMaxSize = slidingWindowMaxSize;
   }
 

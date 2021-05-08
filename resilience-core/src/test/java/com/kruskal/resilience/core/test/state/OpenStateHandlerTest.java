@@ -61,7 +61,7 @@ public class OpenStateHandlerTest {
     context = new Context();
     Configuration configuration = new Configuration();
     configuration.setSlidingWindowStrategy(SlidingWindowStrategy.COUNT_BASED);
-    configuration.setSlidingWindowSize(WINDOW_SIZE);
+    configuration.setSlidingWindowMaxSize(WINDOW_SIZE);
     configuration.setErrorThreshold(ERROR_THRESHOLD);
     configuration.setMinimumCallToEvaluate(MIN_CALL_TO_EVALUATE);
     configuration.setWaitDurationInOpenState(WAIT_DURATION_IN_OPEN_STATE);

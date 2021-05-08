@@ -1,4 +1,4 @@
-package com.kruskal.resilience.springboot.v1;
+package com.kruskal.resilience.springboot.v2;
 
 
 import com.kruskal.resilience.core.Configuration;
@@ -8,6 +8,7 @@ import java.util.Map;
 
 @ConfigurationProperties(prefix = "kruskal.resilience")
 public class ResilienceProperties {
+
 
   private Map<String, Configuration> config;
 
