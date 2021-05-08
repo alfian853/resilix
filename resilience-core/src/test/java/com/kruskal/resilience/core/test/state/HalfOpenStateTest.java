@@ -15,7 +15,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-public class OpenStateHandlerTest {
+public class HalfOpenStateTest {
+
 
   private final double ERROR_THRESHOLD = 0.5;
   private final int WINDOW_SIZE = 10;
@@ -85,6 +86,5 @@ public class OpenStateHandlerTest {
     stateHandler = new OpenStateHandler(context, stateContainer);
     stateContainer.setStateHandler(stateHandler);
   }
-
 
 }

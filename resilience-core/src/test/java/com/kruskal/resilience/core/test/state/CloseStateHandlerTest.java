@@ -30,12 +30,12 @@ public class CloseStateHandlerTest {
   public void init(){
     context = new Context();
     Configuration configuration = new Configuration();
-    configuration.setErrorThreshold(ERROR_THRESHOLD);
-    configuration.setNumberOfRetryInHalfOpenState(10);
     configuration.setSlidingWindowStrategy(SlidingWindowStrategy.COUNT_BASED);
-    configuration.setRetryStrategy(RetryStrategy.PESSIMISTIC);
-    configuration.setMinimumCallToEvaluate(MIN_CALL_TO_EVALUATE);
     configuration.setSlidingWindowSize(WINDOW_SIZE);
+    configuration.setErrorThreshold(ERROR_THRESHOLD);
+    configuration.setMinimumCallToEvaluate(MIN_CALL_TO_EVALUATE);
+    configuration.setRetryStrategy(RetryStrategy.PESSIMISTIC);
+    configuration.setNumberOfRetryInHalfOpenState(10);
 
     SlidingWindow slidingWindow = new CountBasedWindow(configuration);
 
