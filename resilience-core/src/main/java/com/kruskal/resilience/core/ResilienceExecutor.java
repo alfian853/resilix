@@ -1,6 +1,6 @@
 package com.kruskal.resilience.core;
 
-public interface ExecutionHandler {
+public interface ResilienceExecutor {
   boolean acquirePermission();
   boolean execute(Runnable runnable);
 }

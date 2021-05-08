@@ -3,7 +3,7 @@ package com.kruskal.resilience.core;
 import com.kruskal.resilience.core.state.CloseStateHandler;
 import com.kruskal.resilience.core.state.StateHandler;
 
-public class ResilienceHandler implements ExecutionHandler, StateContainer {
+public class ResilienceHandler implements ResilienceExecutor, StateContainer {
 
   private StateHandler stateHandler;
 
