@@ -13,13 +13,13 @@ import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class ResilienceProxyTest {
+class ResilienceProxyTest {
 
   StateHandler stateHandlerTrue = mock(StateHandler.class);
   StateHandler stateHandlerFalse = mock(StateHandler.class);
 
   @BeforeEach
-  public void init(){
+  void init(){
     when(stateHandlerTrue.acquirePermission()).thenReturn(true);
     when(stateHandlerTrue.execute(any())).thenReturn(true);
     when(stateHandlerFalse.acquirePermission()).thenReturn(false);
@@ -27,7 +27,7 @@ public class ResilienceProxyTest {
   }
 
   @Test
-  public void getStateHandlerTest(){
+  void getStateHandlerTest(){
 
     Context context = new Context();
     context.setConfiguration(new Configuration());

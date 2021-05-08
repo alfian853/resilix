@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class CloseStateHandlerTest {
+class CloseStateHandlerTest {
 
   private final double ERROR_THRESHOLD = 0.5;
   private final int WINDOW_SIZE = 10;
@@ -27,7 +27,7 @@ public class CloseStateHandlerTest {
 
 
   @BeforeEach
-  public void init(){
+  void init(){
     context = new Context();
     Configuration configuration = new Configuration();
     configuration.setSlidingWindowStrategy(SlidingWindowStrategy.COUNT_BASED);
@@ -52,7 +52,7 @@ public class CloseStateHandlerTest {
   }
 
   @Test
-  public void minCallToEvaluateTest(){
+  void minCallToEvaluateTest(){
     for(int i = 0; i < MIN_CALL_TO_EVALUATE - 1; i++){
       Assertions.assertFalse(
           stateHandler.execute(FunctionalUtil.throwErrorRunnable())
@@ -70,7 +70,7 @@ public class CloseStateHandlerTest {
   }
 
   @Test
-  public void stillCloseAfterNumberOfAckTest(){
+  void stillCloseAfterNumberOfAckTest(){
     for(int i = 0; i < WINDOW_SIZE; i++){
       Assertions.assertTrue(
           stateHandler.execute(FunctionalUtil.doNothingRunnable())
@@ -92,7 +92,7 @@ public class CloseStateHandlerTest {
   }
 
   @Test
-  public void moveToOpenStateTest(){
+  void moveToOpenStateTest(){
     for(int i = 0; i < WINDOW_SIZE; i++){
       Assertions.assertTrue(
           stateHandler.execute(FunctionalUtil.doNothingRunnable())

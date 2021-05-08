@@ -22,7 +22,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class PesimisticRetryManagerTest {
+class PesimisticRetryManagerTest {
 
   private int SLIDING_WINDOW_SIZE = 50;
   private double ERROR_THRESHOLD = 0.3;
@@ -36,7 +36,7 @@ public class PesimisticRetryManagerTest {
   private PessimisticRetryManager retryManager;
 
   @BeforeEach
-  public void init(){
+  void init(){
     context = new Context();
     configuration = new Configuration();
     configuration.setRetryStrategy(RetryStrategy.PESSIMISTIC);
@@ -52,7 +52,7 @@ public class PesimisticRetryManagerTest {
 
   @Test
   @DisplayName("should be REJECTED")
-  public void rejectedCaseTest() {
+  void rejectedCaseTest() {
     Assertions.assertTimeoutPreemptively(Duration.ofMillis(1000), () -> {
 
       for(int i = 0; i < SLIDING_WINDOW_SIZE; i++) {
@@ -83,7 +83,7 @@ public class PesimisticRetryManagerTest {
 
   @Test
   @DisplayName("should be ACCEPTED, testcase: errorThreshold=80%, success ack = 21")
-  public void acceptedCaseTest() {
+  void acceptedCaseTest() {
     for(int i = 0; i < SLIDING_WINDOW_SIZE; i++) {
       slidingWindow.ackAttempt(RandomUtil.generateRandomBoolean());
     }

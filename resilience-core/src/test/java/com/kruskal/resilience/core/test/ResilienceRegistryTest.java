@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-public class ResilienceRegistryTest {
+class ResilienceRegistryTest {
 
   @Test
-  public void supportAutoCreateTest(){
+  void supportAutoCreateTest(){
     ResilienceRegistry registry = new ResilienceRegistry();
 
     String contextName1 = UUID.randomUUID().toString();

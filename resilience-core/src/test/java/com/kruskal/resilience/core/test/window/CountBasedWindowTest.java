@@ -11,19 +11,19 @@ import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class CountBasedWindowTest {
+class CountBasedWindowTest {
 
   private final Configuration configuration = new Configuration();
   private final CountBasedWindow countBasedWindow = new CountBasedWindow(configuration);
 
   @BeforeEach
-  public void init(){
+  void init(){
     configuration.setSlidingWindowMaxSize(10);
   }
 
   @Test
   @DisplayName("testcase: observe 3 ack, and then unobserve and fire 5 ack")
-  public void observerNotificationTest(){
+  void observerNotificationTest(){
     AtomicInteger count = new AtomicInteger(0);
 
     SlidingWindowObserver observer = success -> count.incrementAndGet();
@@ -44,7 +44,7 @@ public class CountBasedWindowTest {
 
   @Test
   @DisplayName("testcase: fire with 25 random ack followed by 10(70% success) ack in arbitrary order")
-  public void endingTest(){
+  void endingTest(){
 
 
     for(int i = 0; i < 25; i++){

@@ -12,12 +12,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class SlidingWindowFactoryTest {
+class SlidingWindowFactoryTest {
 
 
   @Test
   @DisplayName("Create TIME_BASED SlidingWindow Object")
-  public void create_TIME_BASED(){
+  void create_TIME_BASED(){
     Configuration configuration = new Configuration();
     configuration.setSlidingWindowStrategy(SlidingWindowStrategy.TIME_BASED);
 
@@ -28,7 +28,7 @@ public class SlidingWindowFactoryTest {
 
   @Test
   @DisplayName("Create COUNT_BASED SlidingWindow Object")
-  public void create_COUNT_BASED(){
+  void create_COUNT_BASED(){
     Configuration configuration = new Configuration();
     configuration.setSlidingWindowStrategy(SlidingWindowStrategy.COUNT_BASED);
 
@@ -38,7 +38,7 @@ public class SlidingWindowFactoryTest {
   }
 
   @Test
-  public void errorCaseTest(){
+  void errorCaseTest(){
     Configuration configuration = new Configuration();
     configuration.setSlidingWindowStrategy(null);
 

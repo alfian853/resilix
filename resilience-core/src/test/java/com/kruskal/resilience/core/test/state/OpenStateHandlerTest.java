@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-public class OpenStateHandlerTest {
+class OpenStateHandlerTest {
 
   private final double ERROR_THRESHOLD = 0.5;
   private final int WINDOW_SIZE = 10;
@@ -28,7 +28,7 @@ public class OpenStateHandlerTest {
   private OpenStateHandler stateHandler;
 
   @Test
-  public void movingStateAfterWaitingDurationPassedTest() throws InterruptedException {
+  void movingStateAfterWaitingDurationPassedTest() throws InterruptedException {
     this.init();
 
     stateHandler.evaluateState();
@@ -42,7 +42,7 @@ public class OpenStateHandlerTest {
   }
 
   @Test
-  public void slidingWindowRegardingTest() {
+  void slidingWindowRegardingTest() {
     WAIT_DURATION_IN_OPEN_STATE = 2000000L;
     this.init();
 

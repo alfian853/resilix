@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-public class HalfOpenStateTest {
+class HalfOpenStateTest {
 
 
   private final double ERROR_THRESHOLD = 0.5;
@@ -32,7 +32,7 @@ public class HalfOpenStateTest {
   private HalfOpenStateHandler stateHandler;
 
   @Test
-  public void retryAndSuccessTest() {
+  void retryAndSuccessTest() {
     this.init();
     int maxAcceptableError = (int) ((Math.ceil(ERROR_THRESHOLD * NUMBER_OF_RETRY - 1)));
     int shouldSuccessAttempt = NUMBER_OF_RETRY - maxAcceptableError;
@@ -54,7 +54,7 @@ public class HalfOpenStateTest {
   }
 
   @Test
-  public void retryAndFailedTest() {
+  void retryAndFailedTest() {
     this.init();
 
     this.init();

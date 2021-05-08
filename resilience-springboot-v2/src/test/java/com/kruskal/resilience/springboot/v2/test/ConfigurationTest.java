@@ -17,14 +17,14 @@ import org.springframework.test.context.ActiveProfiles;
     classes = {TestApplication.class},
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-public class ConfigurationTest {
+class ConfigurationTest {
 
 
   @Autowired
   private ResilienceProperties resilienceProperties;
 
   @Test
-  public void test(){
+  void test(){
     Assertions.assertEquals(2, resilienceProperties.getConfig().entrySet().size());
 
     Configuration configuration1 = resilienceProperties.getConfig().get("context1");

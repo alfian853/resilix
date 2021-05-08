@@ -11,12 +11,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class RetryManagerFactoryTest {
+class RetryManagerFactoryTest {
 
 
   @Test
   @DisplayName("Create OPTIMISTIC RetryManager Object")
-  public void create_TIME_BASED_test(){
+  void create_TIME_BASED_test(){
     Configuration configuration = new Configuration();
     configuration.setRetryStrategy(RetryStrategy.OPTIMISTIC);
 
@@ -32,7 +32,7 @@ public class RetryManagerFactoryTest {
 
   @Test
   @DisplayName("Create PESSIMISTIC RetryManager Object")
-  public void create_COUNT_BASED_test(){
+  void create_COUNT_BASED_test(){
     Configuration configuration = new Configuration();
     configuration.setRetryStrategy(RetryStrategy.PESSIMISTIC);
 
@@ -47,16 +47,21 @@ public class RetryManagerFactoryTest {
   }
 
   @Test
-  public void errorCaseTest(){
+  void errorCaseTest(){
     Configuration configuration = new Configuration();
     configuration.setRetryStrategy(null);
 
     Context context = new Context();
-    context.setConfiguration(configuration);
 
     Assertions.assertThrows(IllegalArgumentException.class,
         () -> RetryManagerFactory.create(context)
     );
+
+    context.setConfiguration(configuration);
+    Assertions.assertThrows(IllegalArgumentException.class,
+        () -> RetryManagerFactory.create(context)
+    );
+
   }
 
 }

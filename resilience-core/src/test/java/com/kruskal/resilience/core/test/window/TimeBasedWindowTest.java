@@ -12,14 +12,14 @@ import org.junit.jupiter.api.Test;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class TimeBasedWindowTest {
+class TimeBasedWindowTest {
 
   private final long WINDOW_TIME_RANGE = 1000L;
   private final Configuration configuration = new Configuration();
   private final TimeBasedWindow timeBasedWindow = new TimeBasedWindow(configuration);
 
   @BeforeEach
-  public void init(){
+  void init(){
     configuration.setSlidingWindowTimeRange(WINDOW_TIME_RANGE);
   }
 
@@ -32,7 +32,7 @@ public class TimeBasedWindowTest {
 
   @Test
   @DisplayName("testcase: observe 3 ack, and then unobserve and fire 5 ack")
-  public void observerNotificationTest() throws InterruptedException {
+  void observerNotificationTest() throws InterruptedException {
     AtomicInteger count = new AtomicInteger(0);
 
     SlidingWindowObserver observer = success -> count.incrementAndGet();
@@ -55,7 +55,7 @@ public class TimeBasedWindowTest {
 
   @Test
   @DisplayName("testcase: fire with 25 random ack followed by 10(70% success) ack in arbitrary order after 1000ms later")
-  public void endingTest() throws InterruptedException {
+  void endingTest() throws InterruptedException {
 
     for(int i = 0; i < 25; i++){
       timeBasedWindow.ackAttempt(RandomUtil.generateRandomBoolean());
@@ -83,7 +83,7 @@ public class TimeBasedWindowTest {
   }
 
   @Test
-  public void clearanceTest(){
+  void clearanceTest(){
     for(int i = 0; i < 25; i++){
       timeBasedWindow.ackAttempt(RandomUtil.generateRandomBoolean());
     }
