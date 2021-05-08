@@ -7,6 +7,7 @@ public class CloseStateHandler extends AbstractStateHandler {
 
   public CloseStateHandler(Context context, StateContainer stateManager) {
     super(context, stateManager);
+    context.getSlidingWindow().clear();
   }
 
   @Override

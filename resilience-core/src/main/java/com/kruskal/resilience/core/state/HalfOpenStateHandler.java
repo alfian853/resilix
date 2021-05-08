@@ -13,6 +13,7 @@ public class HalfOpenStateHandler extends AbstractStateHandler {
     super(context, stateManager);
 
     this.retryManager = RetryManagerFactory.create(context);
+    context.getSlidingWindow().clear();
   }
 
   @Override

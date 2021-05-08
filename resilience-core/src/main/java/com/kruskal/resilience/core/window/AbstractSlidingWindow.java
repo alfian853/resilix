@@ -30,9 +30,10 @@ public abstract class AbstractSlidingWindow implements SlidingWindow {
 
   @Override
   public void ackAttempt(boolean success) {
-    if(isActive.get())
-    this.handleAckAttempt(success);
-    this.slidingWindowSubscribers.forEach(subscriber -> subscriber.notifyOnAckAttempt(success));
+    if(isActive.get()){
+      this.handleAckAttempt(success);
+      this.slidingWindowSubscribers.forEach(subscriber -> subscriber.notifyOnAckAttempt(success));
+    }
   }
 
   @Override

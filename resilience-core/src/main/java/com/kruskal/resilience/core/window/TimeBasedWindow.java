@@ -4,6 +4,7 @@ import com.kruskal.resilience.core.Configuration;
 
 import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class TimeBasedWindow extends AbstractSlidingWindow {
@@ -12,6 +13,7 @@ public class TimeBasedWindow extends AbstractSlidingWindow {
   private final Deque<Long> failureAttemptWindow = new ConcurrentLinkedDeque<>();
 
   private final AtomicLong lastAttempt = new AtomicLong(0);
+  private final AtomicBoolean updateQueLock = new AtomicBoolean(true);
 
   public TimeBasedWindow(Configuration configuration) {
     super(configuration);
@@ -41,14 +43,25 @@ public class TimeBasedWindow extends AbstractSlidingWindow {
   }
 
   private void examineAttemptWindow(){
-    while(!successAttemptWindow.isEmpty() &&
-        successAttemptWindow.getFirst() < lastAttempt.get() - configuration.getWindowTimeRange()){
-      successAttemptWindow.removeFirst();
+    if(updateQueLock.compareAndSet(true, false)){
+      while(!successAttemptWindow.isEmpty() &&
+          successAttemptWindow.getFirst() < lastAttempt.get() - configuration.getWindowTimeRange()){
+        successAttemptWindow.removeFirst();
+      }
+      while(!failureAttemptWindow.isEmpty() &&
+          failureAttemptWindow.getFirst() < lastAttempt.get() - configuration.getWindowTimeRange()){
+        failureAttemptWindow.removeFirst();
+      }
+      updateQueLock.set(true);
     }
-    while(!failureAttemptWindow.isEmpty() &&
-        failureAttemptWindow.getFirst() < lastAttempt.get() - configuration.getWindowTimeRange()){
-      failureAttemptWindow.removeFirst();
-    }
+
+  }
+
+  @Override
+  public void clear() {
+    failureAttemptWindow.clear();
+    successAttemptWindow.clear();
+    lastAttempt.set(0);
 
   }
 }

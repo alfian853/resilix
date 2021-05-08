@@ -4,12 +4,14 @@ import com.kruskal.resilience.core.Configuration;
 
 import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CountBasedWindow extends AbstractSlidingWindow {
 
   private final AtomicInteger errorCount = new AtomicInteger();
   private final Deque<Boolean> windowQue = new ConcurrentLinkedDeque<>();
+  private final AtomicBoolean updateQueLock = new AtomicBoolean(true);
 
   public CountBasedWindow(Configuration configuration) {
     super(configuration);
@@ -33,14 +35,23 @@ public class CountBasedWindow extends AbstractSlidingWindow {
     return ((double) errorCount.get()) / windowQue.size();
   }
 
+  @Override
+  public void clear() {
+    windowQue.clear();
+    errorCount.set(0);
+  }
+
   private void examineAttemptWindow(){
-    while (windowQue.size() > configuration.getSlidingWindowMaxSize()){
-      if(windowQue.removeFirst()){
-        // do nothing
+    if(updateQueLock.compareAndSet(true, false)){
+      while (windowQue.size() > configuration.getSlidingWindowMaxSize()){
+        if(windowQue.removeFirst()){
+          // do nothing
+        }
+        else {
+          errorCount.decrementAndGet();
+        }
       }
-      else {
-        errorCount.decrementAndGet();
-      }
+      updateQueLock.set(true);
     }
   }
 
