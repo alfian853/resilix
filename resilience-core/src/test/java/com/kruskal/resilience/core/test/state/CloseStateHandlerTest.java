@@ -36,6 +36,7 @@ public class CloseStateHandlerTest {
     configuration.setMinimumCallToEvaluate(MIN_CALL_TO_EVALUATE);
     configuration.setRetryStrategy(RetryStrategy.PESSIMISTIC);
     configuration.setNumberOfRetryInHalfOpenState(10);
+    configuration.setWaitDurationInOpenState(10000000);
 
     SlidingWindow slidingWindow = new CountBasedWindow(configuration);
 
@@ -108,8 +109,8 @@ public class CloseStateHandlerTest {
           stateHandler.execute(FunctionalUtil.throwErrorRunnable())
       );
     }
-    Assertions.assertFalse(stateHandler.acquirePermission());
     Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());
+    Assertions.assertFalse(stateContainer.getStateHandler().acquirePermission());
     Assertions.assertTrue(stateContainer.getStateHandler() instanceof OpenStateHandler);
   }
 
