@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 class OpenStateHandlerTest {
 
@@ -21,6 +23,7 @@ class OpenStateHandlerTest {
   private final int WINDOW_SIZE = 10;
   private final int MIN_CALL_TO_EVALUATE = 3;
   private long WAIT_DURATION_IN_OPEN_STATE = 200;
+  private final CountDownLatch waiter = new CountDownLatch(1);
 
   private Context context;
   private SlidingWindow slidingWindow;
@@ -34,7 +37,7 @@ class OpenStateHandlerTest {
     stateHandler.evaluateState();
     Assertions.assertSame(stateHandler, stateContainer.getStateHandler());
 
-    Thread.sleep(WAIT_DURATION_IN_OPEN_STATE);
+    waiter.await(WAIT_DURATION_IN_OPEN_STATE, TimeUnit.MILLISECONDS);
 
     Assertions.assertTrue(stateHandler.acquirePermission());
     Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());

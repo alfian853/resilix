@@ -10,6 +10,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class TimeBasedWindowTest {
@@ -17,6 +19,7 @@ class TimeBasedWindowTest {
   private final long WINDOW_TIME_RANGE = 1000L;
   private final Configuration configuration = new Configuration();
   private final TimeBasedWindow timeBasedWindow = new TimeBasedWindow(configuration);
+  private final CountDownLatch waiter = new CountDownLatch(1);
 
   @BeforeEach
   void init(){
@@ -38,7 +41,7 @@ class TimeBasedWindowTest {
     SlidingWindowObserver observer = success -> count.incrementAndGet();
     timeBasedWindow.addObserver(observer);
 
-    Thread.sleep(WINDOW_TIME_RANGE);
+    waiter.await(WINDOW_TIME_RANGE, TimeUnit.MILLISECONDS);
 
     for(int i = 0; i < 3; i++){
       timeBasedWindow.ackAttempt(RandomUtil.generateRandomBoolean());
@@ -61,7 +64,8 @@ class TimeBasedWindowTest {
       timeBasedWindow.ackAttempt(RandomUtil.generateRandomBoolean());
     }
 
-    Thread.sleep(WINDOW_TIME_RANGE + 1);
+    waiter.await(WINDOW_TIME_RANGE + 1, TimeUnit.MILLISECONDS);
+
     int nSuccess = 7;
     int nFailure = 3;
 
