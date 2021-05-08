@@ -1,8 +1,8 @@
 package com.kruskal.resilience.springboot.v2.test;
 
 import com.kruskal.resilience.core.Configuration;
-import com.kruskal.resilience.core.constant.RetryStrategy;
-import com.kruskal.resilience.core.constant.SlidingWindowStrategy;
+import com.kruskal.resilience.core.retry.RetryStrategy;
+import com.kruskal.resilience.core.window.SlidingWindowStrategy;
 import com.kruskal.resilience.springboot.v2.EnableResilience;
 import com.kruskal.resilience.springboot.v2.ResilienceProperties;
 import org.junit.jupiter.api.Assertions;
