@@ -1,7 +1,9 @@
 package com.kruskal.resilience.core.test.factory;
 
 import com.kruskal.resilience.core.Configuration;
-import com.kruskal.resilience.core.constant.SlidingWindowStrategy;
+import com.kruskal.resilience.core.Context;
+import com.kruskal.resilience.core.factory.RetryManagerFactory;
+import com.kruskal.resilience.core.window.SlidingWindowStrategy;
 import com.kruskal.resilience.core.factory.SlidingWindowFactory;
 import com.kruskal.resilience.core.window.CountBasedWindow;
 import com.kruskal.resilience.core.window.SlidingWindow;
@@ -34,5 +36,16 @@ public class SlidingWindowFactoryTest {
 
     Assertions.assertTrue(slidingWindow instanceof CountBasedWindow);
   }
+
+  @Test
+  public void errorCaseTest(){
+    Configuration configuration = new Configuration();
+    configuration.setSlidingWindowStrategy(null);
+
+    Assertions.assertThrows(IllegalArgumentException.class,
+        () -> SlidingWindowFactory.create(configuration)
+    );
+  }
+
 
 }

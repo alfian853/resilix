@@ -8,10 +8,10 @@ import java.util.Map;
 
 public class ResilienceRegistry {
 
-  private final Map<String, ResilienceExecutor> resilienceHandlerMap = new HashMap<>();
+  private final Map<String, ResilienceService> resilienceHandlerMap = new HashMap<>();
 
 
-  public ResilienceExecutor getResilienceExecutor(String contextKey){
+  public ResilienceService getResilienceExecutor(String contextKey){
 
     if(resilienceHandlerMap.containsKey(contextKey)){
       return resilienceHandlerMap.get(contextKey);
@@ -21,7 +21,7 @@ public class ResilienceRegistry {
     }
   }
 
-  public ResilienceExecutor register(String contextKey, Configuration configuration) {
+  public ResilienceService register(String contextKey, Configuration configuration) {
     Context context = new Context();
     context.setContextName(contextKey);
     SlidingWindow slidingWindow = SlidingWindowFactory.create(configuration);
@@ -29,7 +29,7 @@ public class ResilienceRegistry {
     context.setConfiguration(configuration);
     context.setSlidingWindow(slidingWindow);
 
-    ResilienceExecutor resilienceHandler = new ResilienceHandler(context);
+    ResilienceService resilienceHandler = new ResilienceProxy(context);
     resilienceHandlerMap.put(contextKey, resilienceHandler);
 
     return resilienceHandler;

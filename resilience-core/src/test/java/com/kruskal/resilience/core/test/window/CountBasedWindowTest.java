@@ -21,8 +21,6 @@ public class CountBasedWindowTest {
     configuration.setSlidingWindowMaxSize(10);
   }
 
-
-
   @Test
   @DisplayName("testcase: observe 3 ack, and then unobserve and fire 5 ack")
   public void observerNotificationTest(){

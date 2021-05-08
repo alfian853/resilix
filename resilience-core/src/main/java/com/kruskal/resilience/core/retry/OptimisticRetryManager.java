@@ -2,7 +2,6 @@ package com.kruskal.resilience.core.retry;
 
 import com.kruskal.resilience.core.Configuration;
 import com.kruskal.resilience.core.Context;
-import com.kruskal.resilience.core.constant.RetryState;
 import com.kruskal.resilience.core.window.SlidingWindowObserver;
 
 import java.util.concurrent.atomic.AtomicInteger;

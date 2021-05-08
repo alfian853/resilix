@@ -82,4 +82,15 @@ public class TimeBasedWindowTest {
 
   }
 
+  @Test
+  public void clearanceTest(){
+    for(int i = 0; i < 25; i++){
+      timeBasedWindow.ackAttempt(RandomUtil.generateRandomBoolean());
+    }
+
+    Assertions.assertNotEquals(0.0d, timeBasedWindow.getErrorRate(), 0.000001);
+    timeBasedWindow.clear();
+    Assertions.assertEquals(0.0d, timeBasedWindow.getErrorRate(), 0.000001);
+  }
+
 }

@@ -10,11 +10,13 @@ public class RetryManagerFactory {
   private RetryManagerFactory() { }
 
   public static RetryManager create(Context context){
-    switch (context.getConfiguration().getRetryStrategy()){
-      case PESSIMISTIC:
-        return new PessimisticRetryManager(context);
-      case OPTIMISTIC:
-        return new OptimisticRetryManager(context);
+    if(context.getConfiguration() != null && context.getConfiguration().getRetryStrategy() != null){
+      switch (context.getConfiguration().getRetryStrategy()){
+        case PESSIMISTIC:
+          return new PessimisticRetryManager(context);
+        case OPTIMISTIC:
+          return new OptimisticRetryManager(context);
+      }
     }
 
     throw new IllegalArgumentException("Retry strategy is not specified!");

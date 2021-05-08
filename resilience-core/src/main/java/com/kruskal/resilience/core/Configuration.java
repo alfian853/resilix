@@ -1,7 +1,7 @@
 package com.kruskal.resilience.core;
 
-import com.kruskal.resilience.core.constant.RetryStrategy;
-import com.kruskal.resilience.core.constant.SlidingWindowStrategy;
+import com.kruskal.resilience.core.retry.RetryStrategy;
+import com.kruskal.resilience.core.window.SlidingWindowStrategy;
 
 public class Configuration {
 
