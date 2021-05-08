@@ -20,8 +20,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-            <version>2.4.5</version>
+            <version>1.5.9.RELEASE</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.kruskal.resilience</groupId>
+            <artifactId>resilience-core</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
