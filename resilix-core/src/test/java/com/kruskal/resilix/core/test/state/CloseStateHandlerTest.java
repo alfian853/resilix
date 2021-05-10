@@ -2,16 +2,15 @@ package com.kruskal.resilix.core.test.state;
 
 import com.kruskal.resilix.core.Configuration;
 import com.kruskal.resilix.core.Context;
-import com.kruskal.resilix.core.ExecutionDeniedException;
 import com.kruskal.resilix.core.StateContainer;
 import com.kruskal.resilix.core.retry.RetryStrategy;
-import com.kruskal.resilix.core.window.SlidingWindowStrategy;
 import com.kruskal.resilix.core.state.CloseStateHandler;
 import com.kruskal.resilix.core.state.OpenStateHandler;
 import com.kruskal.resilix.core.test.testutil.FunctionalUtil;
 import com.kruskal.resilix.core.test.testutil.TestStateContainer;
 import com.kruskal.resilix.core.window.CountBasedWindow;
 import com.kruskal.resilix.core.window.SlidingWindow;
+import com.kruskal.resilix.core.window.SlidingWindowStrategy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -71,7 +70,7 @@ class CloseStateHandlerTest {
   }
 
   @Test
-  void stillCloseAfterNumberOfAckTest() throws ExecutionDeniedException {
+  void stillCloseAfterNumberOfAckTest() throws Exception {
     for(int i = 0; i < WINDOW_SIZE; i++){
       stateHandler.execute(FunctionalUtil.doNothingRunnable());
     }
@@ -89,7 +88,7 @@ class CloseStateHandlerTest {
   }
 
   @Test
-  void moveToOpenStateTest() throws ExecutionDeniedException {
+  void moveToOpenStateTest() throws Exception {
     for(int i = 0; i < WINDOW_SIZE; i++){
       stateHandler.execute(FunctionalUtil.doNothingRunnable());
     }

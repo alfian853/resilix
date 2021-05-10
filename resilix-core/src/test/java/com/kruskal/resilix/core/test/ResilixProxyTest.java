@@ -1,17 +1,12 @@
 package com.kruskal.resilix.core.test;
 
-import com.kruskal.resilix.core.Configuration;
-import com.kruskal.resilix.core.Context;
-import com.kruskal.resilix.core.ExecutionDeniedException;
-import com.kruskal.resilix.core.ResilixProxy;
+import com.kruskal.resilix.core.*;
 import com.kruskal.resilix.core.state.StateHandler;
 import com.kruskal.resilix.core.test.testutil.FunctionalUtil;
 import com.kruskal.resilix.core.window.SlidingWindow;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.function.Supplier;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -22,14 +17,14 @@ class ResilixProxyTest {
   StateHandler stateHandlerFalse = mock(StateHandler.class);
 
   @BeforeEach
-  void init() throws ExecutionDeniedException {
+  void init() throws Exception {
     when(stateHandlerTrue.acquirePermission()).thenReturn(true);
     when(stateHandlerFalse.acquirePermission()).thenReturn(false);
-    when(stateHandlerFalse.execute(any(Supplier.class))).thenThrow(new ExecutionDeniedException());
+    when(stateHandlerFalse.execute(any(XSupplier.class))).thenThrow(new ExecutionDeniedException());
   }
 
   @Test
-  void getStateHandlerTest() throws ExecutionDeniedException {
+  void getStateHandlerTest() throws Exception {
 
     Context context = new Context();
     context.setConfiguration(new Configuration());
@@ -47,18 +42,18 @@ class ResilixProxyTest {
 
     doAnswer(invocationOnMock -> {
       resilixProxy.setStateHandler(stateHandlerFalse);
-      return false;
+      return invocationOnMock;
     }).when(stateHandlerTrue).evaluateState();
     Assertions.assertNotSame(stateHandlerTrue, resilixProxy.getStateHandler());
 
     Assertions.assertFalse(resilixProxy.acquirePermission());
     Assertions.assertThrows(ExecutionDeniedException.class,
-        () -> resilixProxy.execute(FunctionalUtil.doNothingRunnable())
+        () -> resilixProxy.execute(FunctionalUtil.trueSupplier())
     );
     Assertions.assertSame(stateHandlerFalse, resilixProxy.getStateHandler());
 
     verify(stateHandlerFalse).acquirePermission();
-    verify(stateHandlerFalse).execute(any(Runnable.class));
+    verify(stateHandlerFalse).execute(any(XSupplier.class));
     verify(stateHandlerFalse, times(3)).evaluateState();
   }
 }

@@ -33,7 +33,7 @@ class HalfOpenStateTest {
   private HalfOpenStateHandler stateHandler;
 
   @Test
-  void retryAndSuccessTest() throws ExecutionDeniedException {
+  void retryAndSuccessTest() throws Exception {
     this.init();
 
     int maxAcceptableError = (int) ((Math.ceil(ERROR_THRESHOLD * NUMBER_OF_RETRY - 1)));
@@ -58,7 +58,7 @@ class HalfOpenStateTest {
   }
 
   @Test
-  void retryAndFailedTest() throws ExecutionDeniedException {
+  void retryAndFailedTest() throws Exception {
     this.init();
 
     int minRequiredError = (int) ((Math.floor(ERROR_THRESHOLD * NUMBER_OF_RETRY + 1)));
