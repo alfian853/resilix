@@ -26,7 +26,7 @@
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     <sonar.coverage.jacoco.xmlReportPaths>../app-it/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     <sonar.language>java</sonar.language>
-    <sonar.projectKey>alfian853_resilience</sonar.projectKey>
+    <sonar.projectKey>alfian853_resilix</sonar.projectKey>
     <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
     <sonar.organization>alfian853</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
