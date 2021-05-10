@@ -7,13 +7,13 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>resilience-core</module>
-    <module>resilience-springboot-v1</module>
-    <module>resilience-springboot-v2</module>
+    <module>resilix-core</module>
+    <module>resilix-springboot-v1</module>
+    <module>resilix-springboot-v2</module>
   </modules>
 
-  <groupId>com.kruskal.resilience</groupId>
-  <artifactId>resilience-parent</artifactId>
+  <groupId>com.kruskal.resilix</groupId>
+  <artifactId>resilix-parent</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
   <properties>
