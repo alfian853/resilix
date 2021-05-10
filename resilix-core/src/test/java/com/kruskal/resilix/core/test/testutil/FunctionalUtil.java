@@ -3,6 +3,7 @@ package com.kruskal.resilix.core.test.testutil;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class FunctionalUtil {
 
@@ -23,4 +24,11 @@ public class FunctionalUtil {
     return () -> {throw new RuntimeException();};
   }
 
+  public static Supplier<Boolean> trueSupplier(){
+    return () -> true;
+  }
+
+  public static <T> Supplier<T> throwErrorSupplier(){
+    return () -> {throw new RuntimeException();};
+  }
 }

@@ -1,7 +1,7 @@
 package com.kruskal.resilix.core.state;
 
-public interface StateHandler {
-  boolean acquirePermission();
-  boolean execute(Runnable runnable);
+import com.kruskal.resilix.core.ResilixService;
+
+public interface StateHandler extends ResilixService {
   void evaluateState();
 }

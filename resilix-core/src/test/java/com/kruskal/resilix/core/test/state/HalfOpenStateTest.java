@@ -2,6 +2,7 @@ package com.kruskal.resilix.core.test.state;
 
 import com.kruskal.resilix.core.Configuration;
 import com.kruskal.resilix.core.Context;
+import com.kruskal.resilix.core.ExecutionDeniedException;
 import com.kruskal.resilix.core.StateContainer;
 import com.kruskal.resilix.core.retry.RetryStrategy;
 import com.kruskal.resilix.core.window.SlidingWindowStrategy;
@@ -32,8 +33,9 @@ class HalfOpenStateTest {
   private HalfOpenStateHandler stateHandler;
 
   @Test
-  void retryAndSuccessTest() {
+  void retryAndSuccessTest() throws ExecutionDeniedException {
     this.init();
+
     int maxAcceptableError = (int) ((Math.ceil(ERROR_THRESHOLD * NUMBER_OF_RETRY - 1)));
     int shouldSuccessAttempt = NUMBER_OF_RETRY - maxAcceptableError;
     for(int i = 0; i < shouldSuccessAttempt; i++){
@@ -44,7 +46,9 @@ class HalfOpenStateTest {
     Assertions.assertSame(stateHandler, stateContainer.getStateHandler());
 
     for(int i = 0; i < maxAcceptableError; i++){
-      stateHandler.execute(FunctionalUtil.throwErrorRunnable());
+      Assertions.assertThrows(RuntimeException.class,
+          () -> stateHandler.execute(FunctionalUtil.throwErrorRunnable())
+      );
     }
 
     Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());
@@ -54,10 +58,9 @@ class HalfOpenStateTest {
   }
 
   @Test
-  void retryAndFailedTest() {
+  void retryAndFailedTest() throws ExecutionDeniedException {
     this.init();
 
-    this.init();
     int minRequiredError = (int) ((Math.floor(ERROR_THRESHOLD * NUMBER_OF_RETRY + 1)));
     int shouldSuccessAttempt = NUMBER_OF_RETRY - minRequiredError;
     for(int i = 0; i < shouldSuccessAttempt; i++){
@@ -68,7 +71,9 @@ class HalfOpenStateTest {
     Assertions.assertSame(stateHandler, stateContainer.getStateHandler());
 
     for(int i = 0; i < minRequiredError; i++){
-      stateHandler.execute(FunctionalUtil.throwErrorRunnable());
+      Assertions.assertThrows(RuntimeException.class,
+          () -> stateHandler.execute(FunctionalUtil.throwErrorRunnable())
+      );
     }
 
     Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());

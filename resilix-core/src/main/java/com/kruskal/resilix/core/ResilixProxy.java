@@ -3,6 +3,8 @@ package com.kruskal.resilix.core;
 import com.kruskal.resilix.core.state.CloseStateHandler;
 import com.kruskal.resilix.core.state.StateHandler;
 
+import java.util.function.Supplier;
+
 public class ResilixProxy implements ResilixService, StateContainer {
 
   private StateHandler stateHandler;
@@ -18,9 +20,14 @@ public class ResilixProxy implements ResilixService, StateContainer {
   }
 
   @Override
-  public boolean execute(Runnable runnable) {
+  public void execute(Runnable runnable) throws ExecutionDeniedException {
     stateHandler.evaluateState();
-    return stateHandler.execute(runnable);
+    stateHandler.execute(runnable);
+  }
+
+  @Override
+  public <T> T execute(Supplier<T> supplier) throws ExecutionDeniedException {
+    return stateHandler.execute(supplier);
   }
 
   @Override

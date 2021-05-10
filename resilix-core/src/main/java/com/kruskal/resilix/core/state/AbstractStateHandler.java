@@ -2,8 +2,11 @@ package com.kruskal.resilix.core.state;
 
 import com.kruskal.resilix.core.Configuration;
 import com.kruskal.resilix.core.Context;
+import com.kruskal.resilix.core.ExecutionDeniedException;
 import com.kruskal.resilix.core.StateContainer;
 import com.kruskal.resilix.core.window.SlidingWindow;
+
+import java.util.function.Supplier;
 
 public abstract class AbstractStateHandler implements StateHandler {
 
@@ -22,8 +25,9 @@ public abstract class AbstractStateHandler implements StateHandler {
   }
 
   @Override
-  public boolean execute(Runnable runnable) {
-    if(!this.acquirePermission()) return false;
+  public void execute(Runnable runnable) throws ExecutionDeniedException {
+    if(!this.acquirePermission()) throw new ExecutionDeniedException();
+
     boolean success = true;
     try {
       this.onBeforeExecution();
@@ -31,11 +35,34 @@ public abstract class AbstractStateHandler implements StateHandler {
     }
     catch (Exception e){
       success = false;
+      throw e;
     }
-    slidingWindow.ackAttempt(success);
-    this.evaluateState();
+    finally {
+      slidingWindow.ackAttempt(success);
+      this.evaluateState();
+    }
+  }
 
-    return success;
+  @Override
+  public <T> T execute(Supplier<T> supplier) throws ExecutionDeniedException {
+    if(!this.acquirePermission()) throw new ExecutionDeniedException();
+    boolean success = true;
+    T result = null;
+
+    try {
+      this.onBeforeExecution();
+      result = supplier.get();
+      return result;
+    }
+    catch (Exception e){
+      success = false;
+      throw e;
+    }
+    finally {
+      slidingWindow.ackAttempt(success);
+      this.evaluateState();
+    }
+
   }
 
   protected void onBeforeExecution() {

@@ -2,6 +2,7 @@ package com.kruskal.resilix.core.test.state;
 
 import com.kruskal.resilix.core.Configuration;
 import com.kruskal.resilix.core.Context;
+import com.kruskal.resilix.core.ExecutionDeniedException;
 import com.kruskal.resilix.core.StateContainer;
 import com.kruskal.resilix.core.retry.RetryStrategy;
 import com.kruskal.resilix.core.window.SlidingWindowStrategy;
@@ -54,15 +55,15 @@ class CloseStateHandlerTest {
   @Test
   void minCallToEvaluateTest(){
     for(int i = 0; i < MIN_CALL_TO_EVALUATE - 1; i++){
-      Assertions.assertFalse(
-          stateHandler.execute(FunctionalUtil.throwErrorRunnable())
+      Assertions.assertThrows(RuntimeException.class,
+          () -> stateHandler.execute(FunctionalUtil.throwErrorSupplier())
       );
       Assertions.assertTrue(stateHandler.acquirePermission());
     }
     Assertions.assertTrue(stateContainer.getStateHandler() instanceof CloseStateHandler);
 
-    Assertions.assertFalse(
-        stateHandler.execute(FunctionalUtil.throwErrorRunnable())
+    Assertions.assertThrows(RuntimeException.class,
+        () -> stateHandler.execute(FunctionalUtil.throwErrorRunnable())
     );
 
     Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());
@@ -70,11 +71,9 @@ class CloseStateHandlerTest {
   }
 
   @Test
-  void stillCloseAfterNumberOfAckTest(){
+  void stillCloseAfterNumberOfAckTest() throws ExecutionDeniedException {
     for(int i = 0; i < WINDOW_SIZE; i++){
-      Assertions.assertTrue(
-          stateHandler.execute(FunctionalUtil.doNothingRunnable())
-      );
+      stateHandler.execute(FunctionalUtil.doNothingRunnable());
     }
 
     Assertions.assertTrue(stateHandler.acquirePermission());
@@ -82,9 +81,7 @@ class CloseStateHandlerTest {
 
     int errorAttempt = (int) Math.ceil(WINDOW_SIZE * (1 - ERROR_THRESHOLD)) - 1;
     for(int i = 0; i < errorAttempt; i++){
-      Assertions.assertFalse(
-          stateHandler.execute(FunctionalUtil.throwErrorRunnable())
-      );
+      Assertions.assertTrue(stateHandler.execute(FunctionalUtil.trueSupplier()));
       Assertions.assertTrue(stateHandler.acquirePermission());
     }
 
@@ -92,11 +89,9 @@ class CloseStateHandlerTest {
   }
 
   @Test
-  void moveToOpenStateTest(){
+  void moveToOpenStateTest() throws ExecutionDeniedException {
     for(int i = 0; i < WINDOW_SIZE; i++){
-      Assertions.assertTrue(
-          stateHandler.execute(FunctionalUtil.doNothingRunnable())
-      );
+      stateHandler.execute(FunctionalUtil.doNothingRunnable());
     }
 
     Assertions.assertTrue(stateHandler.acquirePermission());
@@ -105,8 +100,8 @@ class CloseStateHandlerTest {
     int errorAttempt = (int) Math.ceil(WINDOW_SIZE * (1 - ERROR_THRESHOLD));
     for(int i = 0; i < errorAttempt; i++){
       Assertions.assertTrue(stateHandler.acquirePermission());
-      Assertions.assertFalse(
-          stateHandler.execute(FunctionalUtil.throwErrorRunnable())
+      Assertions.assertThrows(RuntimeException.class,
+          () -> stateHandler.execute(FunctionalUtil.throwErrorRunnable())
       );
     }
     Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());

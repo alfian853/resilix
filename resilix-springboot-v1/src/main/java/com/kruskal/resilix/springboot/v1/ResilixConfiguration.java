@@ -12,7 +12,8 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(ResilixProperties.class)
 public class ResilixConfiguration {
 
-  @Bean ResilixRegistry resilixRegistry(ResilixProperties resilixProperties){
+  @Bean
+  ResilixRegistry resilixRegistry(ResilixProperties resilixProperties){
     ResilixRegistry registry = new ResilixRegistry();
 
     resilixProperties.getConfig().entrySet().forEach(configEntry ->
