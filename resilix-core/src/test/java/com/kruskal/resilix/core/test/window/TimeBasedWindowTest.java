@@ -1,6 +1,7 @@
 package com.kruskal.resilix.core.test.window;
 
 import com.kruskal.resilix.core.Configuration;
+import com.kruskal.resilix.core.test.testutil.FunctionalUtil;
 import com.kruskal.resilix.core.test.testutil.RandomUtil;
 import com.kruskal.resilix.core.window.SlidingWindowObserver;
 import com.kruskal.resilix.core.window.TimeBasedWindow;
@@ -42,11 +43,13 @@ class TimeBasedWindowTest {
 
     timeBasedWindow.removeObserver(observer);
 
+    double tmpError = timeBasedWindow.getErrorRate();
     for(int i = 0; i < 5; i++){
       timeBasedWindow.ackAttempt(RandomUtil.generateRandomBoolean());
     }
 
     Assertions.assertEquals(3, count.get());
+    Assertions.assertNotEquals(tmpError, timeBasedWindow.getErrorRate());
   }
 
   @Test
@@ -86,7 +89,31 @@ class TimeBasedWindowTest {
     }
 
     Assertions.assertNotEquals(0.0d, timeBasedWindow.getErrorRate(), 0.000001);
+
     timeBasedWindow.clear();
+    Assertions.assertEquals(0.0d, timeBasedWindow.getErrorRate(), 0.000001);
+
+    for(int i = 0; i < configuration.getMinimumCallToEvaluate(); i++){
+      timeBasedWindow.ackAttempt(false);
+    }
+    Assertions.assertEquals(1.0d, timeBasedWindow.getErrorRate(), 0.000001);
+
+    timeBasedWindow.clear();
+
+    for(int i = 0; i < configuration.getMinimumCallToEvaluate(); i++){
+      timeBasedWindow.ackAttempt(true);
+    }
+    Assertions.assertEquals(0.0d, timeBasedWindow.getErrorRate(), 0.000001);
+  }
+
+  @Test
+  public void activeFlagTest(){
+    timeBasedWindow.setActive(false);
+
+    for(int i = 0; i < configuration.getSlidingWindowMaxSize(); i++){
+      timeBasedWindow.ackAttempt(RandomUtil.generateRandomBoolean());
+    }
+
     Assertions.assertEquals(0.0d, timeBasedWindow.getErrorRate(), 0.000001);
   }
 

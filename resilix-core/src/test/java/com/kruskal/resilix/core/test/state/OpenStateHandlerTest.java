@@ -36,6 +36,15 @@ class OpenStateHandlerTest {
   void movingStateAfterWaitingDurationPassedTest() throws InterruptedException {
     this.init();
 
+    double initialErrorRate = slidingWindow.getErrorRate();
+    Assertions.assertNotEquals(1.0d, initialErrorRate, 0.000001);
+
+    for(int i = 0; i < 5; i++){
+      slidingWindow.ackAttempt(false);
+    }
+
+    Assertions.assertEquals(initialErrorRate, slidingWindow.getErrorRate(), 0.000001);
+
     stateHandler.evaluateState();
     Assertions.assertSame(stateHandler, stateContainer.getStateHandler());
 

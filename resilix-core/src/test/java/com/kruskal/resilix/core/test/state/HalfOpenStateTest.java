@@ -74,7 +74,7 @@ class HalfOpenStateTest {
           () -> stateHandler.execute(FunctionalUtil.throwErrorSupplier())
       );
     }
-
+    Assertions.assertFalse(stateHandler.execute(FunctionalUtil.trueSupplier()).isExecuted());
     Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());
     Assertions.assertFalse(stateContainer.getStateHandler().checkPermission());
     Assertions.assertTrue(stateContainer.getStateHandler() instanceof OpenStateHandler);
