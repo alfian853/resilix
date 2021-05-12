@@ -2,7 +2,6 @@ package com.kruskal.resilix.core.test.state;
 
 import com.kruskal.resilix.core.Configuration;
 import com.kruskal.resilix.core.Context;
-import com.kruskal.resilix.core.ExecutionDeniedException;
 import com.kruskal.resilix.core.StateContainer;
 import com.kruskal.resilix.core.retry.RetryStrategy;
 import com.kruskal.resilix.core.window.SlidingWindowStrategy;
@@ -42,7 +41,7 @@ class HalfOpenStateTest {
       stateHandler.execute(FunctionalUtil.doNothingRunnable());
     }
 
-    Assertions.assertTrue(stateHandler.acquirePermission());
+    Assertions.assertTrue(stateHandler.checkPermission());
     Assertions.assertSame(stateHandler, stateContainer.getStateHandler());
 
     for(int i = 0; i < maxAcceptableError; i++){
@@ -52,7 +51,7 @@ class HalfOpenStateTest {
     }
 
     Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());
-    Assertions.assertTrue(stateContainer.getStateHandler().acquirePermission());
+    Assertions.assertTrue(stateContainer.getStateHandler().checkPermission());
     Assertions.assertTrue(stateContainer.getStateHandler() instanceof CloseStateHandler);
     Assertions.assertEquals(0, slidingWindow.getErrorRate(), 0.000001);
   }
@@ -67,7 +66,7 @@ class HalfOpenStateTest {
       stateHandler.execute(FunctionalUtil.doNothingRunnable());
     }
 
-    Assertions.assertTrue(stateHandler.acquirePermission());
+    Assertions.assertTrue(stateHandler.checkPermission());
     Assertions.assertSame(stateHandler, stateContainer.getStateHandler());
 
     for(int i = 0; i < minRequiredError; i++){
@@ -77,7 +76,7 @@ class HalfOpenStateTest {
     }
 
     Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());
-    Assertions.assertFalse(stateContainer.getStateHandler().acquirePermission());
+    Assertions.assertFalse(stateContainer.getStateHandler().checkPermission());
     Assertions.assertTrue(stateContainer.getStateHandler() instanceof OpenStateHandler);
   }
 

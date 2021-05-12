@@ -39,7 +39,7 @@ class OpenStateHandlerTest {
 
     waiter.await(WAIT_DURATION_IN_OPEN_STATE, TimeUnit.MILLISECONDS);
 
-    Assertions.assertTrue(stateHandler.acquirePermission());
+    Assertions.assertTrue(stateHandler.checkPermission());
     Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());
     Assertions.assertTrue(stateContainer.getStateHandler() instanceof HalfOpenStateHandler);
   }

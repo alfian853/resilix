@@ -19,7 +19,7 @@ public class HalfOpenStateHandler extends AbstractStateHandler {
   }
 
   @Override
-  public boolean acquirePermission() {
+  public boolean checkPermission() {
     return retryManager.checkPermission();
   }
 

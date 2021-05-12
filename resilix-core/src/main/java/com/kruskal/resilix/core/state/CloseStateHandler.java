@@ -16,13 +16,13 @@ public class CloseStateHandler extends AbstractStateHandler {
   }
 
   @Override
-  public boolean acquirePermission() {
+  public boolean checkPermission() {
     return slidingWindow.getErrorRate() < context.getConfiguration().getErrorThreshold();
   }
 
   @Override
   public void evaluateState() {
-    if(!this.acquirePermission()){
+    if(!this.checkPermission()){
       stateContainer.setStateHandler(new OpenStateHandler(context, stateContainer));
     }
   }

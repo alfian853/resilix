@@ -21,7 +21,7 @@ public abstract class AbstractStateHandler implements StateHandler {
 
   @Override
   public void execute(Runnable runnable) throws ExecutionDeniedException {
-    if(!this.acquirePermission()) throw new ExecutionDeniedException();
+    if(!this.checkPermission()) throw new ExecutionDeniedException();
 
     boolean success = true;
     try {
@@ -39,7 +39,7 @@ public abstract class AbstractStateHandler implements StateHandler {
 
   @Override
   public <T> T execute(XSupplier<T> supplier) throws ExecutionDeniedException {
-    if(!this.acquirePermission()) throw new ExecutionDeniedException();
+    if(!this.checkPermission()) throw new ExecutionDeniedException();
     boolean success = true;
     T result = null;
 

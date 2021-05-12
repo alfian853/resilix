@@ -12,9 +12,9 @@ public class ResilixProxy implements ResilixService, StateContainer {
   }
 
   @Override
-  public boolean acquirePermission() {
+  public boolean checkPermission() {
     stateHandler.evaluateState();
-    return stateHandler.acquirePermission();
+    return stateHandler.checkPermission();
   }
 
   @Override
