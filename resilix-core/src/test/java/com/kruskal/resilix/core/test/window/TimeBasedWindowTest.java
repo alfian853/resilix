@@ -26,13 +26,6 @@ class TimeBasedWindowTest {
     configuration.setSlidingWindowTimeRange(WINDOW_TIME_RANGE);
   }
 
-  private boolean getRandomBoolean() {
-    Random random = new Random();
-    return random.ints(1, 10)
-        .findFirst()
-        .getAsInt() % 2 == 0;
-  }
-
   @Test
   @DisplayName("testcase: observe 3 ack, and then unobserve and fire 5 ack")
   void observerNotificationTest() throws InterruptedException {
@@ -60,6 +53,8 @@ class TimeBasedWindowTest {
   @DisplayName("testcase: fire with 25 random ack followed by 10(70% success) ack in arbitrary order after 1000ms later")
   void endingTest() throws InterruptedException {
 
+    Assertions.assertEquals(0.0d, timeBasedWindow.getErrorRate(), 0.000001);
+
     for(int i = 0; i < 25; i++){
       timeBasedWindow.ackAttempt(RandomUtil.generateRandomBoolean());
     }
@@ -80,9 +75,7 @@ class TimeBasedWindowTest {
       }
     }
 
-    double errorRate = timeBasedWindow.getErrorRate();
-
-    Assertions.assertEquals(0.3, errorRate, 0.0001);
+    Assertions.assertEquals(0.3, timeBasedWindow.getErrorRate(), 0.000001);
 
   }
 

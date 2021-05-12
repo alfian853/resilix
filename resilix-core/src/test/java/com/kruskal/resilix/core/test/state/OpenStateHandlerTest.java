@@ -4,6 +4,7 @@ import com.kruskal.resilix.core.Configuration;
 import com.kruskal.resilix.core.Context;
 import com.kruskal.resilix.core.StateContainer;
 import com.kruskal.resilix.core.retry.RetryStrategy;
+import com.kruskal.resilix.core.test.testutil.FunctionalUtil;
 import com.kruskal.resilix.core.window.SlidingWindowStrategy;
 import com.kruskal.resilix.core.state.HalfOpenStateHandler;
 import com.kruskal.resilix.core.state.OpenStateHandler;
@@ -23,6 +24,7 @@ class OpenStateHandlerTest {
   private final int WINDOW_SIZE = 10;
   private final int MIN_CALL_TO_EVALUATE = 3;
   private long WAIT_DURATION_IN_OPEN_STATE = 200;
+  private final String CONTEXT_NAME = "contextName";
   private final CountDownLatch waiter = new CountDownLatch(1);
 
   private Context context;
@@ -42,6 +44,7 @@ class OpenStateHandlerTest {
     Assertions.assertTrue(stateHandler.checkPermission());
     Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());
     Assertions.assertTrue(stateContainer.getStateHandler() instanceof HalfOpenStateHandler);
+    Assertions.assertEquals(CONTEXT_NAME, context.getContextName());
   }
 
   @Test
@@ -52,7 +55,7 @@ class OpenStateHandlerTest {
     double initialErrorRate = slidingWindow.getErrorRate();
 
     for(int i = 0; i < WINDOW_SIZE; i++){
-      slidingWindow.ackAttempt(false);
+      stateHandler.execute(FunctionalUtil.throwErrorRunnable());
     }
 
     // ack should be ignored, thus the error rate doesn't increase
@@ -81,6 +84,7 @@ class OpenStateHandlerTest {
 
     context.setConfiguration(configuration);
     context.setSlidingWindow(slidingWindow);
+    context.setContextName(CONTEXT_NAME);
 
 
     stateContainer = new TestStateContainer();

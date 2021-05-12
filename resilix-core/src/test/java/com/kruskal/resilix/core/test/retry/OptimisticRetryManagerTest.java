@@ -82,6 +82,8 @@ class OptimisticRetryManagerTest {
     futureList.forEach(FunctionalUtil.doNothingConsumer());
 
     Assertions.assertTrue(retryManager.getErrorRate() >= ERROR_THRESHOLD);
+    Assertions.assertFalse(retryManager.checkPermission());
+    Assertions.assertFalse(retryManager.acquireAndUpdateRetryPermission());
   }
 
   @Test
@@ -122,6 +124,7 @@ class OptimisticRetryManagerTest {
 
     // assert if the quota has been exceeded
     Assertions.assertFalse(retryManager.checkPermission());
+    Assertions.assertFalse(retryManager.acquireAndUpdateRetryPermission());
     Assertions.assertEquals(RetryState.ACCEPTED, retryManager.getRetryState());
   }
 }
