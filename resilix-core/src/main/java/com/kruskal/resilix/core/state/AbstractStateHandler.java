@@ -42,7 +42,6 @@ public abstract class AbstractStateHandler implements StateHandler {
   public <T> ResultWrapper<T> execute(XSupplier<T> supplier) {
     if(!this.acquirePermission()) return ResultWrapper.notExecutedResult();
     boolean success = true;
-    T result = null;
 
     try {
       return ResultWrapper.executionResult(supplier.get());

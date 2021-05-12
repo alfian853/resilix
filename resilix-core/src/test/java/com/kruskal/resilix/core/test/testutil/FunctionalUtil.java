@@ -22,7 +22,7 @@ public class FunctionalUtil {
   }
 
   public static Runnable throwErrorRunnable(){
-    return () -> {throw new RuntimeException();};
+    return () -> {throw new CustomTestException();};
   }
 
   public static XSupplier<Boolean> trueSupplier(){

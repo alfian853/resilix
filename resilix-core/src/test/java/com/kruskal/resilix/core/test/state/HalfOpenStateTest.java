@@ -4,6 +4,7 @@ import com.kruskal.resilix.core.Configuration;
 import com.kruskal.resilix.core.Context;
 import com.kruskal.resilix.core.StateContainer;
 import com.kruskal.resilix.core.retry.RetryStrategy;
+import com.kruskal.resilix.core.test.testutil.CustomTestException;
 import com.kruskal.resilix.core.window.SlidingWindowStrategy;
 import com.kruskal.resilix.core.state.CloseStateHandler;
 import com.kruskal.resilix.core.state.HalfOpenStateHandler;
@@ -44,7 +45,7 @@ class HalfOpenStateTest {
     Assertions.assertSame(stateHandler, stateContainer.getStateHandler());
 
     for(int i = 0; i < maxAcceptableError; i++){
-      Assertions.assertThrows(RuntimeException.class,
+      Assertions.assertThrows(CustomTestException.class,
           () -> stateHandler.execute(FunctionalUtil.throwErrorRunnable())
       );
     }

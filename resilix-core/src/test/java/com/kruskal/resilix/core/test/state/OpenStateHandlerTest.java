@@ -64,7 +64,9 @@ class OpenStateHandlerTest {
     double initialErrorRate = slidingWindow.getErrorRate();
 
     for(int i = 0; i < WINDOW_SIZE; i++){
-      stateHandler.execute(FunctionalUtil.throwErrorRunnable());
+      Assertions.assertFalse(
+          stateHandler.execute(FunctionalUtil.throwErrorRunnable())
+      );
     }
 
     // ack should be ignored, thus the error rate doesn't increase

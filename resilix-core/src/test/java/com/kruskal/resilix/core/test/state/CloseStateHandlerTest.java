@@ -7,6 +7,7 @@ import com.kruskal.resilix.core.StateContainer;
 import com.kruskal.resilix.core.retry.RetryStrategy;
 import com.kruskal.resilix.core.state.CloseStateHandler;
 import com.kruskal.resilix.core.state.OpenStateHandler;
+import com.kruskal.resilix.core.test.testutil.CustomTestException;
 import com.kruskal.resilix.core.test.testutil.FunctionalUtil;
 import com.kruskal.resilix.core.test.testutil.TestStateContainer;
 import com.kruskal.resilix.core.window.CountBasedWindow;
@@ -62,7 +63,7 @@ class CloseStateHandlerTest {
     }
     Assertions.assertTrue(stateContainer.getStateHandler() instanceof CloseStateHandler);
 
-    Assertions.assertThrows(RuntimeException.class,
+    Assertions.assertThrows(CustomTestException.class,
         () -> stateHandler.execute(FunctionalUtil.throwErrorRunnable())
     );
 
@@ -102,7 +103,7 @@ class CloseStateHandlerTest {
     int errorAttempt = (int) Math.ceil(WINDOW_SIZE * (1 - ERROR_THRESHOLD));
     for(int i = 0; i < errorAttempt; i++){
       Assertions.assertTrue(stateHandler.acquirePermission());
-      Assertions.assertThrows(RuntimeException.class,
+      Assertions.assertThrows(CustomTestException.class,
           () -> stateHandler.execute(FunctionalUtil.throwErrorRunnable())
       );
     }
