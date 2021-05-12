@@ -1,9 +1,6 @@
 package com.kruskal.resilix.core.state;
 
-import com.kruskal.resilix.core.Context;
-import com.kruskal.resilix.core.ExecutionDeniedException;
-import com.kruskal.resilix.core.StateContainer;
-import com.kruskal.resilix.core.XSupplier;
+import com.kruskal.resilix.core.*;
 import com.kruskal.resilix.core.factory.RetryManagerFactory;
 import com.kruskal.resilix.core.retry.RetryManager;
 
@@ -24,12 +21,12 @@ public class HalfOpenStateHandler extends AbstractStateHandler {
   }
 
   @Override
-  public void execute(Runnable runnable) throws ExecutionDeniedException {
-    if(!retryManager.acquireAndUpdateRetryPermission()) throw new ExecutionDeniedException();
-
+  public boolean execute(Runnable runnable) {
+    if(!retryManager.acquireAndUpdateRetryPermission()) return false;
     boolean success = true;
     try {
       runnable.run();
+      return true;
     }
     catch (Exception e){
       success = false;
@@ -42,13 +39,12 @@ public class HalfOpenStateHandler extends AbstractStateHandler {
   }
 
   @Override
-  public <T> T execute(XSupplier<T> supplier) throws ExecutionDeniedException {
-    if(!retryManager.acquireAndUpdateRetryPermission()) throw new ExecutionDeniedException();
+  public <T> ResultWrapper<T> execute(XSupplier<T> supplier) {
+    if(!retryManager.acquireAndUpdateRetryPermission()) return ResultWrapper.notExecutedResult();
     boolean success = true;
 
     try {
-      T result = supplier.get();
-      return result;
+      return ResultWrapper.executionResult(supplier.get());
     }
     catch (Exception e){
       success = false;

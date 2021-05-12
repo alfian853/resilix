@@ -2,6 +2,7 @@ package com.kruskal.resilix.core.test;
 
 import com.kruskal.resilix.core.*;
 import com.kruskal.resilix.core.state.StateHandler;
+import com.kruskal.resilix.core.test.testutil.CustomTestException;
 import com.kruskal.resilix.core.test.testutil.FunctionalUtil;
 import com.kruskal.resilix.core.window.SlidingWindow;
 import org.junit.jupiter.api.Assertions;
@@ -17,14 +18,14 @@ class ResilixProxyTest {
   StateHandler stateHandlerFalse = mock(StateHandler.class);
 
   @BeforeEach
-  void init() throws Exception {
+  void init() {
     when(stateHandlerTrue.checkPermission()).thenReturn(true);
     when(stateHandlerFalse.checkPermission()).thenReturn(false);
-    when(stateHandlerFalse.execute(any(XSupplier.class))).thenThrow(new ExecutionDeniedException());
+    when(stateHandlerFalse.execute(any(XSupplier.class))).thenThrow(new CustomTestException());
   }
 
   @Test
-  void getStateHandlerTest() throws Exception {
+  void getStateHandlerTest() {
 
     Context context = new Context();
     context.setConfiguration(new Configuration());
@@ -47,7 +48,7 @@ class ResilixProxyTest {
     Assertions.assertNotSame(stateHandlerTrue, resilixProxy.getStateHandler());
 
     Assertions.assertFalse(resilixProxy.checkPermission());
-    Assertions.assertThrows(ExecutionDeniedException.class,
+    Assertions.assertThrows(CustomTestException.class,
         () -> resilixProxy.execute(FunctionalUtil.trueSupplier())
     );
     Assertions.assertSame(stateHandlerFalse, resilixProxy.getStateHandler());

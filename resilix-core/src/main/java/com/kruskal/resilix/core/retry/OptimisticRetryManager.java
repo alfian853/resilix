@@ -10,7 +10,7 @@ public class OptimisticRetryManager implements RetryManager, SlidingWindowObserv
 
   private final AtomicInteger numberOfRetry = new AtomicInteger(0);
   private final AtomicInteger numberOfFail = new AtomicInteger(0);
-  private final Context context;
+  protected final Context context;
   private final Configuration configuration;
 
   public OptimisticRetryManager(Context context) {

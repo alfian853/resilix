@@ -32,7 +32,7 @@ class HalfOpenStateTest {
   private HalfOpenStateHandler stateHandler;
 
   @Test
-  void retryAndSuccessTest() throws Exception {
+  void retryAndSuccessTest() {
     this.init();
 
     int maxAcceptableError = (int) ((Math.ceil(ERROR_THRESHOLD * NUMBER_OF_RETRY - 1)));
@@ -57,13 +57,13 @@ class HalfOpenStateTest {
   }
 
   @Test
-  void retryAndFailedTest() throws Exception {
+  void retryAndFailedTest() {
     this.init();
 
     int minRequiredError = (int) ((Math.floor(ERROR_THRESHOLD * NUMBER_OF_RETRY + 1)));
     int shouldSuccessAttempt = NUMBER_OF_RETRY - minRequiredError;
     for(int i = 0; i < shouldSuccessAttempt; i++){
-      stateHandler.execute(FunctionalUtil.doNothingRunnable());
+      Assertions.assertTrue(stateHandler.execute(FunctionalUtil.trueSupplier()).isExecuted());
     }
 
     Assertions.assertTrue(stateHandler.checkPermission());
@@ -71,7 +71,7 @@ class HalfOpenStateTest {
 
     for(int i = 0; i < minRequiredError; i++){
       Assertions.assertThrows(RuntimeException.class,
-          () -> stateHandler.execute(FunctionalUtil.throwErrorRunnable())
+          () -> stateHandler.execute(FunctionalUtil.throwErrorSupplier())
       );
     }
 

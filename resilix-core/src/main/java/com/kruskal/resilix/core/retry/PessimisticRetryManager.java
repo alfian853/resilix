@@ -1,7 +1,6 @@
 package com.kruskal.resilix.core.retry;
 
 import com.kruskal.resilix.core.Context;
-
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PessimisticRetryManager extends OptimisticRetryManager {

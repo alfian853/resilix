@@ -70,7 +70,7 @@ class CloseStateHandlerTest {
   }
 
   @Test
-  void stillCloseAfterNumberOfAckTest() throws Exception {
+  void stillCloseAfterNumberOfAckTest() {
     for(int i = 0; i < WINDOW_SIZE; i++){
       stateHandler.execute(FunctionalUtil.doNothingRunnable());
     }
@@ -80,7 +80,7 @@ class CloseStateHandlerTest {
 
     int errorAttempt = (int) Math.ceil(WINDOW_SIZE * (1 - ERROR_THRESHOLD)) - 1;
     for(int i = 0; i < errorAttempt; i++){
-      Assertions.assertTrue(stateHandler.execute(FunctionalUtil.trueSupplier()));
+      Assertions.assertTrue(stateHandler.execute(FunctionalUtil.trueSupplier()).isExecuted());
       Assertions.assertTrue(stateHandler.checkPermission());
     }
 
@@ -88,7 +88,7 @@ class CloseStateHandlerTest {
   }
 
   @Test
-  void moveToOpenStateTest() throws Exception {
+  void moveToOpenStateTest() {
     for(int i = 0; i < WINDOW_SIZE; i++){
       stateHandler.execute(FunctionalUtil.doNothingRunnable());
     }

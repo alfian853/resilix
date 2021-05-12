@@ -18,13 +18,13 @@ public class ResilixProxy implements ResilixService, StateContainer {
   }
 
   @Override
-  public void execute(Runnable runnable) throws ExecutionDeniedException {
+  public boolean execute(Runnable runnable) {
     stateHandler.evaluateState();
-    stateHandler.execute(runnable);
+    return stateHandler.execute(runnable);
   }
 
   @Override
-  public <T> T execute(XSupplier<T> supplier) throws ExecutionDeniedException {
+  public <T> ResultWrapper<T> execute(XSupplier<T> supplier) {
     stateHandler.evaluateState();
     return stateHandler.execute(supplier);
   }
