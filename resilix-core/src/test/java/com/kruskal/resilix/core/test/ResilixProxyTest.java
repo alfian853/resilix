@@ -20,6 +20,7 @@ class ResilixProxyTest {
   @BeforeEach
   void init() {
     when(stateHandlerTrue.execute(any(Runnable.class))).thenReturn(true);
+    when(stateHandlerTrue.execute(any(XSupplier.class))).thenReturn(ResultWrapper.executionResult(true));
     when(stateHandlerFalse.execute(any(XSupplier.class))).thenThrow(new CustomTestException());
   }
 
@@ -33,9 +34,10 @@ class ResilixProxyTest {
     resilixProxy.setStateHandler(stateHandlerTrue);
 
     Assertions.assertTrue(resilixProxy.execute(FunctionalUtil.doNothingRunnable()));
+    Assertions.assertTrue(resilixProxy.execute(FunctionalUtil.trueSupplier()).isExecuted());
     Assertions.assertSame(stateHandlerTrue, resilixProxy.getStateHandler());
 
-    verify(stateHandlerTrue, times(2)).evaluateState();
+    verify(stateHandlerTrue, times(3)).evaluateState();
     verify(stateHandlerTrue).execute(any(Runnable.class));
 
     doAnswer(invocationOnMock -> {

@@ -2,6 +2,7 @@ package com.kruskal.resilix.core.test.state;
 
 import com.kruskal.resilix.core.Configuration;
 import com.kruskal.resilix.core.Context;
+import com.kruskal.resilix.core.ResultWrapper;
 import com.kruskal.resilix.core.StateContainer;
 import com.kruskal.resilix.core.retry.RetryStrategy;
 import com.kruskal.resilix.core.state.CloseStateHandler;
@@ -80,7 +81,9 @@ class CloseStateHandlerTest {
 
     int errorAttempt = (int) Math.ceil(WINDOW_SIZE * (1 - ERROR_THRESHOLD)) - 1;
     for(int i = 0; i < errorAttempt; i++){
-      Assertions.assertTrue(stateHandler.execute(FunctionalUtil.trueSupplier()).isExecuted());
+      ResultWrapper<Boolean> resultWrapper = stateHandler.execute(FunctionalUtil.trueSupplier());
+      Assertions.assertTrue(resultWrapper.isExecuted());
+      Assertions.assertTrue(resultWrapper.getResult());
       Assertions.assertTrue(stateHandler.acquirePermission());
     }
 
