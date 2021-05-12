@@ -66,9 +66,8 @@ class PesimisticRetryManagerTest {
 
       int retryCount = 0;
       while (retryManager.getErrorRate() < ERROR_THRESHOLD){
-        if(retryManager.acquireRetryPermission()){
+        if(retryManager.acquireAndUpdateRetryPermission()){
           executor.execute(() -> {
-            retryManager.onBeforeRetry();
             slidingWindow.ackAttempt(RandomUtil.generateRandomBoolean());
           });
           retryCount++;
@@ -101,13 +100,25 @@ class PesimisticRetryManagerTest {
 
     List<Future<?>> futureList = new LinkedList<>();
     for(int i = 0; i < minSuccessAck && retryManager.getErrorRate() < ERROR_THRESHOLD; i++){
-      if(retryManager.acquireRetryPermission()) {
-        futureList.add(executor.submit(() -> slidingWindow.ackAttempt(true)));
+      if(retryManager.acquireAndUpdateRetryPermission()){
+        futureList.add(executor.submit(() -> {
+          slidingWindow.ackAttempt(true);
+        }));
       }
-      else { i--; }
+      else {
+        i--;
+      }
     }
+
     for(int i = 0; i < NUMBER_OF_RETRY - minSuccessAck; i++){
-      futureList.add(executor.submit(() -> slidingWindow.ackAttempt(false)));
+      if(retryManager.acquireAndUpdateRetryPermission()){
+        futureList.add(executor.submit(() -> {
+          slidingWindow.ackAttempt(false);
+        }));
+      }
+      else {
+        i--;
+      }
     }
 
     futureList.stream().forEach(FunctionalUtil.doNothingConsumer());
@@ -115,7 +126,7 @@ class PesimisticRetryManagerTest {
     Assertions.assertTrue(retryManager.getErrorRate() < ERROR_THRESHOLD);
 
     // assert if the quota has been exceeded
-    Assertions.assertFalse(retryManager.acquireRetryPermission());
+    Assertions.assertFalse(retryManager.acquireAndUpdateRetryPermission());
     Assertions.assertEquals(RetryState.ACCEPTED, retryManager.getRetryState());
   }
 }

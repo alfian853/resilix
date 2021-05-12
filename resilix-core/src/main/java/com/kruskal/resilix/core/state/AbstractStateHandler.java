@@ -25,7 +25,6 @@ public abstract class AbstractStateHandler implements StateHandler {
 
     boolean success = true;
     try {
-      this.onBeforeExecution();
       runnable.run();
     }
     catch (Exception e){
@@ -45,7 +44,6 @@ public abstract class AbstractStateHandler implements StateHandler {
     T result = null;
 
     try {
-      this.onBeforeExecution();
       result = supplier.get();
       return result;
     }
@@ -57,10 +55,6 @@ public abstract class AbstractStateHandler implements StateHandler {
       this.evaluateState();
     }
 
-  }
-
-  protected void onBeforeExecution() {
-    // do nothing
   }
 
   protected abstract boolean isSlidingWindowActive();

@@ -13,13 +13,8 @@ public class PessimisticRetryManager extends OptimisticRetryManager {
   }
 
   @Override
-  public boolean acquireRetryPermission() {
-    return isAvailable.get() && super.acquireRetryPermission();
-  }
-
-  @Override
-  public void onBeforeRetry() {
-    isAvailable.set(false);
+  public boolean acquireAndUpdateRetryPermission() {
+    return isAvailable.getAndSet(false) && super.acquireAndUpdateRetryPermission();
   }
 
   @Override

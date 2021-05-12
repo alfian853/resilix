@@ -21,9 +21,18 @@ public class OptimisticRetryManager implements RetryManager, SlidingWindowObserv
   }
 
   @Override
-  public boolean acquireRetryPermission() {
-
+  public boolean checkPermission() {
     if(numberOfRetry.get() >= configuration.getNumberOfRetryInHalfOpenState()){
+      return false;
+    }
+
+    return !this.isErrorLimitExceeded();
+  }
+
+  @Override
+  public boolean acquireAndUpdateRetryPermission() {
+
+    if(numberOfRetry.getAndIncrement() >= configuration.getNumberOfRetryInHalfOpenState()){
       return false;
     }
 
@@ -46,11 +55,6 @@ public class OptimisticRetryManager implements RetryManager, SlidingWindowObserv
   }
 
   @Override
-  public void onBeforeRetry() {
-    // do nothing
-  }
-
-  @Override
   public double getErrorRate() {
     if(numberOfRetry.get() == 0) return 0.0d;
     return ((double) numberOfFail.get()) / numberOfRetry.get();
@@ -58,7 +62,6 @@ public class OptimisticRetryManager implements RetryManager, SlidingWindowObserv
 
   @Override
   public void notifyOnAckAttempt(boolean success) {
-    numberOfRetry.incrementAndGet();
 
     if(!success) numberOfFail.incrementAndGet();
   }
