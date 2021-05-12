@@ -128,7 +128,7 @@ class OptimisticRetryManagerTest {
     Assertions.assertTrue(retryManager.getErrorRate() < ERROR_THRESHOLD);
 
     // assert if the quota has been exceeded
-    Assertions.assertFalse(retryManager.acquireAndUpdateRetryPermission());
+    Assertions.assertFalse(retryManager.checkPermission());
     Assertions.assertEquals(RetryState.ACCEPTED, retryManager.getRetryState());
   }
 }
