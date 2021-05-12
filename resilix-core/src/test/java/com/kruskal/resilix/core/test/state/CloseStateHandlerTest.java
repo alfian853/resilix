@@ -57,7 +57,7 @@ class CloseStateHandlerTest {
       Assertions.assertThrows(RuntimeException.class,
           () -> stateHandler.execute(FunctionalUtil.throwErrorSupplier())
       );
-      Assertions.assertTrue(stateHandler.checkPermission());
+      Assertions.assertTrue(stateHandler.acquirePermission());
     }
     Assertions.assertTrue(stateContainer.getStateHandler() instanceof CloseStateHandler);
 
@@ -75,13 +75,13 @@ class CloseStateHandlerTest {
       stateHandler.execute(FunctionalUtil.doNothingRunnable());
     }
 
-    Assertions.assertTrue(stateHandler.checkPermission());
+    Assertions.assertTrue(stateHandler.acquirePermission());
     Assertions.assertSame(stateHandler, stateContainer.getStateHandler());
 
     int errorAttempt = (int) Math.ceil(WINDOW_SIZE * (1 - ERROR_THRESHOLD)) - 1;
     for(int i = 0; i < errorAttempt; i++){
       Assertions.assertTrue(stateHandler.execute(FunctionalUtil.trueSupplier()).isExecuted());
-      Assertions.assertTrue(stateHandler.checkPermission());
+      Assertions.assertTrue(stateHandler.acquirePermission());
     }
 
     Assertions.assertSame(stateHandler, stateContainer.getStateHandler());
@@ -93,18 +93,18 @@ class CloseStateHandlerTest {
       stateHandler.execute(FunctionalUtil.doNothingRunnable());
     }
 
-    Assertions.assertTrue(stateHandler.checkPermission());
+    Assertions.assertTrue(stateHandler.acquirePermission());
     Assertions.assertSame(stateHandler, stateContainer.getStateHandler());
 
     int errorAttempt = (int) Math.ceil(WINDOW_SIZE * (1 - ERROR_THRESHOLD));
     for(int i = 0; i < errorAttempt; i++){
-      Assertions.assertTrue(stateHandler.checkPermission());
+      Assertions.assertTrue(stateHandler.acquirePermission());
       Assertions.assertThrows(RuntimeException.class,
           () -> stateHandler.execute(FunctionalUtil.throwErrorRunnable())
       );
     }
     Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());
-    Assertions.assertFalse(stateContainer.getStateHandler().checkPermission());
+    Assertions.assertFalse(stateContainer.getStateHandler().acquirePermission());
     Assertions.assertTrue(stateContainer.getStateHandler() instanceof OpenStateHandler);
   }
 

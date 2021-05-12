@@ -16,44 +16,8 @@ public class HalfOpenStateHandler extends AbstractStateHandler {
   }
 
   @Override
-  public boolean checkPermission() {
-    return retryManager.checkPermission();
-  }
-
-  @Override
-  public boolean execute(Runnable runnable) {
-    if(!retryManager.acquireAndUpdateRetryPermission()) return false;
-    boolean success = true;
-    try {
-      runnable.run();
-      return true;
-    }
-    catch (Exception e){
-      success = false;
-      throw e;
-    }
-    finally {
-      slidingWindow.ackAttempt(success);
-      this.evaluateState();
-    }
-  }
-
-  @Override
-  public <T> ResultWrapper<T> execute(XSupplier<T> supplier) {
-    if(!retryManager.acquireAndUpdateRetryPermission()) return ResultWrapper.notExecutedResult();
-    boolean success = true;
-
-    try {
-      return ResultWrapper.executionResult(supplier.get());
-    }
-    catch (Exception e){
-      success = false;
-      throw new RuntimeException(e);
-    } finally {
-      slidingWindow.ackAttempt(success);
-      this.evaluateState();
-    }
-
+  public boolean acquirePermission() {
+    return retryManager.acquireAndUpdateRetryPermission();
   }
 
   @Override

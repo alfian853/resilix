@@ -19,8 +19,7 @@ class ResilixProxyTest {
 
   @BeforeEach
   void init() {
-    when(stateHandlerTrue.checkPermission()).thenReturn(true);
-    when(stateHandlerFalse.checkPermission()).thenReturn(false);
+    when(stateHandlerTrue.execute(any(Runnable.class))).thenReturn(true);
     when(stateHandlerFalse.execute(any(XSupplier.class))).thenThrow(new CustomTestException());
   }
 
@@ -33,12 +32,10 @@ class ResilixProxyTest {
     ResilixProxy resilixProxy = new ResilixProxy(context);
     resilixProxy.setStateHandler(stateHandlerTrue);
 
-    Assertions.assertTrue(resilixProxy.checkPermission());
-    resilixProxy.execute(FunctionalUtil.doNothingRunnable());
+    Assertions.assertTrue(resilixProxy.execute(FunctionalUtil.doNothingRunnable()));
     Assertions.assertSame(stateHandlerTrue, resilixProxy.getStateHandler());
 
-    verify(stateHandlerTrue, times(3)).evaluateState();
-    verify(stateHandlerTrue).checkPermission();
+    verify(stateHandlerTrue, times(2)).evaluateState();
     verify(stateHandlerTrue).execute(any(Runnable.class));
 
     doAnswer(invocationOnMock -> {
@@ -47,14 +44,12 @@ class ResilixProxyTest {
     }).when(stateHandlerTrue).evaluateState();
     Assertions.assertNotSame(stateHandlerTrue, resilixProxy.getStateHandler());
 
-    Assertions.assertFalse(resilixProxy.checkPermission());
     Assertions.assertThrows(CustomTestException.class,
         () -> resilixProxy.execute(FunctionalUtil.trueSupplier())
     );
     Assertions.assertSame(stateHandlerFalse, resilixProxy.getStateHandler());
 
-    verify(stateHandlerFalse).checkPermission();
     verify(stateHandlerFalse).execute(any(XSupplier.class));
-    verify(stateHandlerFalse, times(3)).evaluateState();
+    verify(stateHandlerFalse, times(2)).evaluateState();
   }
 }

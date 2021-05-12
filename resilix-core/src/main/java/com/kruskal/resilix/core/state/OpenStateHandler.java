@@ -20,11 +20,11 @@ public class OpenStateHandler extends AbstractStateHandler {
   }
 
   @Override
-  public boolean checkPermission() {
+  public boolean acquirePermission() {
     this.evaluateState();
 
     if(stateContainer.getStateHandler() != this){
-      return stateContainer.getStateHandler().checkPermission();
+      return stateContainer.getStateHandler().acquirePermission();
     }
 
     return false;

@@ -21,15 +21,6 @@ public class OptimisticRetryManager implements RetryManager, SlidingWindowObserv
   }
 
   @Override
-  public boolean checkPermission() {
-    if(numberOfRetry.get() >= configuration.getNumberOfRetryInHalfOpenState()){
-      return false;
-    }
-
-    return !this.isErrorLimitExceeded();
-  }
-
-  @Override
   public boolean acquireAndUpdateRetryPermission() {
 
     if(numberOfRetry.getAndIncrement() >= configuration.getNumberOfRetryInHalfOpenState()){

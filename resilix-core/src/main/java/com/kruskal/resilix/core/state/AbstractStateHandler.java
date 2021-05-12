@@ -21,7 +21,7 @@ public abstract class AbstractStateHandler implements StateHandler {
 
   @Override
   public boolean execute(Runnable runnable) {
-    if(!this.checkPermission()) return false;
+    if(!this.acquirePermission()) return false;
 
     boolean success = true;
     try {
@@ -40,7 +40,7 @@ public abstract class AbstractStateHandler implements StateHandler {
 
   @Override
   public <T> ResultWrapper<T> execute(XSupplier<T> supplier) {
-    if(!this.checkPermission()) return ResultWrapper.notExecutedResult();
+    if(!this.acquirePermission()) return ResultWrapper.notExecutedResult();
     boolean success = true;
     T result = null;
 
