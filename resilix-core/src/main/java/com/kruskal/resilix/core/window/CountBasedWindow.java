@@ -4,14 +4,12 @@ import com.kruskal.resilix.core.Configuration;
 
 import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CountBasedWindow extends AbstractSlidingWindow {
 
   private final AtomicInteger errorCount = new AtomicInteger();
   private final Deque<Boolean> windowQue = new ConcurrentLinkedDeque<>();
-  private final AtomicBoolean updateQueLock = new AtomicBoolean(true);
 
   public CountBasedWindow(Configuration configuration) {
     super(configuration);
@@ -42,16 +40,13 @@ public class CountBasedWindow extends AbstractSlidingWindow {
   }
 
   private void examineAttemptWindow(){
-    if(updateQueLock.compareAndSet(true, false)){
-      while (windowQue.size() > configuration.getSlidingWindowMaxSize()){
-        if(Boolean.TRUE.equals(windowQue.removeFirst())){
-          // do nothing
-        }
-        else {
-          errorCount.decrementAndGet();
-        }
+    while (windowQue.size() > configuration.getSlidingWindowMaxSize()){
+      if(Boolean.TRUE.equals(windowQue.removeFirst())){
+        // do nothing
       }
-      updateQueLock.set(true);
+      else {
+        errorCount.decrementAndGet();
+      }
     }
   }
 
