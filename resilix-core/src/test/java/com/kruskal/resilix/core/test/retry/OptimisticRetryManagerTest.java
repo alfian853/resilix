@@ -63,26 +63,27 @@ class OptimisticRetryManagerTest {
 
     int minFailedAck = (int) (((ERROR_THRESHOLD) * NUMBER_OF_RETRY)) + 1;
     int maxSuccessAck = NUMBER_OF_RETRY - minFailedAck;
+    List<Future<?>> futureList = new LinkedList<>();
 
     for (int i = 0; i < maxSuccessAck; i++){
-      executor.execute(() -> {
+      futureList.add(executor.submit(() -> {
         retryManager.acquireAndUpdateRetryPermission();
         slidingWindow.ackAttempt(true);
-      });
+      }));
     }
 
     for (int i = 0; i < minFailedAck; i++){
-      executor.execute(() -> {
+      futureList.add(executor.submit(() -> {
         retryManager.acquireAndUpdateRetryPermission();
         slidingWindow.ackAttempt(false);
-      });
+      }));
     }
 
     for(int i = 0; i < NUMBER_OF_RETRY; i++){
-      executor.execute(() -> {
+      futureList.add(executor.submit(() -> {
         retryManager.acquireAndUpdateRetryPermission();
         slidingWindow.ackAttempt(RandomUtil.generateRandomBoolean());
-      });
+      }));
       if(RetryState.REJECTED.equals(retryManager.getRetryState())){
         break;
       }
