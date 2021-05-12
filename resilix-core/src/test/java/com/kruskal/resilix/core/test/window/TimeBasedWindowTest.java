@@ -107,7 +107,7 @@ class TimeBasedWindowTest {
   }
 
   @Test
-  public void activeFlagTest(){
+  void activeFlagTest(){
     timeBasedWindow.setActive(false);
 
     for(int i = 0; i < configuration.getSlidingWindowMaxSize(); i++){
