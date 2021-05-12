@@ -61,7 +61,7 @@ class OptimisticRetryManagerTest {
     Assertions.assertEquals(RetryState.ON_GOING, retryManager.getRetryState());
     Assertions.assertEquals(0.0d, retryManager.getErrorRate(), 0.000001);
 
-    int minFailedAck = (int) (((ERROR_THRESHOLD) * NUMBER_OF_RETRY)) + 1;
+    int minFailedAck = (int) (((ERROR_THRESHOLD) * NUMBER_OF_RETRY)) + 2;
     int maxSuccessAck = NUMBER_OF_RETRY - minFailedAck;
     List<Future<?>> futureList = new LinkedList<>();
 
@@ -88,6 +88,7 @@ class OptimisticRetryManagerTest {
         break;
       }
     }
+    futureList.forEach(FunctionalUtil.doNothingConsumer());
 
     Assertions.assertTrue(retryManager.getErrorRate() >= ERROR_THRESHOLD);
   }
