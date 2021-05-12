@@ -79,15 +79,6 @@ class OptimisticRetryManagerTest {
       }));
     }
 
-    for(int i = 0; i < NUMBER_OF_RETRY; i++){
-      futureList.add(executor.submit(() -> {
-        retryManager.acquireAndUpdateRetryPermission();
-        slidingWindow.ackAttempt(RandomUtil.generateRandomBoolean());
-      }));
-      if(RetryState.REJECTED.equals(retryManager.getRetryState())){
-        break;
-      }
-    }
     futureList.forEach(FunctionalUtil.doNothingConsumer());
 
     Assertions.assertTrue(retryManager.getErrorRate() >= ERROR_THRESHOLD);
