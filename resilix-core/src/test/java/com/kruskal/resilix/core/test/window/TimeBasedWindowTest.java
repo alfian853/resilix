@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 class TimeBasedWindowTest {
 
-  private final long WINDOW_TIME_RANGE = 1000L;
+  private final long WINDOW_TIME_RANGE = 250L;
   private final Configuration configuration = new Configuration();
   private final TimeBasedWindow timeBasedWindow = new TimeBasedWindow(configuration);
   private final CountDownLatch waiter = new CountDownLatch(1);
@@ -62,7 +62,7 @@ class TimeBasedWindowTest {
       timeBasedWindow.ackAttempt(RandomUtil.generateRandomBoolean());
     }
 
-    waiter.await(WINDOW_TIME_RANGE + 1, TimeUnit.MILLISECONDS);
+    waiter.await(WINDOW_TIME_RANGE + 50, TimeUnit.MILLISECONDS);
 
     int nSuccess = 7;
     int nFailure = 3;
