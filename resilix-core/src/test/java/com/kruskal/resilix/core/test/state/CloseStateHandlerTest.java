@@ -57,14 +57,14 @@ class CloseStateHandlerTest {
   void minCallToEvaluateTest(){
     for(int i = 0; i < MIN_CALL_TO_EVALUATE - 1; i++){
       Assertions.assertThrows(RuntimeException.class,
-          () -> stateHandler.execute(FunctionalUtil.throwErrorSupplier())
+          () -> stateHandler.executeChecked(FunctionalUtil.throwErrorCheckedSupplier())
       );
       Assertions.assertTrue(stateHandler.acquirePermission());
     }
     Assertions.assertTrue(stateContainer.getStateHandler() instanceof CloseStateHandler);
 
     Assertions.assertThrows(CustomTestException.class,
-        () -> stateHandler.execute(FunctionalUtil.throwErrorRunnable())
+        () -> stateHandler.executeChecked(FunctionalUtil.throwErrorCheckedRunnable())
     );
 
     Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());
@@ -72,9 +72,9 @@ class CloseStateHandlerTest {
   }
 
   @Test
-  void stillCloseAfterNumberOfAckTest() {
+  void stillCloseAfterNumberOfAckTest() throws Throwable {
     for(int i = 0; i < WINDOW_SIZE; i++){
-      stateHandler.execute(FunctionalUtil.doNothingRunnable());
+      stateHandler.executeChecked(FunctionalUtil.doNothingCheckedRunnable());
     }
 
     Assertions.assertTrue(stateHandler.acquirePermission());
@@ -82,7 +82,7 @@ class CloseStateHandlerTest {
 
     int errorAttempt = (int) Math.ceil(WINDOW_SIZE * (1 - ERROR_THRESHOLD)) - 1;
     for(int i = 0; i < errorAttempt; i++){
-      ResultWrapper<Boolean> resultWrapper = stateHandler.execute(FunctionalUtil.trueSupplier());
+      ResultWrapper<Boolean> resultWrapper = stateHandler.executeChecked(FunctionalUtil.trueCheckedSupplier());
       Assertions.assertTrue(resultWrapper.isExecuted());
       Assertions.assertTrue(resultWrapper.getResult());
       Assertions.assertTrue(stateHandler.acquirePermission());
@@ -92,9 +92,9 @@ class CloseStateHandlerTest {
   }
 
   @Test
-  void moveToOpenStateTest() {
+  void moveToOpenStateTest() throws Throwable {
     for(int i = 0; i < WINDOW_SIZE; i++){
-      stateHandler.execute(FunctionalUtil.doNothingRunnable());
+      stateHandler.executeChecked(FunctionalUtil.doNothingCheckedRunnable());
     }
 
     Assertions.assertTrue(stateHandler.acquirePermission());
@@ -104,7 +104,7 @@ class CloseStateHandlerTest {
     for(int i = 0; i < errorAttempt; i++){
       Assertions.assertTrue(stateHandler.acquirePermission());
       Assertions.assertThrows(CustomTestException.class,
-          () -> stateHandler.execute(FunctionalUtil.throwErrorRunnable())
+          () -> stateHandler.executeChecked(FunctionalUtil.throwErrorCheckedRunnable())
       );
     }
     Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());

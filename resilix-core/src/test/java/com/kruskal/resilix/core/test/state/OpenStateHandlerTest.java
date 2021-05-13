@@ -57,7 +57,7 @@ class OpenStateHandlerTest {
   }
 
   @Test
-  void slidingWindowRegardingTest() {
+  void slidingWindowRegardingTest() throws Throwable {
     WAIT_DURATION_IN_OPEN_STATE = 2000000L;
     this.init();
 
@@ -65,7 +65,7 @@ class OpenStateHandlerTest {
 
     for(int i = 0; i < WINDOW_SIZE; i++){
       Assertions.assertFalse(
-          stateHandler.execute(FunctionalUtil.throwErrorRunnable())
+          stateHandler.executeChecked(FunctionalUtil.throwErrorCheckedRunnable())
       );
     }
 

@@ -33,20 +33,20 @@ class HalfOpenStateTest {
   private HalfOpenStateHandler stateHandler;
 
   @Test
-  void retryAndSuccessTest() {
+  void retryAndSuccessTest() throws Throwable {
     this.init();
 
     int maxAcceptableError = (int) ((Math.ceil(ERROR_THRESHOLD * NUMBER_OF_RETRY - 1)));
     int shouldSuccessAttempt = NUMBER_OF_RETRY - maxAcceptableError;
     for(int i = 0; i < shouldSuccessAttempt; i++){
-      stateHandler.execute(FunctionalUtil.doNothingRunnable());
+      stateHandler.executeChecked(FunctionalUtil.doNothingCheckedRunnable());
     }
 
     Assertions.assertSame(stateHandler, stateContainer.getStateHandler());
 
     for(int i = 0; i < maxAcceptableError; i++){
       Assertions.assertThrows(CustomTestException.class,
-          () -> stateHandler.execute(FunctionalUtil.throwErrorRunnable())
+          () -> stateHandler.executeChecked(FunctionalUtil.throwErrorCheckedRunnable())
       );
     }
 
@@ -57,23 +57,23 @@ class HalfOpenStateTest {
   }
 
   @Test
-  void retryAndFailedTest() {
+  void retryAndFailedTest() throws Throwable {
     this.init();
 
     int minRequiredError = (int) ((Math.floor(ERROR_THRESHOLD * NUMBER_OF_RETRY + 1)));
     int shouldSuccessAttempt = NUMBER_OF_RETRY - minRequiredError;
     for(int i = 0; i < shouldSuccessAttempt; i++){
-      Assertions.assertTrue(stateHandler.execute(FunctionalUtil.trueSupplier()).isExecuted());
+      Assertions.assertTrue(stateHandler.executeChecked(FunctionalUtil.trueCheckedSupplier()).isExecuted());
     }
 
     Assertions.assertSame(stateHandler, stateContainer.getStateHandler());
 
     for(int i = 0; i < minRequiredError; i++){
       Assertions.assertThrows(RuntimeException.class,
-          () -> stateHandler.execute(FunctionalUtil.throwErrorSupplier())
+          () -> stateHandler.executeChecked(FunctionalUtil.throwErrorCheckedSupplier())
       );
     }
-    Assertions.assertFalse(stateHandler.execute(FunctionalUtil.trueSupplier()).isExecuted());
+    Assertions.assertFalse(stateHandler.executeChecked(FunctionalUtil.trueCheckedSupplier()).isExecuted());
     Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());
     Assertions.assertFalse(stateContainer.getStateHandler().acquirePermission());
     Assertions.assertTrue(stateContainer.getStateHandler() instanceof OpenStateHandler);

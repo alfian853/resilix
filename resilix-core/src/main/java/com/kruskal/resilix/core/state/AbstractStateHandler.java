@@ -1,6 +1,8 @@
 package com.kruskal.resilix.core.state;
 
 import com.kruskal.resilix.core.*;
+import com.kruskal.resilix.core.util.CheckedRunnable;
+import com.kruskal.resilix.core.util.CheckedSupplier;
 import com.kruskal.resilix.core.window.SlidingWindow;
 
 public abstract class AbstractStateHandler implements StateHandler {
@@ -20,7 +22,7 @@ public abstract class AbstractStateHandler implements StateHandler {
   }
 
   @Override
-  public boolean execute(Runnable runnable) {
+  public boolean executeChecked(CheckedRunnable runnable) throws Throwable {
     if(!this.acquirePermission()) return false;
 
     boolean success = true;
@@ -28,9 +30,9 @@ public abstract class AbstractStateHandler implements StateHandler {
       runnable.run();
       return true;
     }
-    catch (Exception e){
+    catch (Throwable throwable){
       success = false;
-      throw e;
+      throw throwable;
     }
     finally {
       slidingWindow.ackAttempt(success);
@@ -39,16 +41,16 @@ public abstract class AbstractStateHandler implements StateHandler {
   }
 
   @Override
-  public <T> ResultWrapper<T> execute(XSupplier<T> supplier) {
+  public <T> ResultWrapper<T> executeChecked(CheckedSupplier<T> supplier) throws Throwable {
     if(!this.acquirePermission()) return ResultWrapper.notExecutedResult();
     boolean success = true;
 
     try {
       return ResultWrapper.executionResult(supplier.get());
     }
-    catch (Exception e){
+    catch (Throwable throwable){
       success = false;
-      throw new RuntimeException(e);
+      throw throwable;
     } finally {
       slidingWindow.ackAttempt(success);
       this.evaluateState();
