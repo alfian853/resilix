@@ -23,6 +23,7 @@ class ResilixProxyTest {
   void init() throws Throwable {
     when(stateHandlerTrue.executeChecked(any(CheckedRunnable.class))).thenReturn(true);
     when(stateHandlerTrue.executeChecked(any(CheckedSupplier.class))).thenReturn(ResultWrapper.executionResult(true));
+    when(stateHandlerFalse.executeChecked(any(CheckedRunnable.class))).thenThrow(new CustomTestException());
     when(stateHandlerFalse.executeChecked(any(CheckedSupplier.class))).thenThrow(new CustomTestException());
   }
 
@@ -82,10 +83,14 @@ class ResilixProxyTest {
     Assertions.assertThrows(CustomTestException.class,
         () -> resilixProxy.execute(FunctionalUtil.trueSupplier())
     );
+    Assertions.assertThrows(CustomTestException.class,
+        () -> resilixProxy.execute(FunctionalUtil.throwErrorRunnable())
+    );
+
     Assertions.assertSame(stateHandlerFalse, resilixProxy.getStateHandler());
 
     verify(stateHandlerFalse).executeChecked(any(CheckedSupplier.class));
-    verify(stateHandlerFalse, times(2)).evaluateState();
+    verify(stateHandlerFalse, times(3)).evaluateState();
   }
 
 

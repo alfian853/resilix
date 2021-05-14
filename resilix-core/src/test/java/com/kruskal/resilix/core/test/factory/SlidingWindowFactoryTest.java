@@ -10,6 +10,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 class SlidingWindowFactoryTest {
 
 
@@ -37,8 +40,8 @@ class SlidingWindowFactoryTest {
 
   @Test
   void errorCaseTest(){
-    Configuration configuration = new Configuration();
-    configuration.setSlidingWindowStrategy(null);
+    Configuration configuration = mock(Configuration.class);
+    when(configuration.getSlidingWindowStrategy()).thenReturn(null);
 
     Assertions.assertThrows(IllegalArgumentException.class,
         () -> SlidingWindowFactory.create(configuration)

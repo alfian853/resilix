@@ -11,6 +11,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 class RetryManagerFactoryTest {
 
 
@@ -48,9 +51,9 @@ class RetryManagerFactoryTest {
 
   @Test
   void errorCaseTest(){
-    Configuration configuration = new Configuration();
-    configuration.setRetryStrategy(null);
+    Configuration configuration = mock(Configuration.class);
 
+    when(configuration.getRetryStrategy()).thenReturn(null);
     Context context = new Context();
 
     Assertions.assertThrows(IllegalArgumentException.class,
