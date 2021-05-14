@@ -12,7 +12,7 @@ public class ResilixProxy implements ResilixExecutor, StateContainer {
   private StateHandler stateHandler;
 
   @SuppressWarnings("unchecked")
-  private static <T extends Throwable, R> void sneakyThrow(Throwable t) throws T {
+  private static <T extends Throwable> void sneakyThrow(Throwable t) throws T {
     throw (T) t;
   }
 
