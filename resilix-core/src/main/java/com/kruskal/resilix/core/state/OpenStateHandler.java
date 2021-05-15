@@ -30,6 +30,9 @@ public class OpenStateHandler extends AbstractStateHandler {
     return false;
   }
 
+  /**
+   * Move to {@link HalfOpenStateHandler} if the waiting time is over.
+   */
   @Override
   public void evaluateState() {
     if(System.currentTimeMillis() >= (startingTime + configuration.getWaitDurationInOpenState())){

@@ -6,6 +6,9 @@ import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * A {@link CountBasedWindow} aggregates error rate by the last <i>n</i> ({@link Configuration#getSlidingWindowMaxSize()}) records.
+ */
 public class CountBasedWindow extends AbstractSlidingWindow {
 
   private final AtomicInteger errorCount = new AtomicInteger();

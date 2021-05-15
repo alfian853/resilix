@@ -7,6 +7,12 @@ import com.kruskal.resilix.core.util.CheckedSupplier;
 
 import java.util.function.Supplier;
 
+/**
+ * {@link ResilixProxy} as a proxy exposes {@link StateHandler}'s methods and also trigger
+ * {@link StateHandler#evaluateState()} to obtain the latest state, so it should be called before
+ * any call to {@link StateHandler}, and it may trigger state change via {@link StateContainer#setStateHandler(StateHandler)}
+ * method.
+ * */
 public class ResilixProxy implements ResilixExecutor, StateContainer {
 
   private StateHandler stateHandler;
@@ -21,15 +27,15 @@ public class ResilixProxy implements ResilixExecutor, StateContainer {
   }
 
   @Override
-  public boolean executeChecked(CheckedRunnable runnable) throws Throwable {
+  public boolean executeChecked(CheckedRunnable checkedRunnable) throws Throwable {
     stateHandler.evaluateState();
-    return stateHandler.executeChecked(runnable);
+    return stateHandler.executeChecked(checkedRunnable);
   }
 
   @Override
-  public <T> ResultWrapper<T> executeChecked(CheckedSupplier<T> supplier) throws Throwable {
+  public <T> ResultWrapper<T> executeChecked(CheckedSupplier<T> checkedSupplier) throws Throwable {
     stateHandler.evaluateState();
-    return stateHandler.executeChecked(supplier);
+    return stateHandler.executeChecked(checkedSupplier);
   }
 
   @Override
@@ -41,7 +47,7 @@ public class ResilixProxy implements ResilixExecutor, StateContainer {
       sneakyThrow(throwable);
     }
 
-    //this will not reached
+    //this will not be reached
     return false;
   }
 
@@ -54,7 +60,7 @@ public class ResilixProxy implements ResilixExecutor, StateContainer {
       sneakyThrow(throwable);
     }
 
-    //this will not reached
+    //this will not be reached
     return null;
   }
 

@@ -6,6 +6,10 @@ import com.kruskal.resilix.core.window.SlidingWindowObserver;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * A {@link OptimisticRetryManager} gives the permission as long as the error threshold hasn't reached,
+ * and the retry limit ({@link Configuration#getNumberOfRetryInHalfOpenState()}) hasn't exceeded.
+ */
 public class OptimisticRetryManager implements RetryManager, SlidingWindowObserver {
 
   private final AtomicInteger numberOfRetry = new AtomicInteger(0);

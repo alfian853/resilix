@@ -52,8 +52,15 @@ public abstract class AbstractSlidingWindow implements SlidingWindow {
 
   protected abstract void handleAckAttempt(boolean success);
 
+  /**
+   * @return The number of current ack.
+   */
   protected abstract int getQueSize();
 
+  /**
+   * @return 0 if {@link Configuration#minimumCallToEvaluate} hasn't reached yet
+   *         and else count the actual error rate.
+   */
   protected abstract double getErrorRateAfterMinCallSatisfied();
 
 }

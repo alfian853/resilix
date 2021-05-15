@@ -6,6 +6,9 @@ import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * A {@link TimeBasedWindow} aggregates error rate from the last <i>t<i/> ({@link Configuration#getWindowTimeRange()}) milliseconds.
+ */
 public class TimeBasedWindow extends AbstractSlidingWindow {
 
   private final Deque<Long> successAttemptWindow = new ConcurrentLinkedDeque<>();
@@ -57,6 +60,5 @@ public class TimeBasedWindow extends AbstractSlidingWindow {
     failureAttemptWindow.clear();
     successAttemptWindow.clear();
     lastAttempt.set(0);
-
   }
 }

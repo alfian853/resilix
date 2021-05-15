@@ -22,12 +22,12 @@ public abstract class AbstractStateHandler implements StateHandler {
   }
 
   @Override
-  public boolean executeChecked(CheckedRunnable runnable) throws Throwable {
+  public boolean executeChecked(CheckedRunnable checkedRunnable) throws Throwable {
     if(!this.acquirePermission()) return false;
 
     boolean success = true;
     try {
-      runnable.run();
+      checkedRunnable.run();
       return true;
     }
     catch (Throwable throwable){
@@ -41,12 +41,12 @@ public abstract class AbstractStateHandler implements StateHandler {
   }
 
   @Override
-  public <T> ResultWrapper<T> executeChecked(CheckedSupplier<T> supplier) throws Throwable {
+  public <T> ResultWrapper<T> executeChecked(CheckedSupplier<T> checkedSupplier) throws Throwable {
     if(!this.acquirePermission()) return ResultWrapper.notExecutedResult();
     boolean success = true;
 
     try {
-      return ResultWrapper.executionResult(supplier.get());
+      return ResultWrapper.executionResult(checkedSupplier.get());
     }
     catch (Throwable throwable){
       success = false;
