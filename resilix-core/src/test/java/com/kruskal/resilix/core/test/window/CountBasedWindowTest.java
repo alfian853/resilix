@@ -46,6 +46,7 @@ class CountBasedWindowTest {
   @DisplayName("testcase: fire with 25 random ack followed by 10(70% success) ack in arbitrary order")
   void endingTest(){
 
+    Assertions.assertEquals(0.0d, countBasedWindow.getErrorRate(), 0.000001d);
 
     for(int i = 0; i < 25; i++){
       countBasedWindow.ackAttempt(RandomUtil.generateRandomBoolean());
