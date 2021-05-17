@@ -5,6 +5,13 @@
 
 
 # Resilix: A Lightweight Circuit Breaker Library
+###Table of Contents
+#### 1. [Introduction](#Introduction)
+#### 2. [Usage Example](#Usage-Example)
+#### 3. [Configuration Guidelines](#Configuration-Guidelines)
+
+
+## Introduction
 This library provides differences flavor with the other libraries as I write this:
 - Resilix provides 2 retry strategy. See [Retry Strategy](###kruskal.resilix.config.{your-key}.retryStrategy)
 - Call rejection results in a [ResultWrapper](resilix-core/src/main/java/com/kruskal/resilix/core/ResultWrapper.java) object, contrary with the other library like Resilience4j which will throw an [CallNotPermittedException](https://github.com/resilience4j/resilience4j/blob/master/resilience4j-circuitbreaker/src/main/java/io/github/resilience4j/circuitbreaker/CallNotPermittedException.java)
@@ -12,7 +19,7 @@ This library provides differences flavor with the other libraries as I write thi
 if you have no concern with the retry and call rejection mechanism in Resilience4j, please use [Resilience4j](https://github.com/resilience4j/resilience4j) instead :) .
 
 
-## How to use
+## Usage Example
 You can take a look at this [demo project](https://github.com/alfian853/resilix-demo)
 
 ```xml
@@ -74,6 +81,16 @@ public class DemoController {
 
     log.error("all third parties are down");
     throw new RuntimeException("all third parties are down");
+  }
+
+  /**
+   * will watch the call's result(success/failure) for "somethingKey",
+   * if there is an error, the error rate will increased.
+   */
+  @ResilixWatcher(contextKey = "somethingKey")
+  public Boolean callSomeMethod(){
+    //do something
+    return true;
   }
 }
 ```
