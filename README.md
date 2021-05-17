@@ -7,7 +7,7 @@
 # Resilix: A Lightweight Circuit Breaker Library
 This library provides differences flavor with the other libraries as I write this:
 - Resilix provides 2 retry strategy. See [Retry Strategy](###kruskal.resilix.config.{your-key}.retryStrategy)
-- Call rejection resulted in return object [ResultWrapper](resilix-core/src/main/java/com/kruskal/resilix/core/ResultWrapper.java), contrary with the other library like Resilience4j which will throw an [CallNotPermittedException](https://github.com/resilience4j/resilience4j/blob/master/resilience4j-circuitbreaker/src/main/java/io/github/resilience4j/circuitbreaker/CallNotPermittedException.java)
+- Call rejection results in a [ResultWrapper](resilix-core/src/main/java/com/kruskal/resilix/core/ResultWrapper.java) object, contrary with the other library like Resilience4j which will throw an [CallNotPermittedException](https://github.com/resilience4j/resilience4j/blob/master/resilience4j-circuitbreaker/src/main/java/io/github/resilience4j/circuitbreaker/CallNotPermittedException.java)
 
 if you have no concern with the retry and call rejection mechanism in Resilience4j, please use [Resilience4j](https://github.com/resilience4j/resilience4j) instead :) .
 
