@@ -11,7 +11,6 @@ public class OpenStateHandler extends AbstractStateHandler {
     super(context, stateManager);
 
     this.startingTime = System.currentTimeMillis();
-    context.getSlidingWindow().clear();
   }
 
   @Override

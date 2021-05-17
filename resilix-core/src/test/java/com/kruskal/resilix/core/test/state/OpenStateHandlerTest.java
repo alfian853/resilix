@@ -22,7 +22,7 @@ class OpenStateHandlerTest {
 
   private final double ERROR_THRESHOLD = 0.5;
   private final int WINDOW_SIZE = 10;
-  private final int MIN_CALL_TO_EVALUATE = 3;
+  private final int MIN_CALL_TO_EVALUATE = 0;
   private long WAIT_DURATION_IN_OPEN_STATE = 200;
   private final String CONTEXT_NAME = "contextName";
   private final CountDownLatch waiter = new CountDownLatch(1);
@@ -37,7 +37,6 @@ class OpenStateHandlerTest {
     this.init();
 
     double initialErrorRate = slidingWindow.getErrorRate();
-    Assertions.assertNotEquals(1.0d, initialErrorRate, 0.000001);
 
     for(int i = 0; i < 5; i++){
       slidingWindow.ackAttempt(false);
