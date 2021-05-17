@@ -23,4 +23,9 @@ public class ResilixConfiguration {
     return registry;
   }
 
+  @Bean
+  ResilixWatcherAspect resilixWatcherAspect(ResilixRegistry resilixRegistry){
+    return new ResilixWatcherAspect(resilixRegistry);
+  }
+
 }
