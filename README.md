@@ -5,9 +5,101 @@
 
 
 # Resilix: A Lightweight Circuit Breaker Library
+This library provides differences flavor with the other libraries as I write this:
+- Resilix provides 2 retry strategy. See [Retry Strategy](###kruskal.resilix.config.{your-key}.retryStrategy)
+- Call rejection resulted in return object [ResultWrapper](resilix-core/src/main/java/com/kruskal/resilix/core/ResultWrapper.java), contrary with the other library like Resilience4j which will throw an [CallNotPermittedException](https://github.com/resilience4j/resilience4j/blob/master/resilience4j-circuitbreaker/src/main/java/io/github/resilience4j/circuitbreaker/CallNotPermittedException.java)
+
+if you have no concern with the retry and call rejection mechanism in Resilience4j, please use [Resilience4j](https://github.com/resilience4j/resilience4j) instead :) .
 
 
-## Configuration
+## How to use
+You can take a look at this [demo project](https://github.com/alfian853/resilix-demo)
+
+```xml
+<dependencies>
+  ........................
+  <dependency>
+    <groupId>com.kruskal.resilix</groupId>
+    <artifactId>resilix-springboot-v2</artifactId>
+    <version>${resilix-version}</version>
+  </dependency>
+</dependencies>
+
+<repositories>
+  ....................
+  <repository>
+    <id>github-alfian853</id>
+    <!-- format: https://username:ReadPackageToken@url   -->
+    <url>https://alfian853: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@maven.pkg.github.com/alfian853/*</url>
+  </repository>
+</repositories>
+```
+
+```java
+@EnableResilix // add this to enable the auto configuration
+@SpringBootApplication
+public class ResilixDemoApplication {
+  public static void main(String[] args) {
+    SpringApplication.run(ResilixDemoApplication.class, args);
+  }
+}
+```
+```java
+@RestController
+public class DemoController {
+
+  @Autowired
+  private ResilixRegistry resilixRegistry;
+
+  private final String[] thirdPartyList = {"foo", "bar"};
+
+
+  @GetMapping("/resilix")
+  public String callApi() {
+
+    for (String thirdParty : thirdPartyList) {
+      // get ResilixExecutor by the contextKey
+      ResilixExecutor resilixExecutor = resilixRegistry.getResilixExecutor(thirdParty);
+
+      try {
+        ResultWrapper<String> resultWrapper = resilixExecutor.executeChecked(() -> this.callThirdPartyApi(thirdParty));
+
+        //will skip if not execution isn't permitted and return the result if it has been executed
+        if (resultWrapper.isExecuted()) return resultWrapper.getResult();
+      } catch (Throwable e) {
+        //continue to the next 3rd parties if there is any error occurred;
+        log.error("{} execution failed", thirdParty, e);
+      }
+    }
+
+    log.error("all third parties are down");
+    throw new RuntimeException("all third parties are down");
+  }
+}
+```
+
+if you want to customize the configuration please read the [Configuration Guidelines](##Configuration)
+## Configuration Guidelines
+Configuration example in application.properties:
+```properties
+# configuration for "foo"
+kruskal.resilix.config.foo.errorThreshold=0.2
+kruskal.resilix.config.foo.slidingWindowStrategy=COUNT_BASED
+kruskal.resilix.config.foo.retryStrategy=PESSIMISTIC
+kruskal.resilix.config.foo.waitDurationInOpenState=10000
+kruskal.resilix.config.foo.slidingWindowMaxSize=10
+kruskal.resilix.config.foo.numberOfRetryInHalfOpenState=5
+kruskal.resilix.config.foo.minimumCallToEvaluate=2
+
+# configuration for "bar"
+kruskal.resilix.config.bar.errorThreshold=0.2
+kruskal.resilix.config.bar.slidingWindowStrategy=COUNT_BASED
+kruskal.resilix.config.bar.retryStrategy=OPTIMISTIC
+kruskal.resilix.config.bar.waitDurationInOpenState=10000
+kruskal.resilix.config.bar.slidingWindowMaxSize=10
+kruskal.resilix.config.bar.numberOfRetryInHalfOpenState=5
+kruskal.resilix.config.bar.minimumCallToEvaluate=2
+```
 
 ### kruskal.resilix.config.{your-key}.errorThreshold
 Configures the error threshold in percentage in close state and half-open state (for retry process).
