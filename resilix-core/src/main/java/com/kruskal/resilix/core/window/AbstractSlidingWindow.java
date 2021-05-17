@@ -58,7 +58,7 @@ public abstract class AbstractSlidingWindow implements SlidingWindow {
   protected abstract int getQueSize();
 
   /**
-   * @return 0 if {@link Configuration#minimumCallToEvaluate} hasn't reached yet
+   * @return 0 if {@link Configuration#getMinimumCallToEvaluate()} hasn't reached yet
    *         and else count the actual error rate.
    */
   protected abstract double getErrorRateAfterMinCallSatisfied();
