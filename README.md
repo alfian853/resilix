@@ -13,14 +13,20 @@
 
 ## Introduction
 This library provides differences flavor with the other libraries as I write this:
-- Resilix provides 2 retry strategy. See [Retry Strategy](###kruskal.resilix.config.{your-key}.retryStrategy)
-- Call rejection results in a [ResultWrapper](resilix-core/src/main/java/com/kruskal/resilix/core/ResultWrapper.java) object, contrary with the other library like Resilience4j which will throw an [CallNotPermittedException](https://github.com/resilience4j/resilience4j/blob/master/resilience4j-circuitbreaker/src/main/java/io/github/resilience4j/circuitbreaker/CallNotPermittedException.java)
+- Resilix provides 2 retry strategy. See [Retry Strategy](#kruskalresilixconfigyour-keyretrystrategy)
+[comment]: <> (- Resilix provides 2 retry strategy. See [Retry Strategy]&#40;#kruskal-resilix-config-\{your-key\}-retryStrategy&#41;)
+- Call rejection results in a
+  <a href="/resilix-core/src/main/java/com/kruskal/resilix/core/ResultWrapper.java" target="_blank">ResultWrapper</a> object,
+  contrary with the other library like Resilience4j which will throw an <a href="https://github.com/resilience4j/resilience4j/blob/master/resilience4j-circuitbreaker/src/main/java/io/github/resilience4j/circuitbreaker/CallNotPermittedException.java" target="_blank">CallNotPermittedException</a>
 
-if you have no concern with the retry and call rejection mechanism in Resilience4j, please use [Resilience4j](https://github.com/resilience4j/resilience4j) instead :) .
+if you have no concern with the retry and call rejection mechanism in Resilience4j, please use
+<a href="https://github.com/resilience4j/resilience4j" target="_blank">Resilience4j</a> instead :).
+
 
 
 ## Usage Example
-You can take a look at this [demo project](https://github.com/alfian853/resilix-demo)
+You can take a look at this 
+<a href="https://github.com/alfian853/resilix-demo" target="_blank">demo project</a>
 
 ```xml
 <dependencies>
