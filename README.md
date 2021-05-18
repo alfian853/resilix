@@ -5,7 +5,7 @@
 
 
 # Resilix: A Lightweight Circuit Breaker Library
-###Table of Contents
+### Table of Contents
 #### 1. [Introduction](#Introduction)
 #### 2. [Usage Example](#Usage-Example)
 #### 3. [Configuration Guidelines](#Configuration-Guidelines)
