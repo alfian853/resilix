@@ -76,7 +76,7 @@ public class DemoController {
 
   /**
    * will watch the call's result(success/failure) for "somethingKey",
-   * if there is an error, the error rate will increased.
+   * if there is an error, the error rate for "somethingKey" will be increased.
    */
   @ResilixWatcher(contextKey = "somethingKey")
   public Boolean callSomeMethod(){
@@ -111,7 +111,7 @@ kruskal.resilix.config.bar.minimumCallToEvaluate=2
 
 ### kruskal.resilix.config.{your-key}.errorThreshold
 Configures the error threshold in percentage in close state and half-open state (for retry process).
-when the error rate greater or equal to the threshold, the circuit will trip to open state.
+when the error rate is greater or equal to the threshold, the circuit will trip to open state.
 
 |default value|`0.5`|
 |:---:|:---|
@@ -119,7 +119,7 @@ when the error rate greater or equal to the threshold, the circuit will trip to 
 
 
 ### kruskal.resilix.config.{your-key}.slidingWindowStrategy
-Configures the sliding window aggregation type. 
+Configures the sliding-window aggregation type. 
 
 - COUNT_BASED: aggregate error rate by the last ***n*** records.
 - TIME_BASED: aggregate error rate from the last ***t*** milliseconds.
@@ -154,14 +154,14 @@ Configures the retry strategy.
 |possible value|`OPTIMISTIC` or `PESSIMISTIC`|
 
 ### kruskal.resilix.config.{your-key}.numberOfRetryInHalfOpenState
-Configures the number of minimum retries to be done in the half-open state before the evaluation to decide which state it belongs to.
+Configures the number of minimum retry in the half-open state before deciding which state it belongs to.
 
 |default value|`10`|
 |:---:|:------------------------|
 
 ### kruskal.resilix.config.{your-key}.minimumCallToEvaluate
-Configures the minimum records to be evaluated in sliding window to prevent 100% error rate if the
-first attempt is failed.
+Configures the minimum records to be evaluated in sliding-window to prevent 100% error rate if the
+first call is failed.
 
 
 |default value|`10`|
