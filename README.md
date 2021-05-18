@@ -31,15 +31,6 @@ You can take a look at this [demo project](https://github.com/alfian853/resilix-
     <version>${resilix-version}</version>
   </dependency>
 </dependencies>
-
-<repositories>
-  ....................
-  <repository>
-    <id>github-alfian853</id>
-    <!-- format: https://username:ReadPackageToken@url   -->
-    <url>https://alfian853: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@maven.pkg.github.com/alfian853/*</url>
-  </repository>
-</repositories>
 ```
 
 ```java
