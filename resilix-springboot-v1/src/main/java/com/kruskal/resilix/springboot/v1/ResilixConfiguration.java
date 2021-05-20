@@ -16,9 +16,11 @@ public class ResilixConfiguration {
   ResilixRegistry resilixRegistry(ResilixProperties resilixProperties){
     ResilixRegistry registry = new ResilixRegistry();
 
-    resilixProperties.getConfig().entrySet().forEach(configEntry ->
-        registry.register(configEntry.getKey(), configEntry.getValue())
-    );
+    if(resilixProperties.getConfig() != null){
+      resilixProperties.getConfig().entrySet().forEach(configEntry ->
+          registry.register(configEntry.getKey(), configEntry.getValue())
+      );
+    }
 
     return registry;
   }
