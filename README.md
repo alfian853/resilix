@@ -12,11 +12,11 @@
 
 
 ## Introduction
-This library provides differences flavor with the other libraries as I write this:
-- Resilix provides 2 retry strategy. See [Retry Strategy](#kruskalresilixconfigyour-keyretrystrategy)
+This library provides some difference features compared to the others such as [Resilience4j](https://github.com/resilience4j/resilience4j) :
+- Resilix has 2 retry strategy. See [Retry Strategy](#kruskalresilixconfigyour-keyretrystrategy)
 - Call rejection results in a [ResultWrapper](resilix-core/src/main/java/com/kruskal/resilix/core/ResultWrapper.java) object, contrary with the other library like Resilience4j which will throw an [CallNotPermittedException](https://github.com/resilience4j/resilience4j/blob/master/resilience4j-circuitbreaker/src/main/java/io/github/resilience4j/circuitbreaker/CallNotPermittedException.java)
 
-if you have no concern with the retry and call rejection mechanism in Resilience4j, please use [Resilience4j](https://github.com/resilience4j/resilience4j) instead :) .
+if you have no concern with the retry and call rejection mechanism in Resilience4j, please use Resilience4j instead :) .
 
 
 ## Usage Example
