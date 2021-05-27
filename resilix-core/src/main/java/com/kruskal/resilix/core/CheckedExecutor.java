@@ -11,7 +11,7 @@ public interface CheckedExecutor {
 
   /**
    * @param checkedRunnable Please read {@link CheckedRunnable}
-   * @return true if the execution is finished without any error occurred <br/>
+   * @return true if the execution is finished without any error occurred <br>
    *         false if the execution is denied due to its state
    * @throws Throwable that is thrown by CheckedRunnable
    */
@@ -19,7 +19,8 @@ public interface CheckedExecutor {
 
 
   /**
-   * @param checkedSupplier
+   * @param checkedSupplier See {@link CheckedSupplier}
+   * @param <T> The return type
    * @return {@link ResultWrapper} that contain every information about the execution
    * @throws Throwable that is thrown by CheckedSupplier
    */

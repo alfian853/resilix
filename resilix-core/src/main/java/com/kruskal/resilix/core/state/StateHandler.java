@@ -10,7 +10,7 @@ import com.kruskal.resilix.core.StateContainer;
 public interface StateHandler extends CheckedExecutor {
   /**
    * Try to obtain permission to execute a call. this method might trigger update for certain state.
-   * @return true if permitted <br/>
+   * @return true if permitted <br>
    *         false if not permitted
    */
   boolean acquirePermission();

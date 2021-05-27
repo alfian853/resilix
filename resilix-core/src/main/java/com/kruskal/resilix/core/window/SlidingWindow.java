@@ -30,11 +30,13 @@ public interface SlidingWindow {
 
   /**
    * Adds observer for {@link #ackAttempt(boolean)} calls.
-   * */
+   * @param slidingWindowObserver See {@link SlidingWindowObserver}
+   */
   void addObserver(SlidingWindowObserver slidingWindowObserver);
 
   /**
    * Removes observer for {@link #ackAttempt(boolean)} calls.
-   * */
+   * @param slidingWindowObserver See {@link SlidingWindowObserver}
+   */
   void removeObserver(SlidingWindowObserver slidingWindowObserver);
 }

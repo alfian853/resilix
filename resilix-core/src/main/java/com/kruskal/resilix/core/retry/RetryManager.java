@@ -9,7 +9,7 @@ import com.kruskal.resilix.core.window.SlidingWindowObserver;
 public interface RetryManager extends SlidingWindowObserver {
   /**
    * Get permission and update counter for call attempt or others data.
-   * @return true if is permitted <br/>
+   * @return true if is permitted <br>
    *         false if is not permitted
    */
   boolean acquireAndUpdateRetryPermission();

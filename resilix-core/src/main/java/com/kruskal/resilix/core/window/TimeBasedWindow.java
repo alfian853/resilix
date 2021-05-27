@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * A {@link TimeBasedWindow} aggregates error rate from the last <i>t<i/> ({@link Configuration#getWindowTimeRange()}) milliseconds.
+ * A {@link TimeBasedWindow} aggregates error rate from the last <i>t</i> ({@link Configuration#getWindowTimeRange()}) milliseconds.
  */
 public class TimeBasedWindow extends AbstractSlidingWindow {
 

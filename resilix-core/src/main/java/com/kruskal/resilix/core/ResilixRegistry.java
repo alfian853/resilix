@@ -14,10 +14,11 @@ public class ResilixRegistry {
   private final Map<String, ResilixExecutor> resilixExecutorMap = new HashMap<>();
 
   /**
-   * this method will provide ResilixExecutor by the contextKey.<br/>
+   * this method will provide ResilixExecutor by the contextKey.<br>
    * if it isn't exist yet, it would create a new ResilixExecutor with default {@link Configuration}.
    * @param contextKey the key for specific ResilixExecutor.
-   * */
+   * @return {@link ResilixExecutor} for the contextKey
+   */
   public ResilixExecutor getResilixExecutor(String contextKey){
 
     if(resilixExecutorMap.containsKey(contextKey)){
