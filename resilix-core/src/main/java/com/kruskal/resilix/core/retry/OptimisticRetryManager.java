@@ -62,7 +62,7 @@ public class OptimisticRetryManager implements RetryManager, SlidingWindowObserv
   }
 
   private boolean isErrorLimitExceeded(){
-    return this.getErrorRate() > configuration.getErrorThreshold();
+    return this.getErrorRate() >= configuration.getErrorThreshold();
   }
 
 }
