@@ -24,10 +24,7 @@ public class ResilixWatcherAspect {
     Method method = signature.getMethod();
 
     ResilixWatcher myAnnotation = method.getAnnotation(ResilixWatcher.class);
-
-
-
-
+    
     ResultWrapper<Object> resultWrapper = resilixRegistry.getResilixExecutor(myAnnotation.contextKey())
         .executeChecked(() -> joinPoint.proceed(joinPoint.getArgs()));
 
