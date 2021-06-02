@@ -2,6 +2,7 @@ package com.kruskal.resilix.core.test.state;
 
 import com.kruskal.resilix.core.Configuration;
 import com.kruskal.resilix.core.Context;
+import com.kruskal.resilix.core.ResultWrapper;
 import com.kruskal.resilix.core.StateContainer;
 import com.kruskal.resilix.core.retry.RetryStrategy;
 import com.kruskal.resilix.core.test.testutil.CustomTestException;
@@ -69,14 +70,21 @@ class HalfOpenStateTest {
     Assertions.assertSame(stateHandler, stateContainer.getStateHandler());
 
     for(int i = 0; i < minRequiredError; i++){
-      Assertions.assertThrows(RuntimeException.class,
-          () -> stateHandler.executeChecked(FunctionalUtil.throwErrorCheckedSupplier())
-      );
+      ResultWrapper<Object> resultWrapper = null;
+      try {
+        resultWrapper = stateHandler.executeChecked(FunctionalUtil.throwErrorCheckedSupplier());
+        Assertions.assertFalse(resultWrapper.isExecuted());
+      }
+      catch (Throwable t){
+        Assertions.assertNull(resultWrapper);
+        Assertions.assertTrue(t instanceof CustomTestException);
+      }
     }
+
     Assertions.assertFalse(stateHandler.executeChecked(FunctionalUtil.trueCheckedSupplier()).isExecuted());
     Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());
-    Assertions.assertFalse(stateContainer.getStateHandler().acquirePermission());
     Assertions.assertTrue(stateContainer.getStateHandler() instanceof OpenStateHandler);
+    Assertions.assertFalse(stateContainer.getStateHandler().acquirePermission());
   }
 
   private void init(){

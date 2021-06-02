@@ -40,14 +40,11 @@ public class FunctionalUtil {
   }
 
   public static <T> CheckedSupplier<T> throwErrorCheckedSupplier(){
-    return () -> {throw new RuntimeException();};
+    return () -> {throw new CustomTestException();};
   }
 
   public static Supplier<Boolean> trueSupplier(){
     return () -> true;
   }
 
-  public static <T> Supplier<T> throwErrorSupplier(){
-    return () -> {throw new RuntimeException();};
-  }
 }

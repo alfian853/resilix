@@ -5,6 +5,7 @@ import com.kruskal.resilix.core.Context;
 import com.kruskal.resilix.core.window.SlidingWindowObserver;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A {@link OptimisticRetryManager} gives the permission as long as the error threshold hasn't reached,
@@ -14,6 +15,7 @@ public class OptimisticRetryManager implements RetryManager, SlidingWindowObserv
 
   private final AtomicInteger numberOfRetry = new AtomicInteger(0);
   private final AtomicInteger numberOfFail = new AtomicInteger(0);
+  private AtomicReference<RetryState> retryState = new AtomicReference<>(null);
   protected final Context context;
   private final Configuration configuration;
 
@@ -36,12 +38,19 @@ public class OptimisticRetryManager implements RetryManager, SlidingWindowObserv
 
   @Override
   public RetryState getRetryState() {
+
+    if(retryState.get() == RetryState.ACCEPTED || retryState.get() == RetryState.REJECTED) {
+      return retryState.get();
+    }
+
     if(this.isErrorLimitExceeded()){
+      retryState = new AtomicReference<>(RetryState.REJECTED);
       context.getSlidingWindow().removeObserver(this);
       return RetryState.REJECTED;
     }
 
     if(numberOfRetry.get() >= configuration.getNumberOfRetryInHalfOpenState()){
+      retryState = new AtomicReference<>(RetryState.ACCEPTED);
       context.getSlidingWindow().removeObserver(this);
       return RetryState.ACCEPTED;
     }
@@ -62,6 +71,7 @@ public class OptimisticRetryManager implements RetryManager, SlidingWindowObserv
   }
 
   private boolean isErrorLimitExceeded(){
+    if(retryState.get() == RetryState.REJECTED) return true;
     return this.getErrorRate() >= configuration.getErrorThreshold();
   }
 
