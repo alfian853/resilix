@@ -62,7 +62,6 @@ public class ResilixWatcherTest {
         (int) Math.ceil(configuration.getErrorThreshold() * configuration.getSlidingWindowMaxSize());
 
     while (minFailure-- > 0){
-      System.out.println(slidingWindow.getErrorRate());
       int flag = minFailure % 3;
       if(flag == 0){
         AssertionUtil
