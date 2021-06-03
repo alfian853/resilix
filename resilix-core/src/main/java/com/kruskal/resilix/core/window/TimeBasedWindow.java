@@ -4,7 +4,7 @@ import com.kruskal.resilix.core.Configuration;
 
 import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * A {@link TimeBasedWindow} aggregates error rate from the last <i>t</i> ({@link Configuration#getWindowTimeRange()}) milliseconds.
@@ -13,8 +13,7 @@ public class TimeBasedWindow extends AbstractSlidingWindow {
 
   private final Deque<Long> successAttemptWindow = new ConcurrentLinkedDeque<>();
   private final Deque<Long> failureAttemptWindow = new ConcurrentLinkedDeque<>();
-
-  private final AtomicLong lastAttempt = new AtomicLong(0);
+  private final AtomicBoolean writeLock = new AtomicBoolean(true);
 
   public TimeBasedWindow(Configuration configuration) {
     super(configuration);
@@ -22,18 +21,19 @@ public class TimeBasedWindow extends AbstractSlidingWindow {
 
   @Override
   public void handleAckAttempt(boolean success) {
-    lastAttempt.set(System.currentTimeMillis());
+    long lastAttempt = System.currentTimeMillis();
     if(success){
-      successAttemptWindow.addLast(lastAttempt.get());
+      successAttemptWindow.addLast(lastAttempt);
     }
     else {
-      failureAttemptWindow.addLast(lastAttempt.longValue());
+      failureAttemptWindow.addLast(lastAttempt);
     }
     this.examineAttemptWindow();
   }
 
   @Override
   protected int getQueSize() {
+    this.examineAttemptWindow();
     return successAttemptWindow.size() + failureAttemptWindow.size();
   }
 
@@ -44,21 +44,27 @@ public class TimeBasedWindow extends AbstractSlidingWindow {
   }
 
   private void examineAttemptWindow(){
-    while(!successAttemptWindow.isEmpty() &&
-        successAttemptWindow.getFirst() < lastAttempt.get() - configuration.getWindowTimeRange()){
-      successAttemptWindow.removeFirst();
-    }
-    while(!failureAttemptWindow.isEmpty() &&
-        failureAttemptWindow.getFirst() < lastAttempt.get() - configuration.getWindowTimeRange()){
-      failureAttemptWindow.removeFirst();
-    }
 
+    if(!writeLock.getAndSet(false)) return;
+    try{
+        while(!successAttemptWindow.isEmpty() &&
+            successAttemptWindow.getFirst() < System.currentTimeMillis() - configuration.getWindowTimeRange()){
+          successAttemptWindow.removeFirst();
+        }
+        while(!failureAttemptWindow.isEmpty() &&
+            failureAttemptWindow.getFirst() < System.currentTimeMillis() - configuration.getWindowTimeRange()){
+          failureAttemptWindow.removeFirst();
+        }
+      }
+    catch (Throwable t){}
+    finally {
+      writeLock.set(true);
+    }
   }
 
   @Override
   public void clear() {
     failureAttemptWindow.clear();
     successAttemptWindow.clear();
-    lastAttempt.set(0);
   }
 }
