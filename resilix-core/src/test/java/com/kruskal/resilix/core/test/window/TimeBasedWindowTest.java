@@ -1,7 +1,6 @@
 package com.kruskal.resilix.core.test.window;
 
 import com.kruskal.resilix.core.Configuration;
-import com.kruskal.resilix.core.test.testutil.FunctionalUtil;
 import com.kruskal.resilix.core.test.testutil.RandomUtil;
 import com.kruskal.resilix.core.window.SlidingWindowObserver;
 import com.kruskal.resilix.core.window.TimeBasedWindow;
@@ -10,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
