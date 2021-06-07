@@ -5,13 +5,13 @@ import com.kruskal.resilix.core.StateContainer;
 
 public class OpenStateHandler extends AbstractStateHandler {
 
-  private final long startingTime;
+  private final long endTime;
   private final StateContainer stateContainer;
 
   public OpenStateHandler(Context context, StateContainer stateContainer) {
     super(context);
     this.stateContainer = stateContainer;
-    this.startingTime = System.currentTimeMillis();
+    this.endTime = System.currentTimeMillis() + context.getConfiguration().getWaitDurationInOpenState();
   }
 
   @Override
@@ -25,7 +25,7 @@ public class OpenStateHandler extends AbstractStateHandler {
    */
   @Override
   public void evaluateState() {
-    if(System.currentTimeMillis() >= (startingTime + configuration.getWaitDurationInOpenState())){
+    if(System.currentTimeMillis() > endTime){
       stateContainer.setStateHandler(new HalfOpenStateHandler(context, stateContainer));
     }
   }
