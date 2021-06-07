@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 class TimeBasedWindowTest {
 
   private final long WINDOW_TIME_RANGE = 250L;
+  private final int WAITING_BUFFER = 15;
   private final Configuration configuration = new Configuration();
   private final TimeBasedWindow timeBasedWindow = new TimeBasedWindow(configuration);
   private final CountDownLatch waiter = new CountDownLatch(1);
@@ -33,7 +34,7 @@ class TimeBasedWindowTest {
     SlidingWindowObserver observer = success -> count.incrementAndGet();
     timeBasedWindow.addObserver(observer);
 
-    waiter.await(WINDOW_TIME_RANGE, TimeUnit.MILLISECONDS);
+    waiter.await(WINDOW_TIME_RANGE + WAITING_BUFFER, TimeUnit.MILLISECONDS);
 
     for(int i = 0; i < 3; i++){
       timeBasedWindow.ackAttempt(RandomUtil.generateRandomBoolean());
@@ -60,7 +61,7 @@ class TimeBasedWindowTest {
       timeBasedWindow.ackAttempt(RandomUtil.generateRandomBoolean());
     }
 
-    waiter.await(WINDOW_TIME_RANGE + 100, TimeUnit.MILLISECONDS);
+    waiter.await(WINDOW_TIME_RANGE + WAITING_BUFFER, TimeUnit.MILLISECONDS);
 
     int nSuccess = 7;
     int nFailure = 3;

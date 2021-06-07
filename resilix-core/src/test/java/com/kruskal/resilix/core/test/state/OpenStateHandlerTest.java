@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 class OpenStateHandlerTest {
 
   private final double ERROR_THRESHOLD = 0.5;
+  private final int WAITING_BUFFER = 15;
   private final int WINDOW_SIZE = 10;
   private final int MIN_CALL_TO_EVALUATE = 0;
   private long WAIT_DURATION_IN_OPEN_STATE = 200;
@@ -47,7 +48,7 @@ class OpenStateHandlerTest {
     stateHandler.evaluateState();
     Assertions.assertSame(stateHandler, stateContainer.getStateHandler());
 
-    waiter.await(WAIT_DURATION_IN_OPEN_STATE, TimeUnit.MILLISECONDS);
+    waiter.await(WAIT_DURATION_IN_OPEN_STATE + WAITING_BUFFER, TimeUnit.MILLISECONDS);
 
     Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());
     Assertions.assertTrue(stateContainer.getStateHandler() instanceof HalfOpenStateHandler);
