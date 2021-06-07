@@ -60,7 +60,7 @@ class TimeBasedWindowTest {
       timeBasedWindow.ackAttempt(RandomUtil.generateRandomBoolean());
     }
 
-    waiter.await(WINDOW_TIME_RANGE + 50, TimeUnit.MILLISECONDS);
+    waiter.await(WINDOW_TIME_RANGE + 100, TimeUnit.MILLISECONDS);
 
     int nSuccess = 7;
     int nFailure = 3;
