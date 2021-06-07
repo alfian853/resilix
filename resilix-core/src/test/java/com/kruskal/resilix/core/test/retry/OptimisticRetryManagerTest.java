@@ -83,6 +83,7 @@ class OptimisticRetryManagerTest {
 
     Assertions.assertTrue(retryManager.getErrorRate() >= ERROR_THRESHOLD);
     Assertions.assertFalse(retryManager.acquireAndUpdateRetryPermission());
+    Assertions.assertEquals(RetryState.REJECTED, retryManager.getRetryState());
   }
 
   @Test

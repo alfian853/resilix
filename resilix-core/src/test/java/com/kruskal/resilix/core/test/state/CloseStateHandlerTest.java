@@ -61,7 +61,7 @@ class CloseStateHandlerTest {
       );
       Assertions.assertTrue(stateHandler.acquirePermission());
     }
-    Assertions.assertTrue(stateContainer.getStateHandler() instanceof CloseStateHandler);
+    Assertions.assertSame(stateHandler, stateContainer.getStateHandler());
 
     Assertions.assertThrows(CustomTestException.class,
         () -> stateHandler.executeChecked(FunctionalUtil.throwErrorCheckedRunnable())
@@ -80,12 +80,11 @@ class CloseStateHandlerTest {
     Assertions.assertTrue(stateHandler.acquirePermission());
     Assertions.assertSame(stateHandler, stateContainer.getStateHandler());
 
-    int errorAttempt = (int) Math.ceil(WINDOW_SIZE * (1 - ERROR_THRESHOLD)) - 1;
-    for(int i = 0; i < errorAttempt; i++){
-      ResultWrapper<Boolean> resultWrapper = stateHandler.executeChecked(FunctionalUtil.trueCheckedSupplier());
-      Assertions.assertTrue(resultWrapper.isExecuted());
-      Assertions.assertTrue(resultWrapper.getResult());
-      Assertions.assertTrue(stateHandler.acquirePermission());
+    int safeErrorAttempt = (int) Math.ceil(WINDOW_SIZE * ERROR_THRESHOLD) - 1;
+    for(int i = 0; i < safeErrorAttempt; i++){
+      Assertions.assertThrows(CustomTestException.class,
+          () -> stateHandler.executeChecked(FunctionalUtil.throwErrorCheckedSupplier())
+      );
     }
 
     Assertions.assertSame(stateHandler, stateContainer.getStateHandler());

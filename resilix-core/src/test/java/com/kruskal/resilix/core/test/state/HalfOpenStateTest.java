@@ -61,7 +61,7 @@ class HalfOpenStateTest {
   void retryAndFailedTest() throws Throwable {
     this.init();
 
-    int minRequiredError = (int) ((Math.floor(ERROR_THRESHOLD * NUMBER_OF_RETRY + 1)));
+    int minRequiredError = (int) ((Math.ceil(ERROR_THRESHOLD * NUMBER_OF_RETRY)));
     int shouldSuccessAttempt = NUMBER_OF_RETRY - minRequiredError;
     for(int i = 0; i < shouldSuccessAttempt; i++){
       Assertions.assertTrue(stateHandler.executeChecked(FunctionalUtil.trueCheckedSupplier()).isExecuted());
@@ -69,11 +69,10 @@ class HalfOpenStateTest {
 
     Assertions.assertSame(stateHandler, stateContainer.getStateHandler());
 
+    ResultWrapper<Object> resultWrapper = null;
     for(int i = 0; i < minRequiredError; i++){
-      ResultWrapper<Object> resultWrapper = null;
       try {
         resultWrapper = stateHandler.executeChecked(FunctionalUtil.throwErrorCheckedSupplier());
-        Assertions.assertFalse(resultWrapper.isExecuted());
       }
       catch (Throwable t){
         Assertions.assertNull(resultWrapper);
@@ -94,7 +93,7 @@ class HalfOpenStateTest {
     configuration.setSlidingWindowMaxSize(WINDOW_SIZE);
     configuration.setErrorThreshold(ERROR_THRESHOLD);
     configuration.setMinimumCallToEvaluate(MIN_CALL_TO_EVALUATE);
-    configuration.setWaitDurationInOpenState(WAIT_DURATION_IN_OPEN_STATE);
+    configuration.setWaitDurationInOpenState(WAIT_DURATION_IN_OPEN_STATE*10000);
     configuration.setRetryStrategy(RetryStrategy.OPTIMISTIC);
     configuration.setNumberOfRetryInHalfOpenState(NUMBER_OF_RETRY);
 

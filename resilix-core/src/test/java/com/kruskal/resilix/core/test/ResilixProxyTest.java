@@ -42,6 +42,7 @@ class ResilixProxyTest {
 
     verify(stateHandlerTrue, times(3)).evaluateState();
     verify(stateHandlerTrue).executeChecked(any(CheckedRunnable.class));
+    verify(stateHandlerTrue).executeChecked(any(CheckedSupplier.class));
 
     doAnswer(invocationOnMock -> {
       resilixProxy.setStateHandler(stateHandlerFalse);
