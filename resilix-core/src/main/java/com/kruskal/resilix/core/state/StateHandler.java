@@ -1,6 +1,6 @@
 package com.kruskal.resilix.core.state;
 
-import com.kruskal.resilix.core.CheckedExecutor;
+import com.kruskal.resilix.core.executor.CheckedExecutor;
 import com.kruskal.resilix.core.StateContainer;
 
 /**
@@ -8,13 +8,6 @@ import com.kruskal.resilix.core.StateContainer;
  * call execution and state evaluation.
  * */
 public interface StateHandler extends CheckedExecutor {
-  /**
-   * Try to obtain permission to execute a call. this method might trigger update for certain state.
-   * @return true if permitted <br>
-   *         false if not permitted
-   */
-  boolean acquirePermission();
-
 
   /**
    * Self evaluate its state, it should trigger {@link StateContainer#setStateHandler(StateHandler)}

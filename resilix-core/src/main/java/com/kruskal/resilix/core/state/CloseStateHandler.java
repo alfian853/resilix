@@ -5,14 +5,12 @@ import com.kruskal.resilix.core.StateContainer;
 
 public class CloseStateHandler extends AbstractStateHandler {
 
-  public CloseStateHandler(Context context, StateContainer stateManager) {
-    super(context, stateManager);
-    context.getSlidingWindow().clear();
-  }
+  private final StateContainer stateContainer;
 
-  @Override
-  protected boolean isSlidingWindowActive() {
-    return true;
+  public CloseStateHandler(Context context, StateContainer stateContainer) {
+    super(context);
+    this.stateContainer = stateContainer;
+    context.getSlidingWindow().clear();
   }
 
   @Override

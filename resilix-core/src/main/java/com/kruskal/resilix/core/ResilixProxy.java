@@ -1,5 +1,6 @@
 package com.kruskal.resilix.core;
 
+import com.kruskal.resilix.core.executor.ResilixExecutor;
 import com.kruskal.resilix.core.state.CloseStateHandler;
 import com.kruskal.resilix.core.state.StateHandler;
 import com.kruskal.resilix.core.util.CheckedRunnable;

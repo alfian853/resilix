@@ -1,7 +1,7 @@
 package com.kruskal.resilix.core.test;
 
 import com.kruskal.resilix.core.Configuration;
-import com.kruskal.resilix.core.ResilixExecutor;
+import com.kruskal.resilix.core.executor.ResilixExecutor;
 import com.kruskal.resilix.core.ResilixRegistry;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -6,26 +6,17 @@ import com.kruskal.resilix.core.StateContainer;
 public class OpenStateHandler extends AbstractStateHandler {
 
   private final long startingTime;
+  private final StateContainer stateContainer;
 
-  public OpenStateHandler(Context context, StateContainer stateManager) {
-    super(context, stateManager);
-
+  public OpenStateHandler(Context context, StateContainer stateContainer) {
+    super(context);
+    this.stateContainer = stateContainer;
     this.startingTime = System.currentTimeMillis();
-  }
-
-  @Override
-  protected boolean isSlidingWindowActive() {
-    return false;
   }
 
   @Override
   public boolean acquirePermission() {
     this.evaluateState();
-
-    if(stateContainer.getStateHandler() != this){
-      return stateContainer.getStateHandler().acquirePermission();
-    }
-
     return false;
   }
 

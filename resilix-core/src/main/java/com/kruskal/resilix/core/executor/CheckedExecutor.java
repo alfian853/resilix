@@ -1,5 +1,6 @@
-package com.kruskal.resilix.core;
+package com.kruskal.resilix.core.executor;
 
+import com.kruskal.resilix.core.ResultWrapper;
 import com.kruskal.resilix.core.util.CheckedRunnable;
 import com.kruskal.resilix.core.util.CheckedSupplier;
 

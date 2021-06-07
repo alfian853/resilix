@@ -2,14 +2,12 @@ package com.kruskal.resilix.core.test.retry;
 
 import com.kruskal.resilix.core.Configuration;
 import com.kruskal.resilix.core.Context;
+import com.kruskal.resilix.core.retry.OptimisticRetryExecutor;
 import com.kruskal.resilix.core.retry.RetryState;
 import com.kruskal.resilix.core.retry.RetryStrategy;
-import com.kruskal.resilix.core.window.SlidingWindowStrategy;
-import com.kruskal.resilix.core.retry.OptimisticRetryManager;
+import com.kruskal.resilix.core.test.testutil.CustomTestException;
 import com.kruskal.resilix.core.test.testutil.FunctionalUtil;
-import com.kruskal.resilix.core.test.testutil.RandomUtil;
-import com.kruskal.resilix.core.window.CountBasedWindow;
-import com.kruskal.resilix.core.window.SlidingWindow;
+import com.kruskal.resilix.core.window.SlidingWindowStrategy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-class OptimisticRetryManagerTest {
+class OptimisticRetryExecutorTest {
 
   private int SLIDING_WINDOW_SIZE = 50;
   private double ERROR_THRESHOLD = 0.3;
@@ -31,8 +29,7 @@ class OptimisticRetryManagerTest {
 
   private Configuration configuration;
   private Context context;
-  private SlidingWindow slidingWindow;
-  private OptimisticRetryManager retryManager;
+  private OptimisticRetryExecutor retryExecutor;
 
   @BeforeEach
   void init(){
@@ -44,22 +41,18 @@ class OptimisticRetryManagerTest {
     configuration.setErrorThreshold(ERROR_THRESHOLD);
     configuration.setNumberOfRetryInHalfOpenState(NUMBER_OF_RETRY);
 
-    slidingWindow = new CountBasedWindow(configuration);
     context.setConfiguration(configuration);
-    context.setSlidingWindow(slidingWindow);
+    retryExecutor = new OptimisticRetryExecutor(context);
+
   }
 
   @Test
   @DisplayName("should be REJECTED")
   void rejectedCaseTest() {
-    for(int i = 0; i < SLIDING_WINDOW_SIZE; i++) {
-      slidingWindow.ackAttempt(RandomUtil.generateRandomBoolean());
-    }
     // late instantiation because the observer should be registered after populating slidingWindow's data
-    retryManager = new OptimisticRetryManager(context);
 
-    Assertions.assertEquals(RetryState.ON_GOING, retryManager.getRetryState());
-    Assertions.assertEquals(0.0d, retryManager.getErrorRate(), 0.000001);
+    Assertions.assertEquals(RetryState.ON_GOING, retryExecutor.getRetryState());
+    Assertions.assertEquals(0.0d, retryExecutor.getErrorRate(), 0.000001);
 
     int minFailedAck = (int) (((ERROR_THRESHOLD) * NUMBER_OF_RETRY)) + 2;
     int maxSuccessAck = NUMBER_OF_RETRY - minFailedAck;
@@ -67,63 +60,59 @@ class OptimisticRetryManagerTest {
 
     for (int i = 0; i < maxSuccessAck; i++){
       futureList.add(executor.submit(() -> {
-        retryManager.acquireAndUpdateRetryPermission();
-        slidingWindow.ackAttempt(true);
+        Assertions.assertDoesNotThrow(() -> retryExecutor.executeChecked(FunctionalUtil.doNothingCheckedRunnable()));
       }));
     }
 
     for (int i = 0; i < minFailedAck; i++){
       futureList.add(executor.submit(() -> {
-        retryManager.acquireAndUpdateRetryPermission();
-        slidingWindow.ackAttempt(false);
+        Assertions.assertThrows(CustomTestException.class, () ->
+            retryExecutor.executeChecked(FunctionalUtil.throwErrorCheckedSupplier())
+        );
       }));
     }
 
     futureList.forEach(FunctionalUtil.doNothingConsumer());
 
-    Assertions.assertTrue(retryManager.getErrorRate() >= ERROR_THRESHOLD);
-    Assertions.assertFalse(retryManager.acquireAndUpdateRetryPermission());
-    Assertions.assertEquals(RetryState.REJECTED, retryManager.getRetryState());
+    Assertions.assertTrue(retryExecutor.getErrorRate() >= ERROR_THRESHOLD);
+    Assertions.assertFalse(retryExecutor.acquirePermission());
+    Assertions.assertEquals(RetryState.REJECTED, retryExecutor.getRetryState());
   }
 
   @Test
   @DisplayName("should be ACCEPTED, testcase: errorThreshold=80%, success ack = 21")
   void acceptedCaseTest() {
-    for(int i = 0; i < SLIDING_WINDOW_SIZE; i++) {
-      slidingWindow.ackAttempt(RandomUtil.generateRandomBoolean());
-    }
     ERROR_THRESHOLD = 0.8;
-
     configuration.setErrorThreshold(ERROR_THRESHOLD);
+    retryExecutor = new OptimisticRetryExecutor(context);
 
-    // late instantiation because the observer should be registered after populating slidingWindow's data
-    retryManager = new OptimisticRetryManager(context);
-
-    Assertions.assertEquals(RetryState.ON_GOING, retryManager.getRetryState());
-    Assertions.assertEquals(0.0d, retryManager.getErrorRate(), 0.000001);
+    Assertions.assertEquals(RetryState.ON_GOING, retryExecutor.getRetryState());
+    Assertions.assertEquals(0.0d, retryExecutor.getErrorRate(), 0.000001);
 
     int minSuccessAck = (int) (((1.0d - ERROR_THRESHOLD) * NUMBER_OF_RETRY)) + 2;
 
     List<Future<?>> futureList = new LinkedList<>();
     for(int i = 0; i < minSuccessAck; i++){
       futureList.add(executor.submit(() -> {
-        Assertions.assertTrue(retryManager.acquireAndUpdateRetryPermission());
-        slidingWindow.ackAttempt(true);
+        Assertions.assertDoesNotThrow(() -> retryExecutor.executeChecked(FunctionalUtil.doNothingCheckedRunnable()));
       }));
     }
+    futureList.stream().forEach(FunctionalUtil.doNothingConsumer());
+
     for(int i = 0; i < NUMBER_OF_RETRY - minSuccessAck; i++){
       futureList.add(executor.submit(() -> {
-        Assertions.assertTrue(retryManager.acquireAndUpdateRetryPermission());
-        slidingWindow.ackAttempt(false);
+        Assertions.assertThrows(CustomTestException.class, () ->
+            retryExecutor.executeChecked(FunctionalUtil.throwErrorCheckedSupplier())
+        );
       }));
     }
 
     futureList.stream().forEach(FunctionalUtil.doNothingConsumer());
 
-    Assertions.assertTrue(retryManager.getErrorRate() < ERROR_THRESHOLD);
+    Assertions.assertTrue(retryExecutor.getErrorRate() < ERROR_THRESHOLD);
 
     // assert if the quota has been exceeded
-    Assertions.assertFalse(retryManager.acquireAndUpdateRetryPermission());
-    Assertions.assertEquals(RetryState.ACCEPTED, retryManager.getRetryState());
+    Assertions.assertFalse(retryExecutor.acquirePermission());
+    Assertions.assertEquals(RetryState.ACCEPTED, retryExecutor.getRetryState());
   }
 }

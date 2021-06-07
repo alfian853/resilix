@@ -1,5 +1,6 @@
 package com.kruskal.resilix.core;
 
+import com.kruskal.resilix.core.executor.ResilixExecutor;
 import com.kruskal.resilix.core.factory.SlidingWindowFactory;
 import com.kruskal.resilix.core.window.SlidingWindow;
 

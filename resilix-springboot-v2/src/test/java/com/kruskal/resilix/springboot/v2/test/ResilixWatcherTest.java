@@ -1,7 +1,7 @@
 package com.kruskal.resilix.springboot.v2.test;
 
 import com.kruskal.resilix.core.Configuration;
-import com.kruskal.resilix.core.ResilixExecutor;
+import com.kruskal.resilix.core.executor.ResilixExecutor;
 import com.kruskal.resilix.core.ResilixProxy;
 import com.kruskal.resilix.core.ResilixRegistry;
 import com.kruskal.resilix.core.state.CloseStateHandler;

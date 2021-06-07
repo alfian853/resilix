@@ -14,6 +14,7 @@ public class TestStateContainer implements StateContainer {
 
   @Override
   public StateHandler getStateHandler() {
+    stateHandler.evaluateState();
     return stateHandler;
   }
 }

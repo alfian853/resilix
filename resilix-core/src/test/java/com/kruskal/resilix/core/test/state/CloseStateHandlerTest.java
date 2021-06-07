@@ -107,7 +107,6 @@ class CloseStateHandlerTest {
       );
     }
     Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());
-    Assertions.assertFalse(stateContainer.getStateHandler().acquirePermission());
     Assertions.assertTrue(stateContainer.getStateHandler() instanceof OpenStateHandler);
   }
 

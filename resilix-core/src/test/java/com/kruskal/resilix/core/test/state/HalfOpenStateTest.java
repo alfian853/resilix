@@ -52,7 +52,6 @@ class HalfOpenStateTest {
     }
 
     Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());
-    Assertions.assertTrue(stateContainer.getStateHandler().acquirePermission());
     Assertions.assertTrue(stateContainer.getStateHandler() instanceof CloseStateHandler);
     Assertions.assertEquals(0, slidingWindow.getErrorRate(), 0.000001);
   }
@@ -83,7 +82,6 @@ class HalfOpenStateTest {
     Assertions.assertFalse(stateHandler.executeChecked(FunctionalUtil.trueCheckedSupplier()).isExecuted());
     Assertions.assertNotSame(stateHandler, stateContainer.getStateHandler());
     Assertions.assertTrue(stateContainer.getStateHandler() instanceof OpenStateHandler);
-    Assertions.assertFalse(stateContainer.getStateHandler().acquirePermission());
   }
 
   private void init(){
