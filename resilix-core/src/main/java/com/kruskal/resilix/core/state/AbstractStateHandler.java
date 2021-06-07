@@ -22,10 +22,4 @@ public abstract class AbstractStateHandler extends DefaultCheckedExecutor implem
     slidingWindow.ackAttempt(success);
   }
 
-  /**
-   * Try to obtain permission to execute a call. this method might trigger update for certain state.
-   * @return true if permitted <br>
-   *         false if not permitted
-   */
-  protected abstract boolean acquirePermission();
 }

@@ -40,7 +40,11 @@ public abstract class DefaultCheckedExecutor implements CheckedExecutor {
     }
 
   }
-
+  /**
+   * Try to obtain permission to execute a call.
+   * @return true if permitted <br>
+   *         false if not permitted
+   */
   protected abstract boolean acquirePermission();
 
   protected abstract void onAfterExecution(boolean success);
