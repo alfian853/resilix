@@ -1,19 +1,19 @@
 package com.kruskal.resilix.core;
 
-public class ResultWrapper<T> {
+public class ExecResult<T> {
   boolean isExecuted = false;
   T result = null;
 
-  public static <T> ResultWrapper<T> notExecutedResult(){
-    return new ResultWrapper<>();
+  public static <T> ExecResult<T> notExecutedResult(){
+    return new ExecResult<>();
   }
 
-  public static <T> ResultWrapper<T> executionResult(T result){
-    ResultWrapper<T> resultWrapper = new ResultWrapper<>();
-    resultWrapper.setExecuted(true);
-    resultWrapper.setResult(result);
+  public static <T> ExecResult<T> executionResult(T result){
+    ExecResult<T> execResult = new ExecResult<>();
+    execResult.setExecuted(true);
+    execResult.setResult(result);
 
-    return resultWrapper;
+    return execResult;
   }
 
   public boolean isExecuted() {
@@ -31,7 +31,5 @@ public class ResultWrapper<T> {
   public void setResult(T result) {
     this.result = result;
   }
-
-
 
 }

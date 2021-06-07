@@ -1,7 +1,7 @@
 package com.kruskal.resilix.springboot.v1;
 
 import com.kruskal.resilix.core.ResilixRegistry;
-import com.kruskal.resilix.core.ResultWrapper;
+import com.kruskal.resilix.core.ExecResult;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -25,7 +25,7 @@ public class ResilixWatcherAspect {
 
     ResilixWatcher myAnnotation = method.getAnnotation(ResilixWatcher.class);
     
-    ResultWrapper<Object> resultWrapper = resilixRegistry.getResilixExecutor(myAnnotation.contextKey())
+    ExecResult<Object> resultWrapper = resilixRegistry.getResilixExecutor(myAnnotation.contextKey())
         .executeChecked(() -> joinPoint.proceed(joinPoint.getArgs()));
 
     return resultWrapper.getResult();

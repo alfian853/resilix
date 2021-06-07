@@ -34,7 +34,7 @@ public class ResilixProxy implements ResilixExecutor, StateContainer {
   }
 
   @Override
-  public <T> ResultWrapper<T> executeChecked(CheckedSupplier<T> checkedSupplier) throws Throwable {
+  public <T> ExecResult<T> executeChecked(CheckedSupplier<T> checkedSupplier) throws Throwable {
     stateHandler.evaluateState();
     return stateHandler.executeChecked(checkedSupplier);
   }
@@ -53,7 +53,7 @@ public class ResilixProxy implements ResilixExecutor, StateContainer {
   }
 
   @Override
-  public <T> ResultWrapper<T> execute(Supplier<T> supplier) {
+  public <T> ExecResult<T> execute(Supplier<T> supplier) {
     try{
       return this.executeChecked(supplier::get);
     }

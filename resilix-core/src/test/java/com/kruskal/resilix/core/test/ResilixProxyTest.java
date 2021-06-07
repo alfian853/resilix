@@ -22,7 +22,7 @@ class ResilixProxyTest {
   @BeforeEach
   void init() throws Throwable {
     when(stateHandlerTrue.executeChecked(any(CheckedRunnable.class))).thenReturn(true);
-    when(stateHandlerTrue.executeChecked(any(CheckedSupplier.class))).thenReturn(ResultWrapper.executionResult(true));
+    when(stateHandlerTrue.executeChecked(any(CheckedSupplier.class))).thenReturn(ExecResult.executionResult(true));
     when(stateHandlerFalse.executeChecked(any(CheckedRunnable.class))).thenThrow(new CustomTestException());
     when(stateHandlerFalse.executeChecked(any(CheckedSupplier.class))).thenThrow(new CustomTestException());
   }

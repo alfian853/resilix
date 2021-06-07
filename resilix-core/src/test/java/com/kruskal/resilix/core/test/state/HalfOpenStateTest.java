@@ -2,7 +2,7 @@ package com.kruskal.resilix.core.test.state;
 
 import com.kruskal.resilix.core.Configuration;
 import com.kruskal.resilix.core.Context;
-import com.kruskal.resilix.core.ResultWrapper;
+import com.kruskal.resilix.core.ExecResult;
 import com.kruskal.resilix.core.StateContainer;
 import com.kruskal.resilix.core.retry.RetryStrategy;
 import com.kruskal.resilix.core.test.testutil.CustomTestException;
@@ -63,18 +63,18 @@ class HalfOpenStateTest {
     int minRequiredError = (int) ((Math.ceil(ERROR_THRESHOLD * NUMBER_OF_RETRY)));
     int shouldSuccessAttempt = NUMBER_OF_RETRY - minRequiredError;
     for(int i = 0; i < shouldSuccessAttempt; i++){
-      Assertions.assertTrue(stateHandler.executeChecked(FunctionalUtil.trueCheckedSupplier()).isExecuted());
+      ExecResult<Boolean> execResult = stateHandler.executeChecked(FunctionalUtil.trueCheckedSupplier());
+      Assertions.assertTrue(execResult.isExecuted());
+      Assertions.assertTrue(execResult.getResult());
     }
 
     Assertions.assertSame(stateHandler, stateContainer.getStateHandler());
 
-    ResultWrapper<Object> resultWrapper = null;
     for(int i = 0; i < minRequiredError; i++){
       try {
-        resultWrapper = stateHandler.executeChecked(FunctionalUtil.throwErrorCheckedSupplier());
+        stateHandler.executeChecked(FunctionalUtil.throwErrorCheckedSupplier());
       }
       catch (Throwable t){
-        Assertions.assertNull(resultWrapper);
         Assertions.assertTrue(t instanceof CustomTestException);
       }
     }

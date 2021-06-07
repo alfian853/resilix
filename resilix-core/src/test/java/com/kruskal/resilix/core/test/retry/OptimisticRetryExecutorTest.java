@@ -48,7 +48,7 @@ class OptimisticRetryExecutorTest {
 
   @Test
   @DisplayName("should be REJECTED")
-  void rejectedCaseTest() {
+  void rejectedCaseTest() throws Throwable {
     // late instantiation because the observer should be registered after populating slidingWindow's data
 
     Assertions.assertEquals(RetryState.ON_GOING, retryExecutor.getRetryState());
@@ -76,6 +76,8 @@ class OptimisticRetryExecutorTest {
 
     Assertions.assertTrue(retryExecutor.getErrorRate() >= ERROR_THRESHOLD);
     Assertions.assertFalse(retryExecutor.acquirePermission());
+    Assertions.assertEquals(RetryState.REJECTED, retryExecutor.getRetryState());
+    Assertions.assertFalse(retryExecutor.executeChecked(FunctionalUtil.throwErrorCheckedRunnable()));
     Assertions.assertEquals(RetryState.REJECTED, retryExecutor.getRetryState());
   }
 

@@ -1,7 +1,7 @@
 package com.kruskal.resilix.core.state;
 
 import com.kruskal.resilix.core.Context;
-import com.kruskal.resilix.core.ResultWrapper;
+import com.kruskal.resilix.core.ExecResult;
 import com.kruskal.resilix.core.StateContainer;
 import com.kruskal.resilix.core.factory.RetryExecutorFactory;
 import com.kruskal.resilix.core.retry.RetryExecutor;
@@ -25,7 +25,7 @@ public class HalfOpenStateHandler extends AbstractStateHandler {
   }
 
   @Override
-  public <T> ResultWrapper<T> executeChecked(CheckedSupplier<T> checkedSupplier) throws Throwable {
+  public <T> ExecResult<T> executeChecked(CheckedSupplier<T> checkedSupplier) throws Throwable {
     return retryExecutor.executeChecked(checkedSupplier);
   }
 

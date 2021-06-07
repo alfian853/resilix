@@ -1,6 +1,6 @@
 package com.kruskal.resilix.core.executor;
 
-import com.kruskal.resilix.core.ResultWrapper;
+import com.kruskal.resilix.core.ExecResult;
 import com.kruskal.resilix.core.util.CheckedRunnable;
 import com.kruskal.resilix.core.util.CheckedSupplier;
 
@@ -25,12 +25,12 @@ public abstract class DefaultCheckedExecutor implements CheckedExecutor {
   }
 
   @Override
-  public <T> ResultWrapper<T> executeChecked(CheckedSupplier<T> checkedSupplier) throws Throwable {
-    if(!this.acquirePermission()) return ResultWrapper.notExecutedResult();
+  public <T> ExecResult<T> executeChecked(CheckedSupplier<T> checkedSupplier) throws Throwable {
+    if(!this.acquirePermission()) return ExecResult.notExecutedResult();
     boolean success = true;
 
     try {
-      return ResultWrapper.executionResult(checkedSupplier.get());
+      return ExecResult.executionResult(checkedSupplier.get());
     }
     catch (Throwable throwable){
       success = false;
