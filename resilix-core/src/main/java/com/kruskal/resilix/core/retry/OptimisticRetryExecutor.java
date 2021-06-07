@@ -16,9 +16,9 @@ public class OptimisticRetryExecutor extends DefaultCheckedExecutor implements R
   private final AtomicInteger numberOfRetry = new AtomicInteger(0);
   private final AtomicInteger numberOfFail = new AtomicInteger(0);
   private final AtomicInteger numberOfAck = new AtomicInteger(0);
+  private final AtomicReference<RetryState> retryState = new AtomicReference<>(RetryState.ON_GOING);
   protected Configuration configuration;
 
-  private AtomicReference<RetryState> retryState = new AtomicReference<>(null);
 
   public OptimisticRetryExecutor(Context context) {
     this.configuration = context.getConfiguration();
@@ -27,18 +27,17 @@ public class OptimisticRetryExecutor extends DefaultCheckedExecutor implements R
   @Override
   public RetryState getRetryState() {
 
-    if(retryState.get() == RetryState.REJECTED) {
+    if(retryState.get() != RetryState.ON_GOING) {
       return retryState.get();
     }
 
     if(this.isErrorLimitExceeded()){
       retryState.set(RetryState.REJECTED);
-      retryState = new AtomicReference<>(RetryState.REJECTED);
       return RetryState.REJECTED;
     }
 
     if(numberOfAck.get() >= configuration.getNumberOfRetryInHalfOpenState()){
-      retryState = new AtomicReference<>(RetryState.ACCEPTED);
+      retryState.set(RetryState.ACCEPTED);
       return RetryState.ACCEPTED;
     }
 
