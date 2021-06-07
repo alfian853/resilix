@@ -56,7 +56,6 @@ public class TimeBasedWindow extends AbstractSlidingWindow {
           failureAttemptWindow.removeFirst();
         }
       }
-    catch (Throwable t){}
     finally {
       writeLock.set(true);
     }

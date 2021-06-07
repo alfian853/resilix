@@ -56,7 +56,6 @@ public class CountBasedWindow extends AbstractSlidingWindow {
         }
       }
     }
-    catch (Throwable t){}
     finally {
       writeLock.set(true);
     }
