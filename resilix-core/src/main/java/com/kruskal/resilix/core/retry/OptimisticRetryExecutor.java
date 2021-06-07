@@ -16,11 +16,12 @@ public class OptimisticRetryExecutor extends DefaultCheckedExecutor implements R
   private final AtomicInteger numberOfRetry = new AtomicInteger(0);
   private final AtomicInteger numberOfFail = new AtomicInteger(0);
   private final AtomicInteger numberOfAck = new AtomicInteger(0);
+  protected Configuration configuration;
 
   private AtomicReference<RetryState> retryState = new AtomicReference<>(null);
 
   public OptimisticRetryExecutor(Context context) {
-    super(context);
+    this.configuration = context.getConfiguration();
   }
 
   @Override

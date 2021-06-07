@@ -1,7 +1,9 @@
 package com.kruskal.resilix.core.state;
 
-import com.kruskal.resilix.core.*;
-import com.kruskal.resilix.core.factory.RetryFactory;
+import com.kruskal.resilix.core.Context;
+import com.kruskal.resilix.core.ResultWrapper;
+import com.kruskal.resilix.core.StateContainer;
+import com.kruskal.resilix.core.factory.RetryExecutorFactory;
 import com.kruskal.resilix.core.retry.RetryExecutor;
 import com.kruskal.resilix.core.util.CheckedRunnable;
 import com.kruskal.resilix.core.util.CheckedSupplier;
@@ -14,7 +16,7 @@ public class HalfOpenStateHandler extends AbstractStateHandler {
   public HalfOpenStateHandler(Context context, StateContainer stateContainer) {
     super(context);
     this.stateContainer = stateContainer;
-    this.retryExecutor = RetryFactory.create(context);
+    this.retryExecutor = RetryExecutorFactory.create(context);
   }
 
   @Override

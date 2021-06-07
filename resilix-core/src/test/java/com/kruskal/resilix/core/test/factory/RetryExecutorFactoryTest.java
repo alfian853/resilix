@@ -3,7 +3,7 @@ package com.kruskal.resilix.core.test.factory;
 import com.kruskal.resilix.core.Configuration;
 import com.kruskal.resilix.core.Context;
 import com.kruskal.resilix.core.retry.RetryStrategy;
-import com.kruskal.resilix.core.factory.RetryFactory;
+import com.kruskal.resilix.core.factory.RetryExecutorFactory;
 import com.kruskal.resilix.core.retry.OptimisticRetryExecutor;
 import com.kruskal.resilix.core.retry.RetryExecutor;
 import com.kruskal.resilix.core.window.CountBasedWindow;
@@ -27,7 +27,7 @@ class RetryExecutorFactoryTest {
     context.setConfiguration(configuration);
     context.setSlidingWindow(new CountBasedWindow(configuration));
 
-    RetryExecutor retryExecutor = RetryFactory.create(context);
+    RetryExecutor retryExecutor = RetryExecutorFactory.create(context);
 
     Assertions.assertTrue(retryExecutor instanceof OptimisticRetryExecutor);
 
@@ -43,7 +43,7 @@ class RetryExecutorFactoryTest {
     context.setConfiguration(configuration);
     context.setSlidingWindow(new CountBasedWindow(configuration));
 
-    RetryExecutor retryExecutor = RetryFactory.create(context);
+    RetryExecutor retryExecutor = RetryExecutorFactory.create(context);
 
     Assertions.assertTrue(retryExecutor instanceof OptimisticRetryExecutor);
 
@@ -57,12 +57,12 @@ class RetryExecutorFactoryTest {
     Context context = new Context();
 
     Assertions.assertThrows(IllegalArgumentException.class,
-        () -> RetryFactory.create(context)
+        () -> RetryExecutorFactory.create(context)
     );
 
     context.setConfiguration(configuration);
     Assertions.assertThrows(IllegalArgumentException.class,
-        () -> RetryFactory.create(context)
+        () -> RetryExecutorFactory.create(context)
     );
 
   }

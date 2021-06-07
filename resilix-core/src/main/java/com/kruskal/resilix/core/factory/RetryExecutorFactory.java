@@ -5,9 +5,9 @@ import com.kruskal.resilix.core.retry.OptimisticRetryExecutor;
 import com.kruskal.resilix.core.retry.PessimisticRetryExecutor;
 import com.kruskal.resilix.core.retry.RetryExecutor;
 
-public class RetryFactory {
+public class RetryExecutorFactory {
 
-  private RetryFactory() { }
+  private RetryExecutorFactory() { }
 
   public static RetryExecutor create(Context context){
     if(context.getConfiguration() != null && context.getConfiguration().getRetryStrategy() != null){

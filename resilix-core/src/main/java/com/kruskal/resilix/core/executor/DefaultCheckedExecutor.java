@@ -1,20 +1,10 @@
 package com.kruskal.resilix.core.executor;
 
-import com.kruskal.resilix.core.*;
-import com.kruskal.resilix.core.executor.CheckedExecutor;
+import com.kruskal.resilix.core.ResultWrapper;
 import com.kruskal.resilix.core.util.CheckedRunnable;
 import com.kruskal.resilix.core.util.CheckedSupplier;
 
 public abstract class DefaultCheckedExecutor implements CheckedExecutor {
-
-  protected Context context;
-  protected Configuration configuration;
-
-  protected DefaultCheckedExecutor(Context context) {
-    this.context = context;
-
-    this.configuration = context.getConfiguration();
-  }
 
   @Override
   public boolean executeChecked(CheckedRunnable checkedRunnable) throws Throwable {
