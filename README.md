@@ -4,7 +4,7 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=alfian853_resilix&metric=coverage)](https://sonarcloud.io/dashboard?id=alfian853_resilix)
 
 
-# Resilix: A Lightweight Circuit Breaker Library
+# Resilix: A Fault Tolerance Library for Java and Springboot
 ### Table of Contents
 #### 1. [Introduction](#Introduction)
 #### 2. [Usage Example](#Usage-Example)
