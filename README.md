@@ -42,28 +42,29 @@ public class ResilixDemoApplication {
   }
 }
 ```
-```java
-@RestController
-public class DemoController {
 
-  @Autowired
-  private ResilixRegistry resilixRegistry;
+```java
+
+@RestController public class DemoController {
+
+  @Autowired private ResilixRegistry resilixRegistry;
 
   private final String[] thirdPartyList = {"foo", "bar"};
 
 
-  @GetMapping("/resilix")
-  public String callApi() {
+  @GetMapping("/resilix") public String callApi() {
 
     for (String thirdParty : thirdPartyList) {
       // get ResilixExecutor by the contextKey
       ResilixExecutor resilixExecutor = resilixRegistry.getResilixExecutor(thirdParty);
 
       try {
-        ResultWrapper<String> resultWrapper = resilixExecutor.executeChecked(() -> this.callThirdPartyApi(thirdParty));
+        ExecResult<String> execResult =
+            resilixExecutor.executeChecked(() -> this.callThirdPartyApi(thirdParty));
 
         //will skip if not execution isn't permitted and return the result if it has been executed
-        if (resultWrapper.isExecuted()) return resultWrapper.getResult();
+        if (execResult.isExecuted())
+          return execResult.getResult();
       } catch (Throwable e) {
         //continue to the next 3rd parties if there is any error occurred;
         log.error("{} execution failed", thirdParty, e);
@@ -78,8 +79,7 @@ public class DemoController {
    * will watch the call's result(success/failure) for "somethingKey",
    * if there is an error, the error rate for "somethingKey" will be increased.
    */
-  @ResilixWatcher(contextKey = "somethingKey")
-  public Boolean callSomeMethod(){
+  @ResilixWatcher(contextKey = "somethingKey") public Boolean callSomeMethod() {
     //do something
     return true;
   }
